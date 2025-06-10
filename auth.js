@@ -98,7 +98,7 @@ function logoutUser() {
     localStorage.removeItem(AUTH_KEY);
     localStorage.removeItem('userEmail');
     checkAuth();
-    window.location.href = 'home.html'; // Redirect to home after logout
+    window.location.href = 'index.html'; // Redirect to home after logout
 }
 
 // Initialize auth check on page load
@@ -120,7 +120,7 @@ if (document.getElementById('loginForm')) {
         
         if (loginUser(email, password)) {
             alert('Login successful!');
-            window.location.href = 'home.html';
+            window.location.href = 'index.html';
         } else {
             alert('Invalid email or password');
         }

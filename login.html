@@ -342,7 +342,7 @@
                 <ul class="navbar-nav ms-auto">
 
                     <li class="nav-item">
-                        <a href="home.html" class="nav-link">Home</a>
+                        <a href="index.html" class="nav-link">Home</a>
                     </li>
                     
                     <!-- Dropdown menu item -->
@@ -472,7 +472,7 @@
             .then(data => {
                 localStorage.setItem('weatherAuthToken', data.token);
                 checkAuthStatus();
-                window.location.href = 'home.html';
+                window.location.href = 'index.html';
             })
             .catch(error => {
                 console.error('Login error:', error);
@@ -492,7 +492,7 @@
             
             // Show success message and redirect
             alert('Login successful! Redirecting to home page...');
-            window.location.href = 'home.html';
+            window.location.href = 'index.html';
         });
     
         // Auth status check function
