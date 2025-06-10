@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1b1b53;
+            --secondary-color: #3a3a8f;
+            --accent-color: #06f07b;
+            --highlight-color: #ff4ed9;
+            --text-color: #333;
+            --light-text: #f8f9fa;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+        
+        /* Navigation - Matched to About Page */
+        .navbar {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background-color: var(--primary-color) !important;
+
+        }
+        
+        .navbar-brand img {
+            height: 30px;
+            transition: transform 0.3s ease;
+        }
+        
+        .navbar-brand:hover img {
+            transform: scale(1.05);
+        }
+        
+        .nav-link {
+            position: relative;
+            margin: 0 8px;
+            transition: color 0.3s ease;
+            color: var(--light-text) !important;
+        }
+        
+        .nav-link.active {
+            color: var(--accent-color) !important;
+            font-weight: bold;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--highlight-color);
+            border-radius: 3px;
+        }
+        
+        .dropdown-menu {
+            background-color: var(--primary-color);
+            border: none;
+        }
+        
+        .dropdown-item {
+            color: var(--light-text);
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background-color: var(--highlight-color);
+            color: white;
+        }
+
+        /* Contact Section - Updated to match theme */
+        .contact-section {
+            padding: 5rem 0;
+            flex: 1;
+        }
+        
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .contact-section h2 {
+            font-size: 2.8rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .contact-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--highlight-color);
+        }
+        
+        .contact-section p {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+            color: #666;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 2rem;
+        }
+        
+        .contact-info {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 2.5rem;
+            border-radius: 0.5rem;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+        
+        .contact-item i {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-right: 1.5rem;
+            margin-top: 5px;
+        }
+        
+        .contact-item h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .contact-item a, .contact-item p {
+            color: #ddd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-item a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+        
+        .contact-form {
+            background: white;
+            padding: 0.2rem;
+            border-radius: 0rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            
+            
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 0.3rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 0.3rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--highlight-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 78, 217, 0.2);
+            
+            
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+            
+        }
+        
+        .submit-btn {
+            background-color: var(--highlight-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 0.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-weight: 600;
+        }
+        
+        .submit-btn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        /* Footer - Matched to About Page */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 3rem 0 2rem;
+            margin-top: auto;
+        }
+        
+        .footer-logo img {
+            height: 40px;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .footer-logo:hover img {
+            transform: scale(1.05);
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            display: inline-block;
+            margin: 0 12px;
+        }
+        
+        .footer-links a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: white;
+            transition: width 0.3s ease;
+        }
+        
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+        
+        .social-media a {
+            color: white;
+            font-size: 1.3rem;
+            margin: 0 12px;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        
+        .social-media a:hover {
+            color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+        
+        .contact-form input {
+            padding: 0.6rem;
+            border-radius: 0.25rem;
+            border: none;
+            margin-right: 0.5rem;
+            transition: box-shadow 0.3s ease;
+            border: 1px solid #181313;
+        }
+        
+        .contact-form:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 10px 20px rgba(43, 6, 6, 0.1);
+          transition: all 0.3s ease;
+        }
+        
+        .contact-form input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(6, 240, 123, 0.3);
+        }
+        
+        .contact-form button {
+            padding: 0.6rem 3.0rem;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            border: none;
+            border-radius: 0.25rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-form button:hover {
+            background-color: var(--highlight-color);
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-links li {
+                display: block;
+                margin: 0.5rem 0;
+            }
+            
+            .contact-form {
+                margin-top: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Menu - Matched to About Page -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+      <div class="container">
+          <a class="navbar-brand" href="#">
+              <img src="logo2.jpg" alt="P.Kamesa Logo" class="d-inline-block align-text-top">
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+              <ul class="navbar-nav ms-auto">
+
+                  <li class="nav-item">
+                      <a href="home.html" class="nav-link">Home</a>
+                  </li>
+                  
+                  <!-- Dropdown menu item -->
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Weather Data
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="metar1.html">METAR/SPECI</a></li>
+                        <li><a class="dropdown-item" href="synop.html">SYNOP</a></li>
+                          <li><a class="dropdown-item" href="actuals.html">ACTUALS</a></li>
+                          <li><a class="dropdown-item" href="mon_brief.html">MON BRIEF</a></li>
+                          <li>
+                            <a class="dropdown-item" href="#" onclick="launchFirefox('https://196.202.217.196/nsweb/FlightBriefing/?page=showQuery#showQuery')">FLIGHT FOLDER</a>
+                        </li>
+                          <li><a class="dropdown-item" href="dutyroster.html">DUTY ROSTER</a></li>
+                         
+                      </ul>
+                  </li>
+                  
+                  <li class="nav-item">
+                      <a href="about.html" class="nav-link">About</a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="contact.html" class="nav-link active">Contact</a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="login.html" class="nav-link">Login</a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="signup.html" class="nav-link">Sign Up</a>
+                  </li>
+                  <li class="nav-item" id="logout-item" style="display: none;">
+                    <a href="#" class="nav-link" id="logout-link">Logout</a>
+                </li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+
+<!-- Contact Me Section -->
+<section id="contact" class="contact-section">
+    <div class="contact-container">
+      <h2 class="animate">Contact Me</h2>
+      <p class="animate delay-1">Have questions or feedback? Reach out anytime!</p>
+      
+      <div class="contact-grid">
+        <!-- Contact Info -->
+        <div class="contact-info animate delay-1">
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <div>
+              <h3>Email</h3>
+              <a href="mailto:petmaish1@gmail.com">petmaish1@gmail.com</a>
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <i class="fas fa-phone-alt"></i>
+            <div>
+              <h3>Phone</h3>
+              <a href="tel:+254712290069">+254 712290069</a>
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <h3>Location</h3>
+              <p>Nairobi, Kenya</p>
+            </div>
+          </div>
+          
+          <div class="social-links">
+            <a href="https://twitter.com" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        
+        <!-- Contact Form -->
+        <form class="contact-form animate delay-2" id="contactForm">
+          <div class="form-group">
+            <input type="text" id="name" placeholder="Your Name" required>
+          </div>
+          
+          <div class="form-group">
+            <input type="email" id="email" placeholder="Your Email" required>
+          </div>
+          
+          <div class="form-group">
+            <input type="text" id="subject" placeholder="Subject">
+          </div>
+          
+          <div class="form-group">
+            <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
+          </div>
+          
+          <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+    <!-- Footer - Matched to About Page -->
+    <footer class="py-4">
+      <div class="container">
+          <div class="row">
+              <div class="col-md-4 text-center text-md-start">
+                  <div class="footer-logo">
+                      <img src="logo.png" alt="P.K Logo">
+                  </div>
+                  <p>&copy; 2025 P.Kamesa. All rights reserved.</p>
+              </div>
+              <div class="col-md-4 text-center">
+                  <ul class="footer-links">
+                      <li><a href="/privacy-policy">Privacy Policy</a></li>
+                      <li><a href="/terms-of-service">Terms of Service</a></li>
+                      <li><a href="contact.html">Contact Me</a></li>
+                  </ul>
+              </div>
+              <div class="col-md-4 text-center text-md-end">
+                  <div class="social-media mb-3">
+                      <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+                      <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                      <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                      <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+                  </div>
+                  <form class="contact-form d-flex justify-content-center justify-content-md-end">
+                      <input type="email" class="form-control me-2" placeholder="Enter your email" required style="max-width: 250px;">
+                      <button type="submit" class="btn">Subscribe</button>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </footer>
+
+    <!-- JavaScript for form submission -->
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          // Get form values
+          const name = document.getElementById('name').value;
+          const email = document.getElementById('email').value;
+          const subject = document.getElementById('subject').value;
+          const message = document.getElementById('message').value;
+          
+          // Here you would typically send the data to a server
+          // For demo, we'll just log it and show an alert
+          console.log({name, email, subject, message});
+          
+          alert('Thank you for your message! I will get back to you soon.');
+          this.reset();
+        });
+
+        // Add animation class to elements when they come into view
+        document.addEventListener('DOMContentLoaded', function() {
+            const animateElements = document.querySelectorAll('.animate');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animated');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            animateElements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
+        <script>
+            function launchFirefox(url) {
+                // Try Firefox protocol (works if Firefox is set as handler)
+                window.location.href = 'firefox://open-url?url=' + encodeURIComponent(url);
+                
+                // Fallback: Open in a new tab (default browser) after a delay
+                setTimeout(function() {
+                    window.open(url, '_blank');
+                }, 500);
+                
+                return false; // Prevent default link behavior
+            }
+            </script>
+    <script src="auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>   
+</body>
+</html>
