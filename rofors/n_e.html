@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Custom styles */
+    <title>North Eastern</title>
+    
+ <style>
+                    /* Custom styles */
         :root {
       --primary-color: #1b1b53;
       --secondary-color: #3a3a8f;
@@ -77,32 +78,7 @@
       background-color: var(--highlight-color);
       color: white;
     }
-
-         
-        .content {
-            flex: 1;
-            padding: 2rem 0;
-            font-size: 15.5px;
-            font-weight: bold;
-        }
-        
-        .hero-section {
-            background: linear-gradient(135deg, #1b1b53 0%, #3a3a8f 100%);
-            color: white;
-            padding: 3rem 0;
-            margin-bottom: 2rem;
-            border-radius: 0.5rem;
-        }
-        
-        .feature-list {
-            margin: 2rem 0;
-        }
-        
-        .feature-list li {
-            margin-bottom: 0.5rem;
-        }
-        
-        footer {
+            footer {
             background-color: #1b1b53;
             color: white;
             padding: 2rem 0;
@@ -158,14 +134,28 @@
             border: none;
             border-radius: 0.25rem;
         }
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
 </head>
+
 <body>
     <!-- Navigation Menu -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgb(27, 27, 83);">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img src="logo2.jpg" alt="P.Kamesa Logo" class="d-inline-block align-text-top">
+                <img src="/logo2.jpg" alt="P.Kamesa Logo" class="d-inline-block align-text-top">
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -176,21 +166,21 @@
                 <ul class="navbar-nav ms-auto">
 
                     <li class="nav-item">
-                        <a href="index.html" class="nav-link active" aria-current="page">Home</a>
+                        <a href="/index.html" class="nav-link" aria-current="page">Home</a>
                     </li>
                     
-                                        <!-- Dropdown menu item -->
+                    <!-- Dropdown menu item -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             ROFORS
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="rofors/s_e.html">S.E</a></li>
-                            <li><a class="dropdown-item" href="rofors/coast.html">COAST</a></li>
-                            <li><a class="dropdown-item" href="rofors/central.html">CENTRAL</a></li>
-                            <li><a class="dropdown-item" href="rofors/western.html">WESTERN</a></li>
-                            <li><a class="dropdown-item" href="rofors/n_w.html">NORTH_WESTERN</a></li>
-                            <li><a class="dropdown-item" href="rofors/n_e.html">N.E</a></li>                            
+                            <li><a class="dropdown-item" href="/rofors/s_e.html">S.E</a></li>
+                            <li><a class="dropdown-item" href="/rofors/coast.html">COAST</a></li>
+                            <li><a class="dropdown-item" href="/rofors/central.html">CENTRAL</a></li>
+                            <li><a class="dropdown-item" href="/rofors/western.html">WESTERN</a></li>
+                            <li><a class="dropdown-item" href="/rofors/n_w.html">NORTH_WESTERN</a></li>
+                            <li><a class="dropdown-item active" href="/rofors/n_e.html">N.E</a></li>                            
                         </ul>
                     </li>
                     <!-- Dropdown menu item -->
@@ -199,29 +189,29 @@
                             Weather Data
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="metar1.html">METAR/SPECI</a></li>
-                            <li><a class="dropdown-item" href="synop.html">SYNOP</a></li>
-                            <li><a class="dropdown-item" href="actuals.html">ACTUALS</a></li>
-                             <li><a class="dropdown-item" href="mon_brief.html">MON BRIEF</a></li>
+                            <li><a class="dropdown-item" href="/metar1.html">METAR/SPECI</a></li>
+                            <li><a class="dropdown-item" href="/synop.html">SYNOP</a></li>
+                            <li><a class="dropdown-item" href="/actuals.html">ACTUALS</a></li>
+                             <li><a class="dropdown-item" href="/mon_brief.html">MON BRIEF</a></li>
                             <li>
                                 <a class="dropdown-item" href="#" onclick="launchFirefox('https://196.202.217.196/nsweb/FlightBriefing/?page=showQuery#showQuery')">FLIGHT FOLDER</a>
                             </li>
-                            <li><a class="dropdown-item" href="dutyroster.html">DUTY ROSTER</a></li>
+                            <li><a class="dropdown-item" href="/dutyroster.html">DUTY ROSTER</a></li>
                             
                         </ul>
                     </li>
                     
                     <li class="nav-item">
-                        <a href="about.html" class="nav-link">About</a>
+                        <a href="/about.html" class="nav-link">About</a>
                     </li>
                     <li class="nav-item">
-                        <a href="contact.html" class="nav-link">Contact</a>
+                        <a href="/contact.html" class="nav-link">Contact</a>
                     </li>
                     <li class="nav-item">
-                        <a href="login.html" class="nav-link">Login</a>
+                        <a href="/login.html" class="nav-link">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a href="signup.html" class="nav-link">Sign Up</a>
+                        <a href="/signup.html" class="nav-link">Sign Up</a>
                     </li>
                     <li class="nav-item" id="logout-item" style="display: none;">
                         <a href="#" class="nav-link" id="logout-link">Logout</a>
@@ -230,53 +220,10 @@
             </div>
         </div>
     </nav>
-    
-    <!-- Main Content -->
-    <main class="content">
-        <div class="container">
-            <!-- Hero Section -->
-            <section class="hero-section text-center py-5 mb-5">
-                <div class="container">
-                    <h1 class="display-4 fw-bold">Welcome to My Weather App.</h1>
-                    <p class="lead">Professional weather reporting tool for Observers, Meteorologists and Aviation Professionals.</p>
-                </div>
-            </section>
-            
-            <!-- Content Section -->
-            <section class="mb-5">
-                <div class="row">
-                    <div class="col-lg-8 mx-auto">
-                        <div class="bg-dark-grey text-black fs-2 p-4 mb-4">
-                        <p class="lead" >
-                            <i class="fas fa-info-circle text-primary me-2"></i>
-                            Welcome to the Weather Report Generator, a specialized tool designed for Observers, Meteorologists, 
-                            Aviation Professionals, and Weather Enthusiasts. This platform simplifies the creation of 
-                            SYNOPs, ACTUALS, FLIGHT FOLDER, DUTY ROSTER, and METAR/SPECI reports with standardized formatting.
-                        </p>
-                    </div>
-                        
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <h2 class="card-title h4">Key Features:</h2>
-                                <ul class="list-group list-group-flush feature-list">
-                                    <li class="list-group-item"><i class="fas fa-check-circle text-primary me-2"></i>METAR/SPECI reports compliant with ICAO/WMO standards</li>
-                                    <li class="list-group-item"><i class="fas fa-check-circle text-primary me-2"></i>Form fields for SYNOP and ACTUALS data with auto-validation</li>
-                                    <li class="list-group-item"><i class="fas fa-check-circle text-primary me-2"></i>Save, export, and email reports directly from the platform</li>
-                                    <li class="list-group-item"><i class="fas fa-check-circle text-primary me-2"></i>Mobile-responsive design for on-the-go use</li>
-                                </ul>
-                            </div>
-                        </div>
-                        
-                        <div class="alert alert-info">
-                            <h2 class="h4">Get Started:</h2>
-                            <p>Click on the Weather Data tab to begin generating reports instantly!</p>
-                            <a href="metar1.html" class="btn btn-primary mt-2">Try METAR Generator</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </main>
+
+    <div class="iframe-container">
+        <iframe src="https://docs.google.com/document/d/1wS0o1pDKR1K6igRHbMJxL-dr0S2IJLlJ/edit?usp=sharing&ouid=118311929635489986511&rtpof=true&sd=true"></iframe>
+    </div>
 
     <!-- Footer -->
     <footer class="py-4">
@@ -309,21 +256,43 @@
             </div>
         </div>
     </footer>
-
     <script>
-        function launchFirefox(url) {
-            // Try Firefox protocol (works if Firefox is set as handler)
-            window.location.href = 'firefox://open-url?url=' + encodeURIComponent(url);
-            
-            // Fallback: Open in a new tab (default browser) after a delay
-            setTimeout(function() {
-                window.open(url, '_blank');
-            }, 500);
-            
-            return false; // Prevent default link behavior
+            // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        displaySavedReports();
+        
+        // Redirect if not logged in
+        if (!localStorage.getItem('weatherAuthToken')) {
+            window.location.href = 'login.html';
         }
-        </script>
-    <script src="auth.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>  
+    });
+
+        document.addEventListener('DOMContentLoaded', function() {
+    // Get current page URL
+    const currentPage = window.location.pathname.split('/').pop();
+    
+    // Find all dropdown items
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+    
+    // Loop through each dropdown item
+    dropdownItems.forEach(item => {
+        // Get the href attribute and extract the filename
+        const itemPage = item.getAttribute('href').split('/').pop();
+        
+        // Check if it matches current page
+        if (itemPage === currentPage) {
+            // Add active class to this item
+            item.classList.add('active');
+            
+            // Also add active class to parent dropdown toggle
+            const dropdownToggle = item.closest('.dropdown-menu').previousElementSibling;
+            dropdownToggle.classList.add('active');
+        }
+    });
+});
+</script>
+
+        <script src="auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

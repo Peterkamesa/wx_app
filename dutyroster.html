@@ -181,16 +181,14 @@
 
         /* Make first two columns sticky */
         .MAB-MET th:first-child,
-        .MAB-MET td:first-child,
-        .MAB-MET th:nth-child(2),
-        .MAB-MET td:nth-child(2) {
+        .MAB-MET td:first-child {
             position: sticky;
             left: 0;
             z-index: 5;
         }
 
         .MAB-MET th:first-child,
-        .MAB-MET th:nth-child(2) {
+        .MAB-MET th:nth-child(1) {
             z-index: 15;
         }
 
@@ -266,32 +264,80 @@
             }
         }
 
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .MAB-MET  {
+                font-size: 90%;
+            }
+            
+            .MAB-MET  th, 
+            .MAB-MET  td {
+                padding: 10px 6px;
+            }
+            
+        }
+        /* Container for the scrollable table */
+
+
+
+
+ 
+    /* Adjust the table display for mobile */
+    @media (max-width: 768px) {
+        .MAB-MET {
+            display: table;
+            width: auto;
+            min-width: 100%;
+        }
+        
+        .table-container {
+            -webkit-overflow-scrolling: touch;
+        }
+    }
+
         @media (max-width: 768px) {
-            .page-header h1 {
-                font-size: 1.8rem;
+            body {
+                padding: 10px;
             }
             
-            .MAB-MET th, 
-            .MAB-MET td {
-                padding: 0.4rem;
-                font-size: 0.8rem;
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 1px;
             }
             
+            .MAB-MET  {
+                display: block;
+                overflow-x: auto;
+                font-size: 80%;
+            }
+            
+            .MAB-MET  th, 
+            .MAB-MET  td {
+                padding: 8px 4px;
+                font-size: 0.9rem;
+            }
+            
+
+            
+            .KEY {
+                font-size: 0.9rem;
+                padding: 10px 15px;
+            }
             .footer-links li {
                 display: block;
                 margin: 0.5rem 0;
             }
         }
 
-        @media (max-width: 576px) {
-            .page-header h1 {
-                font-size: 1.5rem;
+        @media (max-width: 480px) {
+            .MAB-MET  {
+                font-size: 70%;
             }
             
-            .MAB-MET th, 
-            .MAB-MET td {
-                padding: 0.3rem;
-                font-size: 0.7rem;
+            .MAB-MET  th, 
+            .MAB-MET  td {
+                padding: 6px 3px;
             }
         }
     </style>
@@ -314,6 +360,20 @@
                         <a href="index.html" class="nav-link" aria-current="page">Home</a>
                     </li>
                     
+                    <!-- Dropdown menu item -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            ROFORS
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="rofors/s_e.html">S.E</a></li>
+                            <li><a class="dropdown-item" href="rofors/coast.html">COAST</a></li>
+                            <li><a class="dropdown-item" href="rofors/central.html">CENTRAL</a></li>
+                            <li><a class="dropdown-item" href="rofors/western.html">WESTERN</a></li>
+                            <li><a class="dropdown-item" href="rofors/n_w.html">NORTH_WESTERN</a></li>
+                            <li><a class="dropdown-item" href="rofors/n_e.html">N.E</a></li>                            
+                        </ul>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle active" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Weather Data
@@ -353,7 +413,7 @@
     <div class="content">
         <div class="container">
             <div class="page-header text-center">
-                <h1 class="mb-3">MAY DUTY ROSTER FOR MAB-MET 2025</h1>
+                <h1 class="mb-3">JUNE DUTY ROSTER FOR MAB-MET 2025</h1>
                 <p class="lead mb-0">Meteorological Department Staff Schedule</p>
             </div>
 
