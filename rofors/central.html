@@ -154,17 +154,26 @@ iframe {
     border: none;
     min-width: 100%; /* Ensure it doesn't get smaller than viewport */
 }
+.h1 {
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    justify-items: center;
+    text-transform: uppercase;
+    color: #0d6efd;
+}
 
 /* Mobile-specific adjustments */
 @media (max-width: 768px) {
     .iframe-container {
-        height: calc(100vh - 120px); /* Account for navbar/footer */
+        height: calc(100vh - 120px);
     }
     
     iframe {
         zoom: 0.50; /* Optional: scale down if content is too wide */
-        min-width: 130%; /* Allow horizontal scrolling */
-
+        min-width: 160%; /* Allow horizontal scrolling */
+        left: -110px;
     }
 }
         
@@ -241,9 +250,10 @@ iframe {
             </div>
         </div>
     </nav>
+    <h1 class="h1">mab-met route forecast.</h1>
 
 <div class="iframe-container">
-    <iframe src="https://docs.google.com/document/d/1uqYV5MwEq5dQ_1lJ2EdPZctyOxVCNniS/preview?mobileformat=true&usp=sharing&ouid=118311929635489986511&rtpof=true&sd=true"></iframe>
+    <iframe src="https://docs.google.com/document/d/1OHHWW4IUShdHoZIjGNDtSXLZQ_iq1c3w/edit?usp=sharing&ouid=118311929635489986511&rtpof=true&sd=true"></iframe>
 </div>
 
     <!-- Footer -->
