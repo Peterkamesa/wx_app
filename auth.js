@@ -1,149 +1,141 @@
-// Highlight active page on click
-document.querySelectorAll('.navbar-link').forEach(link => {
-    link.addEventListener('click', function() {
-        // Remove active class from all links
-        document.querySelectorAll('.navbar-link').forEach(item => {
-            item.classList.remove('active');
-        });
-        
-        // Add active class to clicked link
-        this.classList.add('active');
-        
-        // Store in sessionStorage to persist on page reload
-        sessionStorage.setItem('activeNavItem', this.getAttribute('href'));
-    });
-});
-
-// Check and set active item on page load
-document.addEventListener('DOMContentLoaded', function() {
-    const activeItem = sessionStorage.getItem('activeNavItem');
-    if (activeItem) {
-        document.querySelectorAll('.navbar-link').forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === activeItem) {
-                link.classList.add('active');
-            }
-        });
-    }
-});
-
-// In your auth.js or main script
-function setTimeBasedBackground() {
-    const hour = new Date().getHours();
-    const isDaytime = hour > 6 && hour < 20;
-    
-    document.body.style.backgroundImage = isDaytime
-        ? "url('back/day-bg.jpg')"
-        : "url('back/night-bg.jpg')";
-}
-
-// Call on page load
-setTimeBasedBackground();
-
-// auth.js - Mock Authentication System
+// Constants
 const AUTH_KEY = 'weatherAuthToken';
 const MOCK_USERS = [
     { email: "petmaish1@gmail.com", password: "peter" },
     { email: "admin@example.com", password: "admin123" }
 ];
 
-// Check login status
+// Set time-based background image
+function setTimeBasedBackground() {
+    const hour = new Date().getHours();
+    const isDaytime = hour > 6 && hour < 20;
+
+    document.body.style.backgroundImage = isDaytime
+        ? "url('back/day-bg.jpg')"
+        : "url('back/night-bg.jpg')";
+}
+
+// Check authentication status
 function checkAuth() {
     const isLoggedIn = localStorage.getItem(AUTH_KEY) !== null;
+    const userEmail = JSON.parse(localStorage.getItem('userEmail'));
+
+    const logoutItem = document.getElementById('logout-item');
+    const loginItem = document.getElementById('login-item');
+    const signupItem = document.getElementById('signup-item');
+    const welcomeMessage = document.getElementById('welcome-message');
+
     if (isLoggedIn) {
-        document.getElementById('logout-item').style.display = 'block';
-        document.getElementById('login-item').style.display = 'none';
-        document.getElementById('signup-item').style.display = 'none';
-        
-        // Show welcome message if element exists
-        const userEmail = JSON.parse(localStorage.getItem('userEmail'));
-        if (document.getElementById('welcome-message') && userEmail) {
-            document.getElementById('welcome-message').textContent = `Welcome, ${userEmail}`;
+        logoutItem?.style?.setProperty('display', 'block');
+        loginItem?.style?.setProperty('display', 'none');
+        signupItem?.style?.setProperty('display', 'none');
+        if (welcomeMessage && userEmail) {
+            welcomeMessage.textContent = `Welcome, ${userEmail}`;
         }
     } else {
-        document.getElementById('logout-item').style.display = 'none';
-        document.getElementById('login-item').style.display = 'block';
-        document.getElementById('signup-item').style.display = 'block';
+        logoutItem?.style?.setProperty('display', 'none');
+        loginItem?.style?.setProperty('display', 'block');
+        signupItem?.style?.setProperty('display', 'block');
     }
 }
 
-// Mock login validation
+// Validate mock credentials
 function validateUser(email, password) {
-    return MOCK_USERS.find(user => 
-        user.email === email && 
-        user.password === password
-    );
+    return MOCK_USERS.find(user => user.email === email && user.password === password);
 }
 
-// Login function
+// Login handler
 function loginUser(email, password) {
     const user = validateUser(email, password);
-    
     if (user) {
-        // Create mock token (in real app, this would come from server)
         const mockToken = `mock-token-${Date.now()}`;
-        
-        // Store authentication data
         localStorage.setItem(AUTH_KEY, mockToken);
         localStorage.setItem('userEmail', JSON.stringify(email));
-        
         checkAuth();
         return true;
     }
     return false;
 }
 
-// Logout function
+// Logout handler
 function logoutUser() {
     localStorage.removeItem(AUTH_KEY);
     localStorage.removeItem('userEmail');
     checkAuth();
-    window.location.href = 'index.html'; // Redirect to home after logout
+    window.location.href = 'index.html';
 }
 
-// Initialize auth check on page load
-document.addEventListener('DOMContentLoaded', checkAuth);
+// Set active nav link and persist in sessionStorage
+function setupNavbarLinkHighlighting() {
+    const navLinks = document.querySelectorAll('.navbar-link');
 
-// Attach logout handler
-document.getElementById('logout-link')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    logoutUser();
+    navLinks.forEach(link => {
+        link.addEventListener('click', function () {
+            navLinks.forEach(item => item.classList.remove('active'));
+            this.classList.add('active');
+            sessionStorage.setItem('activeNavItem', this.getAttribute('href'));
+        });
+    });
+
+    const activeItem = sessionStorage.getItem('activeNavItem');
+    if (activeItem) {
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === activeItem) {
+                link.classList.add('active');
+            }
+        });
+    }
+}
+
+// Event handlers on page load
+document.addEventListener('DOMContentLoaded', function () {
+    setTimeBasedBackground();
+    checkAuth();
+    setupNavbarLinkHighlighting();
+
+    // Logout click
+    const logoutLink = document.getElementById('logout-link');
+    if (logoutLink) {
+        logoutLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            logoutUser();
+        });
+    }
+
+    // Login form handler
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (loginUser(email, password)) {
+                alert('Login successful!');
+                window.location.href = 'index.html';
+            } else {
+                alert('Invalid email or password');
+            }
+        });
+    }
+
+    // Signup form handler
+    const signupForm = document.getElementById('signupForm');
+    if (signupForm) {
+        signupForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+
+            if (MOCK_USERS.some(user => user.email === email)) {
+                alert('Email already registered');
+                return;
+            }
+
+            MOCK_USERS.push({ email, password });
+            alert('Registration successful! Please login.');
+            window.location.href = 'login.html';
+        });
+    }
 });
-
-// For login form submission
-if (document.getElementById('loginForm')) {
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
-        
-        if (loginUser(email, password)) {
-            alert('Login successful!');
-            window.location.href = 'index.html';
-        } else {
-            alert('Invalid email or password');
-        }
-    });
-}
-
-// For signup form (optional mock implementation)
-if (document.getElementById('signupForm')) {
-    document.getElementById('signupForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const email = document.getElementById('signupEmail').value;
-        const password = document.getElementById('signupPassword').value;
-        
-        // Check if user already exists
-        if (MOCK_USERS.some(user => user.email === email)) {
-            alert('Email already registered');
-            return;
-        }
-        
-        // Add new user to mock database
-        MOCK_USERS.push({ email, password });
-        alert('Registration successful! Please login.');
-        window.location.href = 'login.html';
-    });
-}
