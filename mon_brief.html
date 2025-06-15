@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-     <title>Mon Brief</title>
+    <title>Mon Brief</title>
     <style>
-            /* Custom styles */
+        /* Your existing CSS styles */
         :root {
-      --primary-color: #1b1b53;
-      --secondary-color: #3a3a8f;
-      --accent-color: #06f07b;
-      --highlight-color: #ff4ed9;
-      --light-text: #f8f9fa;
-      --success-color: #28a745;
-      --info-color: #17a2b8;
-      --danger-color: #dc3545;
-    }
-    
+            --primary-color: #1b1b53;
+            --secondary-color: #3a3a8f;
+            --accent-color: #06f07b;
+            --highlight-color: #ff4ed9;
+            --light-text: #f8f9fa;
+            --success-color: #28a745;
+            --info-color: #17a2b8;
+            --danger-color: #dc3545;
+        }
+        
         body {
             display: flex;
             flex-direction: column;
@@ -27,61 +27,63 @@
         }
         
         .navbar {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      background-color: var(--primary-color) !important;
-    }
-    
-    .navbar-brand img {
-      height: 30px;
-      transition: transform 0.3s ease;
-    }
-    
-    .navbar-brand:hover img {
-      transform: scale(1.05);
-    }
-    
-    .nav-link {
-      position: relative;
-      margin: 0 8px;
-      transition: color 0.3s ease;
-      color: var(--light-text) !important;
-    }
-    
-    .nav-link.active {
-      color: var(--accent-color) !important;
-      font-weight: bold;
-    }
-    
-    .nav-link.active::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: var(--highlight-color);
-      border-radius: 3px;
-    }
-    
-    .dropdown-menu {
-      background-color: var(--primary-color);
-      border: none;
-    }
-    
-    .dropdown-item {
-      color: var(--light-text);
-      transition: all 0.3s ease;
-    }
-    
-    .dropdown-item:hover {
-      background-color: var(--highlight-color);
-      color: white;
-    }
-            .iframe-container {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background-color: var(--primary-color) !important;
+        }
+        
+        .navbar-brand img {
+            height: 30px;
+            transition: transform 0.3s ease;
+        }
+        
+        .navbar-brand:hover img {
+            transform: scale(1.05);
+        }
+        
+        .nav-link {
+            position: relative;
+            margin: 0 8px;
+            transition: color 0.3s ease;
+            color: var(--light-text) !important;
+        }
+        
+        .nav-link.active {
+            color: var(--accent-color) !important;
+            font-weight: bold;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--highlight-color);
+            border-radius: 3px;
+        }
+        
+        .dropdown-menu {
+            background-color: var(--primary-color);
+            border: none;
+        }
+        
+        .dropdown-item {
+            color: var(--light-text);
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background-color: var(--highlight-color);
+            color: white;
+        }
+        
+        .iframe-container {
             position: relative;
             width: 100%;
             height: 100vh;
         }
+        
         iframe {
             position: absolute;
             top: 0;
@@ -90,10 +92,10 @@
             height: 100%;
             border: none;
         }
-</style>
+    </style>
 </head>
 <body>
-        <!-- Navigation Menu -->
+    <!-- Navigation Menu -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgb(27, 27, 83);">
         <div class="container">
             <a class="navbar-brand" href="#">
@@ -106,14 +108,13 @@
             
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav ms-auto">
-
                     <li class="nav-item">
                         <a href="index.html" class="nav-link" aria-current="page">Home</a>
                     </li>
                     
                     <!-- Dropdown menu item -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             ROFORS
                         </a>
                         <ul class="dropdown-menu">
@@ -125,21 +126,19 @@
                             <li><a class="dropdown-item" href="n_e.html">N.E</a></li>                             
                         </ul>
                     </li>
+                    
                     <!-- Dropdown menu item -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle active" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Weather Data
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="metar1.html">METAR/SPECI</a></li>
                             <li><a class="dropdown-item" href="synop.html">SYNOP</a></li>
                             <li><a class="dropdown-item" href="actuals.html">ACTUALS</a></li>
-                             <li><a class="dropdown-item" href="mon_brief.html">MON BRIEF</a></li>
-                            <li>
-                                <a class="dropdown-item" href="#" onclick="launchFirefox('https://196.202.217.196/nsweb/FlightBriefing/?page=showQuery#showQuery')">FLIGHT FOLDER</a>
-                            </li>
+                            <li><a class="dropdown-item" href="mon_brief.html">MON BRIEF</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="launchFirefox('https://196.202.217.196/nsweb/FlightBriefing/?page=showQuery#showQuery')">FLIGHT FOLDER</a></li>
                             <li><a class="dropdown-item" href="dutyroster.html">DUTY ROSTER</a></li>
-                            
                         </ul>
                     </li>
                     
@@ -162,10 +161,42 @@
             </div>
         </div>
     </nav>
+    
     <div class="iframe-container">
         <iframe src="https://docs.google.com/presentation/d/15moZ6zI9L7AG2NFty3RlWbgsfhVmNEAi/edit?usp=sharing&ouid=118311929635489986511&rtpof=true&sd=true"></iframe>
     </div>
-        <script src="auth.js"></script>
+    
+    <script src="auth.js"></script>
+    
+    <script>
+        // Custom dropdown functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to launch Firefox (or any browser)
+            window.launchFirefox = function(url) {
+                window.open(url, '_blank');
+            };
+            
+            // Track dropdown item clicks
+            document.querySelectorAll('.dropdown-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    console.log('Dropdown item clicked:', this.textContent.trim());
+                    // You can add analytics tracking here
+                });
+            });
+            
+            // Handle logout link
+            const logoutLink = document.getElementById('logout-link');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Implement logout functionality
+                    console.log('Logout clicked');
+                    // You would typically call your auth.js logout function here
+                });
+            }
+        });
+    </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
