@@ -139,3 +139,20 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+// Initialize submenu functionality
+document.querySelectorAll('.dropdown-submenu a.dropdown-toggle').forEach(function(element) {
+    element.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var submenu = this.nextElementSibling;
+        submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+    });
+});
+
+// Close submenus when clicking elsewhere
+document.addEventListener('click', function() {
+    document.querySelectorAll('.dropdown-submenu .dropdown-menu').forEach(function(element) {
+        element.style.display = 'none';
+    });
+});
