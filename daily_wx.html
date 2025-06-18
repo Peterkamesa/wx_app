@@ -20,8 +20,6 @@
         body {
             margin: 0;
             padding: 0;
-            background: url(cd1.jpg);
-            font-family: 'Times New Roman', Times, serif;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -65,7 +63,7 @@
     }
     
     .dropdown-menu {
-      background-color: var(--primary-color);
+      background-color: var(--secondary-color);
       border: none;
     }
     
@@ -86,6 +84,7 @@
             width: 1000px;
             height: auto;
             margin: 0 auto;
+            margin-top: 10px;
             background-color: skyblue;
 
         }
@@ -177,6 +176,161 @@
             border: none;
             border-radius: 0.25rem;
         }
+        /* Media Queries for Responsive Design */
+@media (max-width: 1200px) {
+    .map-container {
+        width: 900px;
+    }
+    .img1 {
+        width: 600px;
+    }
+}
+
+@media (max-width: 992px) {
+    .map-container {
+        width: 750px;
+    }
+    .img {
+        width: 450px;
+        height: 500px;
+    }
+    .img1 {
+        width: 500px;
+        height: 450px;
+    }
+    .content {
+        width: 450px;
+    }
+    .navbar-nav {
+        text-align: start;
+    }
+    .footer-links li {
+        display: block;
+        margin: 5px 0;
+    }
+    .dropdown-menu {
+        background-color: var(--secondary-color);
+    }
+}
+
+@media (max-width: 768px) {
+    .map-container {
+        width: 90%;
+        padding: 15px;
+    }
+    .img, .img1 {
+        width: 100%;
+        height: auto;
+    }
+    .content {
+        width: 100%;
+    }
+    h1 {
+        font-size: 24px;
+    }
+    p {
+        font-size: 16px;
+    }
+    .footer .col-md-4 {
+        margin-bottom: 20px;
+        text-align: center !important;
+    }
+    .contact-form {
+        justify-content: center !important;
+    }
+    .navbar-brand img {
+        height: 25px;
+    }
+
+}
+
+@media (max-width: 576px) {
+    .map-container {
+        margin-top: 5px;
+    }
+    h1 {
+        font-size: 20px;
+    }
+    p {
+        font-size: 14px;
+    }
+    .footer-logo img {
+        height: 30px;
+    }
+    .social-media a {
+        font-size: 1.2rem;
+        margin: 0 5px;
+    }
+    .contact-form input {
+        width: 60%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .contact-form button {
+        width: 100%;
+    }
+    .dropdown-menu {
+        background-color: var(--secondary-color);
+    }
+}
+
+@media (max-width: 400px) {
+    .map-container h1 {
+        font-size: 18px;
+    }
+    .map-container p {
+        font-size: 13px;
+    }
+    .navbar-brand img {
+        height: 20px;
+    }
+    .nav-link {
+        font-size: 14px;
+        margin: 0 5px;
+    }
+    .footer p {
+        font-size: 12px;
+    }
+    .dropdown-menu {
+        background-color: var(--secondary-color);
+    }
+}
+
+/* For very small screens (e.g., flip phones) */
+@media (max-width: 320px) {
+    .map-container h1 {
+        font-size: 16px;
+    }
+    .map-container p {
+        font-size: 12px;
+    }
+    .contact-form input {
+        width: 100%;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+    .map-container {
+        padding: 5px 0;
+    }
+    .img, .img1 {
+        height: 300px;
+    }
+    .content {
+        margin: 5px 0;
+    }
+}
+
+/* High resolution displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) { 
+    .navbar-brand img {
+        height: 35px;
+    }
+    .footer-logo img {
+        height: 45px;
+    }
+}
     </style>
 </head>
     <!-- Navigation Menu -->
@@ -200,7 +354,7 @@
                     <!-- Dropdown menu item for forms -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            FORMS
+                            WX Forms
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="form626.html">FORM 626</a></li>
@@ -232,7 +386,7 @@
                     <!-- Dropdown menu item for rofors -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            ROFORS
+                            Forecasts
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item active" href="daily_wx.html">Daily WX</a></li>
@@ -247,7 +401,7 @@
                     <!-- Dropdown menu item for wx messages -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Weather Data
+                            Observations
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="metar1.html">METAR/SPECI</a></li>
