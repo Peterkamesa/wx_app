@@ -134,19 +134,23 @@
             border: none;
             border-radius: 0.25rem;
         }
-        .iframe-container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-        }
-        iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+.iframe-container {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    overflow: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+     /* Ensure it doesn't get smaller than viewport */
+}
         /* tablet-specific adjustments */
 @media (max-width: 991px) {
     .iframe-container {
