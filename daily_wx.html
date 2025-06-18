@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Forecast</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>WEATHER SUMMARY</title>
     <style>
-                    /* Custom styles */
         :root {
       --primary-color: #1b1b53;
       --secondary-color: #3a3a8f;
@@ -18,12 +17,14 @@
       --info-color: #17a2b8;
       --danger-color: #dc3545;
     }
-    
         body {
+            margin: 0;
+            padding: 0;
+            background: url(cd1.jpg);
+            font-family: 'Times New Roman', Times, serif;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            background-color: #f8f9fa;
         }
         
         .navbar {
@@ -77,22 +78,49 @@
       background-color: var(--highlight-color);
       color: white;
     }
+        .map-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 1000px;
+            height: auto;
+            margin: 0 auto;
+            background-color: skyblue;
 
-    /* Style for nested dropdown */
-.dropdown-submenu {
-    position: relative;
-}
+        }
+        .map-container h1 {
+            font-size: 30px;
+            color: rgb(18, 18, 18);
+            font-weight: bold;
+            text-transform: capitalize;
+        }
+        .map-container p {
+            display: flex;
+            align-items: center;
+            text-align: start;
+            justify-content: center;
+            font-size: 20px;
+            color: black; 
+            font-weight: 500;
+        }
+        .content {
+            width: 500px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
 
-.dropdown-submenu .dropdown-menu {
-    top: 0;
-    left: 100%;
-    margin-top: -1px;
-}
-
-/* Show nested dropdown on hover */
-.dropdown-submenu:hover .dropdown-menu {
-    display: block;
-}
+        .img {
+            margin-bottom: 30px;
+            height: 550px;
+            width: 500px;
+        }
+        .img1 {
+            margin-bottom: 30px;
+            height: 500px;
+            width: 680px;
+        }
             footer {
             background-color: #1b1b53;
             color: white;
@@ -149,23 +177,8 @@
             border: none;
             border-radius: 0.25rem;
         }
-        .iframe-container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-        }
-        iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
     </style>
 </head>
-
-<body>
     <!-- Navigation Menu -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgb(27, 27, 83);">
         <div class="container">
@@ -183,7 +196,7 @@
                     <li class="nav-item">
                         <a href="index.html" class="nav-link" aria-current="page">Home</a>
                     </li>
-                    
+
                     <!-- Dropdown menu item for forms -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -215,22 +228,23 @@
                             <li><a class="dropdown-item" href="#">#</a></li>                            
                         </ul>
                     </li>
-                    <!-- Dropdown menu item -->
+                    
+                    <!-- Dropdown menu item for rofors -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             ROFORS
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="daily_wx.html">Daily WX</a></li>
+                            <li><a class="dropdown-item active" href="daily_wx.html">Daily WX</a></li>
                             <li><a class="dropdown-item" href="s_e.html">S.E</a></li>
                             <li><a class="dropdown-item" href="coast.html">COAST</a></li>
                             <li><a class="dropdown-item" href="central.html">CENTRAL</a></li>
                             <li><a class="dropdown-item" href="western.html">WESTERN</a></li>
                             <li><a class="dropdown-item" href="n_w.html">N.W</a></li>
-                            <li><a class="dropdown-item" href="n_e.html">N.E</a></li>                             
+                            <li><a class="dropdown-item" href="n_e.html">N.E</a></li>                            
                         </ul>
                     </li>
-                    <!-- Dropdown menu item -->
+                    <!-- Dropdown menu item for wx messages -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Weather Data
@@ -285,10 +299,63 @@
         </div>
     </nav>
 
-    <div class="iframe-container">
-        <iframe src="https://docs.google.com/document/d/19wg5GLI4UtTwzhKz-djQ2-X1Xp76NW4C/edit?usp=sharing&ouid=118311929635489986511&rtpof=true&sd=true"></iframe>
+<body>
+    <div class = "map-container">
+        <div class="content">
+        <h1>Moi Air Base Daily Forecast From 18th to 19th June 2025</h1>
+        <p>Rainfall is expected over few places of the country</p>
+        </div>
+        <img src="WhatsApp Image 2025-06-17 at 09.56.06.jpeg" class =img>
+
     </div>
 
+    <div class = "map-container">
+        <div class="content">
+        <h1>Nairobi county cummulative rainfall for the day</h1>
+        <p>Cloudy conditions expected in the morning breaking into sunny intervals.Showers expected over several places in the 
+            afternoon
+        </p>
+        </div>
+        <img src="WhatsApp Image 2025-06-17 at 09.56.07.jpeg" class =img1>
+        
+
+    </div>
+    
+     <div class = "map-container">
+        <div class="content">
+        <h1>Surface Winds</h1>
+        <p>Southerly winds are expected at the surface veering to south-easterlies over the north-western parts of the country</p>
+        </div>
+      <img src="WhatsApp Image 2025-06-17 at 09.56.07 (1).jpeg" class =img>
+
+    </div>
+
+    <div class = "map-container">
+        <div class = "content">
+        <h1>700MB level winds</h1>
+        <p>South-westerly to westerly winds are expected at the 700mb level over most parts of the country</p>
+        </div>
+        <img src="WhatsApp Image 2025-06-17 at 09.56.08.jpeg" class =img>
+
+    </div>
+
+    <div class = "map-container">
+        <div class = "content">
+        <h1>maximum surface temperatures</h1>
+        <p>Maximum temperatures are expected to range from 5 degrees celcius to 35  degrees celcius.</p>
+    </div>
+        <img src="WhatsApp Image 2025-06-17 at 09.56.09.jpeg" class =img>
+
+    </div>
+
+        <div class = "map-container">
+            <div class = "content">
+        <h1>minimum surface temperatures</h1>
+        <p>Minimum temperatures are expected to range from 0 degrees celcius to 25 degrees celcius.</p>
+        </div>
+        <img src="WhatsApp Image 2025-06-17 at 09.56.09 (1).jpeg" class =img>
+
+    </div>
     <!-- Footer -->
     <footer class="py-4">
         <div class="container">
@@ -354,9 +421,25 @@
         }
     });
 });
+document.addEventListener('DOMContentLoaded', function() {
+    const iframe = document.querySelector('iframe');
+    
+    // Adjust iframe height on resize
+    function resizeIframe() {
+        const container = document.querySelector('.iframe-container');
+        if (window.innerWidth < 768) {
+            container.style.height = (window.innerHeight - 120) + 'px';
+        } else {
+            container.style.height = '100vh';
+        }
+    }
+    
+    window.addEventListener('resize', resizeIframe);
+    resizeIframe();
+});
 </script>
 
-        <script src="auth.js"></script>
+    <script src="auth.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
