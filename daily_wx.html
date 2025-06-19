@@ -176,6 +176,17 @@
             border: none;
             border-radius: 0.25rem;
         }
+        .taf {
+            width: 600px;
+            height: auto;
+            background-color: #f8f9fa;
+            color: black;
+            border: solid 1px black;
+            margin-bottom: 20px;
+            padding: 4px 8px;
+            font-size: 20px;
+            font-weight: bold;
+        }
         /* Media Queries for Responsive Design */
 @media (max-width: 1200px) {
     .map-container {
@@ -183,6 +194,10 @@
     }
     .img1 {
         width: 600px;
+    }
+    .taf {
+        width: 550px;
+        font-size: 18px;
     }
 }
 
@@ -211,6 +226,10 @@
     .dropdown-menu {
         background-color: var(--secondary-color);
     }
+    .taf {
+        width: 500px;
+        font-size: 17px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -231,17 +250,16 @@
     p {
         font-size: 16px;
     }
-    .footer .col-md-4 {
-        margin-bottom: 20px;
-        text-align: center !important;
-    }
-    .contact-form {
-        justify-content: center !important;
-    }
+
     .navbar-brand img {
         height: 25px;
     }
-
+    .taf {
+        width: 100%; /* Takes full width on smaller screens */
+        max-width: 500px; /* Prevents excessive stretching */
+        font-size: 16px;
+        margin: 0 auto 15px; /* Centers the TAF box */
+    }
 }
 
 @media (max-width: 576px) {
@@ -257,20 +275,13 @@
     .footer-logo img {
         height: 30px;
     }
-    .social-media a {
-        font-size: 1.2rem;
-        margin: 0 5px;
-    }
-    .contact-form input {
-        width: 60%;
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
-    .contact-form button {
-        width: 100%;
-    }
+
     .dropdown-menu {
         background-color: var(--secondary-color);
+    }
+    .taf {
+        font-size: 15px;
+        padding: 3px 6px;
     }
 }
 
@@ -294,6 +305,9 @@
     .dropdown-menu {
         background-color: var(--secondary-color);
     }
+    .taf {
+        font-size: 14px;
+    }
 }
 
 /* For very small screens (e.g., flip phones) */
@@ -306,6 +320,10 @@
     }
     .contact-form input {
         width: 100%;
+    }
+    .taf {
+        width: 80%;
+        font-size: 15px;
     }
 }
 
@@ -456,7 +474,7 @@
 <body>
     <div class = "map-container">
         <div class="content">
-        <h1>Moi Air Base Daily Forecast From 18th to 19th June 2025</h1>
+        <h1>Moi Air Base Daily Forecast From 19th to 20th June 2025</h1>
         <p>Rainfall is expected over few places of the country</p>
         </div>
         <img src="WhatsApp Image 2025-06-17 at 09.56.06.jpeg" class =img>
@@ -509,6 +527,17 @@
         </div>
         <img src="WhatsApp Image 2025-06-17 at 09.56.09 (1).jpeg" class =img>
 
+    </div>
+            <div class = "map-container">
+            <div class = "content">
+        <h1>terminal aerodrome forecast(TAF)</h1>
+        <p>TAF will be updated after 6hrs!</p>
+        </div>
+        <div class = taf>
+            TAF HKRQ 190500 1906/2006<br>
+            14006KT 9999 BKN022 BECMG 1906/1911 BKN020 BECMG 1912/1918 FEW023CB BKN024 BECMG 1919/1923 BKN019 BECMG 2000/2005
+            00000KT BKN016=
+        </div>
     </div>
     <!-- Footer -->
     <footer class="py-4">
