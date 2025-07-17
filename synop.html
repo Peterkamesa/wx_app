@@ -717,7 +717,7 @@
                 return;
             }
             try {
-                const response = await fetch('http://localhost:3001/api/reports', {
+                const response = await fetch('https://wxbackend-production.up.railway.app/api/reports', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
@@ -740,7 +740,7 @@
         //fecht synop reports from database
         async function fetchDatabaseReports() {
             try {
-                const response = await fetch('http://localhost:3001/api/reports/SYNOP');
+                const response = await fetch('https://wxbackend-production.up.railway.app/api/reports/SYNOP');
                 const reports = await response.json();
 
                 const reportsList = document.getElementById('databaseReports');
@@ -788,7 +788,7 @@
         async function deleteDatabaseReport(id) {
             if (!confirm("Are you sure you want to delete this synop report?")) return;
                 try {
-                    const response = await fetch(`http://localhost:3001/api/reports/clear/SYNOP/${id}`, {
+                    const response = await fetch(`https://wxbackend-production.up.railway.app/api/reports/clear/SYNOP/${id}`, {
                         method: 'DELETE'
                     });
                     if (response.ok) {
@@ -808,7 +808,7 @@
         async function clearDatabaseReports() {
             if (!confirm("Are you sure you want to clear all saved synop reports?")) return;
                 try {
-                    const response = await fetch('http://localhost:3001/api/reports/clear/SYNOP', {
+                    const response = await fetch('https://wxbackend-production.up.railway.app/api/reports/clear/SYNOP', {
                         method: 'DELETE'
                     });
                     if (response.ok) {
@@ -826,7 +826,7 @@
         async function deleteSynopReport(reportId) {
             if (!confirm("Are you sure you want to delete this report?")) return
                 try {
-                    const response = await fetch(`http://localhost:3001/api/reports/clear/SYNOP/${reportId}`, {
+                    const response = await fetch(`https://wxbackend-production.up.railway.app/api/reports/clear/SYNOP/${reportId}`, {
                         method: 'DELETE'
                     });
 
@@ -870,7 +870,7 @@
                 }
 
                 try {
-                    const response = await fetch('http://localhost:3001/api/send-report', {
+                    const response = await fetch('https://wxbackend-production.up.railway.app/api/send-report', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 

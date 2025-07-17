@@ -40,7 +40,8 @@ app.use(helmet());
 
 app.use(cors({
   origin: [
-    'https://peterkamesa.github.io',  // Remove trailing slash and path
+    'https://peterkamesa.github.io',
+    'https://wxbackend-production.up.railway.app',  // Remove trailing slash and path
     'http://localhost:3001',
     'http://localhost:5501'
   ],

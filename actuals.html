@@ -587,7 +587,7 @@
           }
 
           try {
-            const response = await fetch('http://localhost:3001/api/reports', {
+            const response = await fetch('https://wxbackend-production.up.railway.app/api/reports', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -610,7 +610,7 @@
         // Fetch saved reports from the database
         async function fetchDatabaseReports() {
             try {
-              const response = await fetch('http://localhost:3001/api/reports/ACTUALS');
+              const response = await fetch('https://wxbackend-production.up.railway.app/api/reports/ACTUALS');
               const reports = await response.json();
 
               const reportsList = document.getElementById('databaseReports');
@@ -659,7 +659,7 @@
             if (!confirm("Are you sure you want to delete this report from the database?")) return;
 
             try {
-              const response = await fetch(`http://localhost:3001/api/reports/clear/ACTUALS/${id}`,{
+              const response = await fetch(`https://wxbackend-production.up.railway.app/api/reports/clear/ACTUALS/${id}`,{
                 method: 'DELETE'
               });
 
@@ -680,7 +680,7 @@
             if(!confirm("Are you sure you want to delete all the Actual reports from the database?")) return;
 
             try {
-              const response = await fetch('http://localhost:3001/api/reports/clear/ACTUALS', {
+              const response = await fetch('https://wxbackend-production.up.railway.app/api/reports/clear/ACTUALS', {
                 method: 'DELETE'
              });
              if(response.ok){
@@ -700,7 +700,7 @@
             if (!confirm("Are you sure you want to delete this ACTUAL report?")) return;
 
             try {
-                const response = await fetch(`http://localhost:3001/api/reports/clear/ACTUALS/${reportId}`, {
+                const response = await fetch(`https://wxbackend-production.up.railway.app/api/reports/clear/ACTUALS/${reportId}`, {
                     method: 'DELETE'
                 });
 
@@ -730,7 +730,7 @@
                   return;
               }
               
-              const response = await fetch('http://localhost:3001/api/send-report', {
+              const response = await fetch('https://wxbackend-production.up.railway.app/api/send-report', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ 

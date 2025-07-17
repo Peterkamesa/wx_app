@@ -696,7 +696,7 @@
     }
 
             try {
-                const response = await fetch('http://localhost:3001/api/reports', {
+                const response = await fetch('https://wxbackend-production.up.railway.app/api/reports', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
@@ -720,7 +720,7 @@
         // Fetch reports from database
         async function fetchDatabaseReports() {
             try {
-                const response = await fetch('http://localhost:3001/api/reports/METAR');
+                const response = await fetch('https://wxbackend-production.up.railway.app/api/reports/METAR');
                 const reports = await response.json();
                 
                 const reportsList = document.getElementById('databaseReports');
@@ -769,7 +769,7 @@ async function deleteDatabaseReport(reportId) {
     if (!confirm("Are you sure you want to delete this METAR report?")) return;
     
     try {
-        const response = await fetch(`http://localhost:3001/api/reports/clear/METAR/${reportId}`, {
+        const response = await fetch(`https://wxbackend-production.up.railway.app/api/reports/clear/METAR/${reportId}`, {
             method: 'DELETE',
         });
 
@@ -796,7 +796,7 @@ async function deleteDatabaseReport(reportId) {
             if (!confirm("Are you sure you want to delete ALL METAR reports from the database?")) return;
             
             try {
-                const response = await fetch('http://localhost:3001/api/reports/clear/METAR', {
+                const response = await fetch('https://wxbackend-production.up.railway.app/api/reports/clear/METAR', {
                     method: 'DELETE'
                 });
                 
@@ -815,7 +815,7 @@ async function deleteMetarReport(reportId) {
     if (!confirm("Are you sure you want to delete this METAR report?")) return;
     
     try {
-        const response = await fetch(`http://localhost:3001/api/reports/clear/METAR/${reportId}`, {
+        const response = await fetch(`https://wxbackend-production.up.railway.app/api/reports/clear/METAR/${reportId}`, {
             method: 'DELETE'
         });
         
@@ -845,7 +845,7 @@ async function deleteMetarReport(reportId) {
             return;
         }
     
-                const response = await fetch('http://localhost:3001/api/send-report', {
+                const response = await fetch('https://wxbackend-production.up.railway.app/api/send-report', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
