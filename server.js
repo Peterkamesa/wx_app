@@ -28,7 +28,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 const requiredEnvVars = ['EMAIL_USER', 'EMAIL_PASS', 'MONGODB_URI'];
 requiredEnvVars.forEach(varName => {
   if (!process.env[varName]) {
-    console.error(`Missing required environment variable: ${varName}`);
+    console.error(`Missing required environment variable: rater${varName}`);
     process.exit(1);
   }
 });
@@ -52,6 +52,13 @@ app.use(cors({
 
 // Other Middleware
 app.use(morgan('dev'));
+
+app.use((req, res, next) => {
+  if (!req.secure && req.get('x-forwarded-proto') !== 'https' && process.env.NODE_ENV === 'production') {
+    return res.redirect('https://' + req.get('host') + req.url);
+  }
+  next();
+});
 
 // report models(report.js)
 const Report = require('./models/report');
