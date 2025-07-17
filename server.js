@@ -10,7 +10,7 @@ const morgan = require('morgan');
 
 
 const app = express();
-app.use(cors());
+
 app.use(express.json());
 app.use(express.static(__dirname)); // Serves files from project root
 
@@ -37,6 +37,16 @@ requiredEnvVars.forEach(varName => {
 
 // Security Middleware
 app.use(helmet());
+
+app.use(cors({
+  origin: [
+    'https://peterkamesa.github.io/wx_app/',  // Your GitHub Pages URL
+    'http://localhost:3001',          // For local development
+    'http://localhost:5501'           // Common alternative dev port
+  ],
+  methods: ['GET', 'POST', 'DELETE'],
+  credentials: true  // If you need cookies/auth
+}));
 
 // Rate limiting
 const limiter = rateLimit({
