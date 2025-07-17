@@ -1,11 +1,14 @@
 require('dotenv').config();
+const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+
 
 const app = express();
-app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname)); // Serves files from project root
 
@@ -21,6 +24,35 @@ mongoose.connect(process.env.MONGODB_URI, {
   console.error('MongoDB connection error:', err);
 });
 
+// Validate required environment variables
+const requiredEnvVars = ['EMAIL_USER', 'EMAIL_PASS', 'MONGODB_URI'];
+requiredEnvVars.forEach(varName => {
+  if (!process.env[varName]) {
+    console.error(`Missing required environment variable: ${varName}`);
+    process.exit(1);
+  }
+});
+
+// Security Middleware
+app.use(helmet());
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100
+});
+app.use('/api/', limiter);
+
+// CORS Configuration
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3001',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Other Middleware
+app.use(morgan('dev'));
+
 // report models(report.js)
 const Report = require('./models/report');
 
@@ -33,11 +65,10 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
   },
- /* tls: {
-    rejectUnauthorized: false // For testing only
-  },*/
-    tls: {}, // in production
-  
+  tls: {
+    rejectUnauthorized: true // For testing only
+  },
+
   connectionTimeout: 30000, // Increase timeout to 30 seconds
   greetingTimeout: 30000,
   socketTimeout: 30000
