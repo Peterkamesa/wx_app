@@ -9,6 +9,7 @@ const morgan = require('morgan');
 
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname)); // Serves files from project root
 
@@ -43,12 +44,7 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-// CORS Configuration
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3001',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+
 
 // Other Middleware
 app.use(morgan('dev'));
