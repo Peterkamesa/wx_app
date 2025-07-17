@@ -44,8 +44,8 @@ app.use(cors({
     'http://localhost:3001',          // For local development
     'http://localhost:5501'           // Common alternative dev port
   ],
-  methods: ['GET', 'POST', 'DELETE'],
-  credentials: true  // If you need cookies/auth
+  methods: ['GET', 'POST', 'DELETE']
+ 
 }));
 
 // Rate limiting
