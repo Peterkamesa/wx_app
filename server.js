@@ -27,7 +27,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 });
 
 // Validate required environment variables
-const requiredEnvVars = ['EMAIL_USER', 'EMAIL_PASS', 'MONGODB_URI'];
+const requiredEnvVars = ['EMAIL_USER', 'EMAIL_PASS', 'MONGODB_URI', 'PORT', 'RECIPIENT_EMAIL'];
 requiredEnvVars.forEach(varName => {
   if (!process.env[varName]) {
     console.error(`Missing required environment variable: rater${varName}`);
@@ -40,12 +40,12 @@ app.use(helmet());
 
 app.use(cors({
   origin: [
-    'https://peterkamesa.github.io/wx_app/',  // Your GitHub Pages URL
-    'http://localhost:3001',          // For local development
-    'http://localhost:5501'           // Common alternative dev port
+    'https://peterkamesa.github.io',  // Remove trailing slash and path
+    'http://localhost:3001',
+    'http://localhost:5501'
   ],
-  methods: ['GET', 'POST', 'DELETE']
- 
+  methods: ['GET', 'POST', 'DELETE'],
+  allowedHeaders: ['Content-Type']  // Important for API requests
 }));
 
 // Rate limiting
