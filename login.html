@@ -451,8 +451,14 @@
         
         <form class="auth-form animate delay-1" id="loginForm">
             <div class="form-group">
-                <label for="loginEmail">Email</label>
-                <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                <label for="loginStation">Weather Station</label>
+                <select id="loginStation" class = "form-select" required>
+                    <option value="" selected disabled>Select Your Station</option>
+                    <option value="Mab-Met">Mab-Met</option>
+                    <option value="Dagoretti">Dagoretti</option>
+                    <option value="JKIA">JKIA</option>
+                    <option value="Wilson">Wilson</option>
+                    </select>
             </div>
             
             <div class="form-group">
@@ -507,24 +513,24 @@
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const email = document.getElementById('loginEmail').value;
+            const station = document.getElementById('loginStation').value;
             const password = document.getElementById('loginPassword').value;
             
             // Basic validation
-            if (!email || !password) {
-                alert('Please fill in all fields');
+            if (!station || !password) {
+                alert('Please select your station and enter password');
                 return;
             }
     
-            /* 
+            
             // REAL API IMPLEMENTATION (COMMENTED OUT FOR NOW)
-            fetch('/api/login', {
+            fetch('https://wxbackend-production.up.railway.app/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    email: email,
+                    station: station,
                     password: password
                 })
             })
@@ -536,12 +542,13 @@
                 localStorage.setItem('weatherAuthToken', data.token);
                 checkAuthStatus();
                 window.location.href = 'index.html';
+                alert('Login successful! Redirecting to home page...');
             })
             .catch(error => {
                 console.error('Login error:', error);
                 alert('Login failed. Please check your credentials.');
             });
-            */
+            
     
             // DEMO IMPLEMENTATION (TEMPORARY)
             console.log('Demo login with:', { email, password });
@@ -560,7 +567,8 @@
     
         // Auth status check function
         function checkAuthStatus() {
-            const isLoggedIn = localStorage.getItem('weatherAuthToken') !== null;
+            const token = localStorage.getItem('weatherAuthToken');
+            const isLoggedIn = token !== null;
             
             // Toggle logout button visibility
             const logoutBtn = document.getElementById('logout-item');
@@ -576,10 +584,14 @@
             
             // Update user greeting if exists
             const userGreeting = document.getElementById('user-greeting');
-            if (userGreeting) {
-                userGreeting.style.display = isLoggedIn ? 'block' : 'none';
-                // Demo username - replace with actual username from token in real implementation
-                document.getElementById('username').textContent = email.split('@')[0] || 'User';
+            if (userGreeting && isLoggedIn) {
+                try {
+                    const decoded = jwt.decode(token);
+                    userGreeting.style.display = 'block';
+                    document.getElementById('username').textContent = decoded.station;
+                } catch (e) {
+                    console.error('error decoding token:', e);
+                }
             }
         }
 

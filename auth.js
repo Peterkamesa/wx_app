@@ -4,6 +4,46 @@ const MOCK_USERS = [
     { email: "petmaish1@gmail.com", password: "peter" },
     { email: "admin@example.com", password: "admin123" }
 ];
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const station = document.getElementById('loginStation').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Basic validation
+            if (!station || !password) {
+                alert('Please select your station and enter password');
+                return;
+            }
+    
+            
+            // REAL API IMPLEMENTATION (COMMENTED OUT FOR NOW)
+            fetch('https://wxbackend-production.up.railway.app/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    station: station,
+                    password: password
+                })
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Login failed');
+                return response.json();
+            })
+            .then(data => {
+                localStorage.setItem('weatherAuthToken', data.token);
+                checkAuthStatus();
+                window.location.href = 'index.html';
+                alert('Login successful! Redirecting to home page...');
+            })
+            .catch(error => {
+                console.error('Login error:', error);
+                alert('Login failed. Please check your credentials.');
+            });
+        });
+    
 
 // Set time-based background image
 function setTimeBasedBackground() {
@@ -38,6 +78,36 @@ function checkAuth() {
         signupItem?.style?.setProperty('display', 'block');
     }
 }
+
+        // Auth status check function
+        function checkAuthStatus() {
+            const token = localStorage.getItem('weatherAuthToken');
+            const isLoggedIn = token !== null;
+            
+            // Toggle logout button visibility
+            const logoutBtn = document.getElementById('logout-item');
+            if (logoutBtn) {
+                logoutBtn.style.display = isLoggedIn ? 'block' : 'none';
+            }
+            
+            // Toggle login button visibility
+            const loginBtn = document.getElementById('login-item');
+            if (loginBtn) {
+                loginBtn.style.display = isLoggedIn ? 'none' : 'block';
+            }
+            
+            // Update user greeting if exists
+            const userGreeting = document.getElementById('user-greeting');
+            if (userGreeting && isLoggedIn) {
+                try {
+                    const decoded = jwt.decode(token);
+                    userGreeting.style.display = 'block';
+                    document.getElementById('username').textContent = decoded.station;
+                } catch (e) {
+                    console.error('error decoding token:', e);
+                }
+            }
+        }
 
 // Validate mock credentials
 function validateUser(email, password) {
