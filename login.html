@@ -510,11 +510,12 @@
     </footer>
 
     <script>
-document.getElementById('loginForm').addEventListener('submit', function(e) {
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
     const station = document.getElementById('loginStation').value;
     const password = document.getElementById('loginPassword').value;
+    const submitButton = this.querySelector('button[type="submit"]');
     
     // Basic validation
     if (!station || !password) {
@@ -522,30 +523,55 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
         return;
     }
 
-    // API Implementation
-    fetch('https://wxbackend-production.up.railway.app/api/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            station: station,
-            password: password
-        })
-    })
-    .then(response => {
-        if (!response.ok) throw new Error('Login failed');
-        return response.json();
-    })
-    .then(data => {
+    try {
+        // Add loading state
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging in...';
+
+        const response = await fetch('https://wxbackend-production.up.railway.app/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                station: station,
+                password: password
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Login failed');
+        }
+
+        const data = await response.json();
+        
+        // Store token
         localStorage.setItem('weatherAuthToken', data.token);
-        checkAuthStatus();
+        
+        // Redirect (check if authStatus function exists first)
+        if (typeof checkAuthStatus === 'function') {
+            checkAuthStatus();
+        }
+        
         window.location.href = 'index.html';
-    })
-    .catch(error => {
+        
+    } catch (error) {
         console.error('Login error:', error);
-        alert('Login failed. Please check your credentials.');
-    });
+        
+        // More specific error messages
+        if (error.message.includes('Failed to fetch')) {
+            alert('Network error. Please check your connection.');
+        } else {
+            alert(error.message || 'Login failed. Please check your credentials.');
+        }
+    } finally {
+        // Reset button state
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = 'Login';
+        }
+    }
 });
 
         // Add animation class to elements when they come into view
