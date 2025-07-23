@@ -463,7 +463,7 @@
             
             <div class="form-group">
                 <label for="loginPassword">Password</label>
-                <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                <input type="password" id="loginPassword" placeholder="Enter your station password" required>
             </div>
             
             <div class="form-group">
@@ -510,90 +510,43 @@
     </footer>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const station = document.getElementById('loginStation').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            // Basic validation
-            if (!station || !password) {
-                alert('Please select your station and enter password');
-                return;
-            }
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
     
-            
-            // REAL API IMPLEMENTATION (COMMENTED OUT FOR NOW)
-            fetch('https://wxbackend-production.up.railway.app/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    station: station,
-                    password: password
-                })
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Login failed');
-                return response.json();
-            })
-            .then(data => {
-                localStorage.setItem('weatherAuthToken', data.token);
-                checkAuthStatus();
-                window.location.href = 'index.html';
-                alert('Login successful! Redirecting to home page...');
-            })
-            .catch(error => {
-                console.error('Login error:', error);
-                alert('Login failed. Please check your credentials.');
-            });
-            
+    const station = document.getElementById('loginStation').value;
+    const password = document.getElementById('loginPassword').value;
     
-            // DEMO IMPLEMENTATION (TEMPORARY)
-            console.log('Demo login with:', { email, password });
-            
-            // Create a demo token (replace with real API later)
-            const demoToken = 'demo-token-' + Date.now();
-            
-            // Store the token and update UI
-            localStorage.setItem('weatherAuthToken', demoToken);
-            checkAuthStatus();
-            
-            // Show success message and redirect
-            alert('Login successful! Redirecting to home page...');
-            window.location.href = 'index.html';
-        });
-    
-        // Auth status check function
-        function checkAuthStatus() {
-            const token = localStorage.getItem('weatherAuthToken');
-            const isLoggedIn = token !== null;
-            
-            // Toggle logout button visibility
-            const logoutBtn = document.getElementById('logout-item');
-            if (logoutBtn) {
-                logoutBtn.style.display = isLoggedIn ? 'block' : 'none';
-            }
-            
-            // Toggle login button visibility
-            const loginBtn = document.getElementById('login-item');
-            if (loginBtn) {
-                loginBtn.style.display = isLoggedIn ? 'none' : 'block';
-            }
-            
-            // Update user greeting if exists
-            const userGreeting = document.getElementById('user-greeting');
-            if (userGreeting && isLoggedIn) {
-                try {
-                    const decoded = jwt.decode(token);
-                    userGreeting.style.display = 'block';
-                    document.getElementById('username').textContent = decoded.station;
-                } catch (e) {
-                    console.error('error decoding token:', e);
-                }
-            }
-        }
+    // Basic validation
+    if (!station || !password) {
+        alert('Please select your station and enter password');
+        return;
+    }
+
+    // API Implementation
+    fetch('https://wxbackend-production.up.railway.app/api/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            station: station,
+            password: password
+        })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Login failed');
+        return response.json();
+    })
+    .then(data => {
+        localStorage.setItem('weatherAuthToken', data.token);
+        checkAuthStatus();
+        window.location.href = 'index.html';
+    })
+    .catch(error => {
+        console.error('Login error:', error);
+        alert('Login failed. Please check your credentials.');
+    });
+});
 
         // Add animation class to elements when they come into view
         document.addEventListener('DOMContentLoaded', function() {
