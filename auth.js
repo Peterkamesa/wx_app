@@ -7,8 +7,8 @@ function setTimeBasedBackground() {
     const isDaytime = hour > 6 && hour < 20;
 
     document.body.style.backgroundImage = isDaytime
-        ? "url('back/day-bg.jpg')"
-        : "url('back/night-bg.jpg')";
+        ? "url('cd1.jpg')"
+        : "url('cd1.jpg')";
 }
 
 // Auth status check function
@@ -151,3 +151,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
