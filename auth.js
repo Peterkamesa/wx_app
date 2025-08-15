@@ -152,3 +152,38 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// When submitting a new sheet report
+async function submitSheetReport() {
+    const formData = {
+        type: 'SHEET', // Or whatever type you're using
+        sheetType: document.getElementById('sheetType').value,
+        sheetId: generateUniqueId(), // Or get from Google API
+        sheetUrl: document.getElementById('sheetUrl').value,
+        station: currentStation, // From your auth system
+        month: document.getElementById('month').value,
+        // ... other fields
+    };
+
+    const response = await fetch('https://wxbackend-production.up.railway.app/api/reports', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+    });
+    // Handle response
+}
+
+// Fetch and display station sheets
+async function loadStationSheets() {
+    const response = await fetch(`https://wxbackend-production.up.railway.app/api/sheets/station/${currentStation}`);
+    const sheets = await response.json();
+    
+    const container = document.getElementById('sheetsContainer');
+    container.innerHTML = sheets.map(sheet => `
+        <div class="sheet-card">
+            <h3>${sheet.sheetType}</h3>
+            <p>Created: ${new Date(sheet.createdAt).toLocaleDateString()}</p>
+            <a href="${sheet.sheetUrl}" target="_blank">Open Sheet</a>
+            ${sheet.month ? `<p>Month: ${sheet.month}</p>` : ''}
+        </div>
+    `).join('');
+}
