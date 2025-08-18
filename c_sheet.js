@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function loadStationSheet(station) {
   try {
     const token = localStorage.getItem('weatherAuthToken');
-    const response = await fetch(`/api/sheets/csheet?station=${station}`, {
+    const response = await fetch(`https://wxbackend-production.up.railway.app/api/sheets/csheet?station=${station}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     
