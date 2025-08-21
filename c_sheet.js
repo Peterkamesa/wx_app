@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function loadStationSheet(station) {
   try {
     const token = localStorage.getItem('weatherAuthToken');
-    const response = await fetch(`https://wxbackend-production.up.railway.app/api/sheets/csheet?station=${station}`, {
+    const response = await fetch(`https://wxbackend-production.up.railway.app/api/reports/sheets/csheet?station=${station}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     
@@ -93,7 +93,7 @@ async function saveSheetChanges() {
     const sheetId = sheetUrl.match(/\/d\/([^\/]+)/)[1];
     
     // Send save request to backend
-    const response = await fetch('https://wxbackend-production.up.railway.app/api/sheets/save', {
+    const response = await fetch('https://wxbackend-production.up.railway.app/api/reports/sheets/save', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
