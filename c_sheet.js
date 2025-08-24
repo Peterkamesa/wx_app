@@ -6,9 +6,14 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
 
-  // Get user data from token
+  // Get user data from token with proper parsing
   const token = localStorage.getItem('weatherAuthToken');
-  const user = JSON.parse(atob(token.split('.')[1]));
+  const user = parseJwt(token);
+  
+  if (!user) {
+    // parseJwt already handles redirect on failure
+    return;
+  }
   
   // Initialize UI
   const stationSelect = document.getElementById('stationSelect');
@@ -33,9 +38,34 @@ document.addEventListener('DOMContentLoaded', function() {
     loadStationSheet(user.stationName);
   }
 
-  // Save button functionality (will implement later)
+  // Save button functionality
   saveSheetBtn.addEventListener('click', saveSheetChanges);
 });
+
+// Proper JWT parsing function
+function parseJwt(token) {
+  try {
+    // Validate token format
+    if (!token || typeof token !== 'string' || token.split('.').length !== 3) {
+      throw new Error('Invalid token format');
+    }
+    
+    // Base64Url decode the payload part
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    
+    return JSON.parse(jsonPayload);
+  } catch (error) {
+    console.error('Failed to parse JWT token:', error);
+    // Handle invalid token by redirecting to login
+    localStorage.removeItem('weatherAuthToken');
+    window.location.href = 'login.html';
+    return null;
+  }
+}
 
 async function loadStationSheet(station) {
   try {
@@ -79,8 +109,6 @@ function showAlert(message, type) {
   
   setTimeout(() => alertDiv.remove(), 5000);
 }
-
-
 
 async function saveSheetChanges() {
   try {
