@@ -70,9 +70,7 @@ function parseJwt(token) {
 async function loadStationSheet(station) {
   try {
     const token = localStorage.getItem('weatherAuthToken');
-    const response = await fetch(`https://wxbackend-production.up.railway.app/api/reports/sheets/csheet?station=${station}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
+    const response = await fetch(`https://wxbackend-production.up.railway.app/api/reports/sheets/csheet?station=${station}`);
     
     if (!response.ok) throw new Error('Failed to load sheet');
     
