@@ -69,12 +69,20 @@ function parseJwt(token) {
 
 async function loadStationSheet(station) {
   try {
-    const token = localStorage.getItem('weatherAuthToken');
-    const response = await fetch(`https://wxbackend-production.up.railway.app/api/reports/csheet?station=${station}`);
+    console.log('Loading sheet for:', station);
     
-    if (!response.ok) throw new Error('Failed to load sheet');
+    const response = await fetch(`https://wxbackend-production.up.railway.app/api/sheets/csheet?station=${station}`);
+    
+    console.log('Response status:', response.status);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Server error:', errorText);
+      throw new Error(`Failed to load sheet: ${response.status} ${errorText}`);
+    }
     
     const data = await response.json();
+    console.log('Response data:', data);
     
     if (!data.sheetUrl) {
       throw new Error('No sheet URL available for this station');
@@ -119,7 +127,7 @@ async function saveSheetChanges() {
     const sheetId = sheetUrl.match(/\/d\/([^\/]+)/)[1];
     
     // Send save request to backend
-    const response = await fetch('https://wxbackend-production.up.railway.app/api/reports/sheets/save', {
+    const response = await fetch('https://wxbackend-production.up.railway.app/api/sheets/save', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
