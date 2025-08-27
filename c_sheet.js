@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Set default station if user is station-specific
   if (user.role === 'station') {
     stationSelect.value = user.stationName;
-    stationSelect.disabled = true;
+    stationSelect.disabled = false;
   }
 
   // Load sheet when button clicked
@@ -34,9 +34,9 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Auto-load sheet for station users
-  if (user.role === 'station') {
+  /*if (user.role === 'station') {
     loadStationSheet(user.stationName);
-  }
+  }*/
 
   // Save button functionality
   saveSheetBtn.addEventListener('click', saveSheetChanges);
