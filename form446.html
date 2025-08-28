@@ -177,7 +177,10 @@
                             <li><a class="dropdown-item" href="form626.html">FORM 626</a></li>
                             <li><a class="dropdown-item" href="c_sheet.html">C/SHEET</a></li>
                             <li><a class="dropdown-item active" href="form446.html">FORM 446</a></li>
-                            <!-- Nested dropdown for WX SUMMARY -->
+                            <li><a class="dropdown-item" href="wx_summary_may.html">WX SUMMARY</a></li>
+
+                            <!--
+                             Nested dropdown for WX SUMMARY
                             <li class="dropdown-submenu">
                                 <a class="dropdown-item dropdown-toggle" href="#">WX SUMMARY</a>
                                 <ul class="dropdown-menu">
@@ -195,6 +198,7 @@
                                     <li><a class="dropdown-item" href="wx_summary_dec.html">December</a></li>
                                 </ul>
                             </li>
+                            -->
                             <li><a class="dropdown-item" href="agro18_dek.html">AGRO18 DEK</a></li>
                             <li><a class="dropdown-item" href="#">#</a></li>                            
                         </ul>
@@ -269,10 +273,42 @@
         </div>
     </nav>
 
-    <div class="iframe-container">
-        <iframe src="https://docs.google.com/spreadsheets/d/1xo2b0cLtw7wZhEy3ZdkFDIIhz4ZeA0cO/edit?usp=sharing&ouid=118311929635489986511&rtpof=true&sd=true"></iframe>
+    <!-- Add this right before the iframe container -->
+<div class="container mt-3">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">Station Control Panel</h4>
     </div>
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="stationSelect" class="form-label">Select Station:</label>
+            <select id="stationSelect" class="form-select">
+              <option value="Mab-Met">Mab-Met (63739)</option>
+              <option value="Dagoretti">Dagoretti (63741)</option>
+              <option value="JKIA">JKIA (63740)</option>
+              <option value="Wilson">Wilson (63742)</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6 text-end">
+          <button id="loadSheetBtn" class="btn btn-success">
+            <i class="fas fa-sync-alt me-2"></i>Load Station Sheet
+          </button>
+          <button id="saveSheetBtn" class="btn btn-primary ms-2" disabled>
+            <i class="fas fa-save me-2"></i>Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!-- Modify your iframe container like this -->
+<div class="iframe-container mt-3">
+  <iframe id="sheetFrame" src="about:blank"></iframe>
+</div>
     <!-- Footer -->
     <footer class="py-4">
         <div class="container">
@@ -342,5 +378,6 @@
 
         <script src="auth.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="form446.js"></script>
 </body>
 </html>
