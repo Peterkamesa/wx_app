@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>AGRO18 DEKAD</title>
+    <title>RAINFALL CART</title>
     <style>
                     /* Custom styles */
         :root {
@@ -175,7 +175,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="form626.html">FORM 626</a></li>
-                            <li><a class="dropdown-item" href="c_sheet.html">C/SHEET</a></li>
+                            <li><a class="dropdown-item active" href="c_sheet.html">C/SHEET</a></li>
                             <li><a class="dropdown-item" href="form446.html">FORM 446</a></li>
                             <li><a class="dropdown-item" href="wx_summary_may.html">WX SUMMARY</a></li>
 
@@ -199,8 +199,8 @@
                                 </ul>
                             </li>
                             -->
-                            <li><a class="dropdown-item active" href="agro18_dek.html">AGRO18 DEK</a></li>
-                            <li><a class="dropdown-item" href="rainfallcart.html">FORM496(R/CART)</a></li>                             
+                            <li><a class="dropdown-item" href="agro18_dek.html">AGRO18 DEK</a></li>
+                            <li><a class="dropdown-item" href="rainfallcart.html">FORM496(R/CART)</a></li>                            
                         </ul>
                     </li>
                     <!-- Dropdown menu item -->
@@ -215,7 +215,7 @@
                             <li><a class="dropdown-item" href="central.html">CENTRAL</a></li>
                             <li><a class="dropdown-item" href="western.html">WESTERN</a></li>
                             <li><a class="dropdown-item" href="n_w.html">N.W</a></li>
-                            <li><a class="dropdown-item" href="n_e.html">N.E</a></li>                           
+                            <li><a class="dropdown-item" href="n_e.html">N.E</a></li>                            
                         </ul>
                     </li>
                     <!-- Dropdown menu item -->
@@ -344,7 +344,7 @@
     <script>
             // Initialize on page load
     document.addEventListener('DOMContentLoaded', function() {
-        displaySavedReports();
+        
         
         // Redirect if not logged in
         if (!localStorage.getItem('weatherAuthToken')) {
@@ -379,6 +379,6 @@
 
         <script src="auth.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="agro18_dek.js"></script>
+    <script src="rainfallcart.js"></script>
 </body>
 </html>
