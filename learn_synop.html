@@ -1,0 +1,983 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SYNOP Notes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+                    /* Custom styles */
+        :root {
+      --primary-color: #1b1b53;
+      --secondary-color: #3a3a8f;
+      --accent-color: #06f07b;
+      --highlight-color: #ff4ed9;
+      --light-text: #f8f9fa;
+      --success-color: #28a745;
+      --info-color: #17a2b8;
+      --danger-color: #dc3545;
+        --nav-width: 260px;
+      --brand: #0f172a;
+      --accent: #2563eb;
+      --muted: #6b7280;
+      --panel: #f8fafc;
+    }
+    
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            background: url(cd1.jpg)  center center fixed;
+        }
+        
+        .navbar {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      background-color: var(--primary-color) !important;
+    }
+    
+    .navbar-brand img {
+      height: 30px;
+      transition: transform 0.3s ease;
+    }
+    
+    .navbar-brand:hover img {
+      transform: scale(1.05);
+    }
+    
+    .nav-link {
+      position: relative;
+      margin: 0 8px;
+      transition: color 0.3s ease;
+      color: var(--light-text) !important;
+    }
+    
+    .nav-link.active {
+      color: var(--accent-color) !important;
+      font-weight: bold;
+    }
+    
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--highlight-color);
+      border-radius: 3px;
+    }
+    
+    .dropdown-menu {
+      background-color: var(--secondary-color);
+      border: none;
+    }
+    
+    .dropdown-item {
+      color: var(--light-text);
+      transition: all 0.3s ease;
+    }
+    
+    .dropdown-item:hover {
+      background-color: var(--highlight-color);
+      color: white;
+    }
+            footer {
+            background-color: #1b1b53;
+            color: white;
+            padding: 2rem 0;
+            margin-top: auto;
+        }
+        
+        .footer-logo img {
+            height: 40px;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        
+        .footer-links a {
+            color: #adb5bd;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+
+        }
+        
+        .social-media a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 10px;
+        }
+        
+        .contact-form {
+            margin-top: 1rem;
+        }
+        
+        .contact-form input {
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            border: none;
+            margin-right: 0.5rem;
+        }
+        
+        .contact-form button {
+            padding: 0.5rem 1rem;
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+        }
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+                .navbar {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .jumbotron {
+            background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);
+            color: white;
+            border-radius: 0 0 30px 30px;
+            padding: 1rem 1rem;
+            margin-bottom: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 2px solid var(--primary-color);
+            font-weight: 600;
+            color: var(--primary-color);
+            padding: 1rem 1.25rem;
+        }
+        
+        .synop-group {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            background-color: #e9ecef;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+        
+        .example-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .nav-pills .nav-link {
+            color: var(--secondary-color);
+            border-radius: 20px;
+            margin: 0.25rem;
+        }
+        
+        .nav-pills .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+       /* footer {
+            background-color: #343a40;
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }*/
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+        }
+        
+        .code-value {
+            font-family: 'Courier New', monospace;
+            background-color: #f1f3f4;
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+        }
+        
+        .importance-badge {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 10px;
+        }
+            /* Page content */
+    /*body { background: var(--panel); color: #0b1220; }*/
+    .hero { background: linear-gradient(135deg,var(--brand),var(--accent)); color: #fff; padding: 2rem; border-radius: .5rem; margin-bottom: 1.25rem; }
+    .sidebar { position: sticky; top: 1rem; max-height: calc(100vh - 2rem); overflow:auto; color: #0c0b0b; }
+    .section-title { border-bottom: 3px solid rgba(37,99,235,.12); padding-bottom: .25rem; margin-bottom: .75rem; display:inline-block; }
+    pre { background:#eef2ff; padding:.75rem; border-radius:.4rem; white-space: pre-wrap; word-break: break-word; }
+    table th, table td { vertical-align: middle; }
+    .code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace; font-size: .95em; }
+    /*footer { margin-top: 2rem; color: var(--muted); font-size: .9rem; }*/
+    @media (min-width: 992px){
+      main { display: grid; grid-template-columns: var(--nav-width) 1fr; gap: 1.5rem; align-items: start; }
+    }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Menu -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgb(27, 27, 83);">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="logo2.jpg" alt="P.Kamesa Logo" class="d-inline-block align-text-top"> Wx App
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link" aria-current="page">Home</a>
+                    </li>
+                    <!-- Dropdown menu item -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Resources
+                        </a>
+                        <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="learn_metar.html">Metar Notes</a></li>
+                                        <li><a class="dropdown-item active" href="learn_synop.html">Synop Notes</a></li>
+                                        <li><a class="dropdown-item" href="taf.html">TAF Notes</a></li>                      
+                        </ul>
+                    </li>
+                    <!-- Dropdown menu item for forms -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            WX Forms
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item " href="form626.html">FORM 626</a></li>
+                            <li><a class="dropdown-item" href="c_sheet.html">C/SHEET</a></li>
+                            <li><a class="dropdown-item" href="form446.html">FORM 446</a></li>
+                            <li><a class="dropdown-item" href="wx_summary_may.html">WX SUMMARY</a></li>
+
+                            <!--
+                             Nested dropdown for WX SUMMARY
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">WX SUMMARY</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="wx_summary_jan.html">January</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_feb.html">February</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_mar.html">March</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_apr.html">April</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_may.html">May</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_jun.html">June</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_jul.html">July</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_aug.html">August</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_sep.html">September</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_oct.html">October</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_nov.html">November</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_dec.html">December</a></li>
+                                </ul>
+                            </li>
+                            -->
+                            <li><a class="dropdown-item" href="agro18_dek.html">AGRO18 DEK</a></li>
+                            <li><a class="dropdown-item" href="rainfallcart.html">FORM496(R/CART)</a></li>                              
+                        </ul>
+                    </li>
+                    <!-- Dropdown menu item -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Forecasts
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="daily_wx.html">Daily WX</a></li>
+                            <li><a class="dropdown-item" href="s_e.html">S.E</a></li>
+                            <li><a class="dropdown-item" href="coast.html">COAST</a></li>
+                            <li><a class="dropdown-item" href="central.html">CENTRAL</a></li>
+                            <li><a class="dropdown-item" href="western.html">WESTERN</a></li>
+                            <li><a class="dropdown-item" href="n_w.html">N.W</a></li>
+                            <li><a class="dropdown-item" href="n_e.html">N.E</a></li>                             
+                        </ul>
+                    </li>
+                    <!-- Dropdown menu item -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Observations
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="metar1.html">METAR/SPECI</a></li>
+                            <li><a class="dropdown-item" href="synop.html">SYNOP</a></li>
+                            <li><a class="dropdown-item" href="actuals.html">ACTUALS</a></li>
+                             <li><a class="dropdown-item" href="mon_brief.html">MON BRIEF</a></li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="launchFirefox('https://196.202.217.196/nsweb/FlightBriefing/?page=showQuery#showQuery')">FLIGHT FOLDER</a>
+                            </li>
+                            <!-- Nested dropdown for duty rosters -->
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">Duty Rosters</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="dutyroster_jan.html">January</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_feb.html">February</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_mar.html">March</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_apr.html">April</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_may.html">May</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_jun.html">June</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_jul.html">July</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_aug.html">August</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_sep.html">September</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_oct.html">October</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_nov.html">November</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_dec.html">December</a></li>
+                                </ul>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a href="about.html" class="nav-link">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="login.html" class="nav-link">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="signup.html" class="nav-link">Sign Up</a>
+                    </li>
+                    <li class="nav-item" id="logout-item" style="display: none;">
+                        <a href="#" class="nav-link" id="logout-link">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Jumbotron -->
+    <div class="jumbotron col-lg-6 mx-auto">
+        <div class="container text-center">
+            <h1 class="display-5">SYNOP Code Groups Explained</h1>
+            <p class="lead">A comprehensive guide to understanding SYNOP meteorological observation codes</p>
+            <a href="#section1" class="btn btn-light btn-lg mt-3">Start Learning</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Introduction -->
+        <div class="row mb-3">
+            <div class="col-lg-8 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">What is SYNOP?</h2>
+                        <p>SYNOP (surface synoptic observations) is a numerical code used for reporting weather observations made by manned and automated weather stations. The code is regulated by the World Meteorological Organization (WMO) and is used globally for weather forecasting and climate monitoring.</p>
+                        <p>Each SYNOP report consists of several sections with specific groups that encode different meteorological parameters. Understanding these groups is essential for meteorologists and weather enthusiasts.</p>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> <strong>Note:</strong> SYNOP codes follow a strict format where each character or group of characters represents specific weather information.
+                        </div>
+                        <p class="lead fw-bold">YYGGiw  IIiii  iRiXhVV  Nddff  1SnTTT  2SnTdTdTd  3PoPoPoPo  48hhh/PPPP  6RRRtR  7wwW1W2 
+                            8NhClCmCh  1SnTxTxTx  2SnTnTnTn  5SnPPP  8NsChshshs 
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Section 1: Identification & Time -->
+        <section id="section1" class="mb-5">
+            <h2 class="section-title bg-white">Section 1: Identification & Time Data</h2>
+            
+            <div class="row">
+                <!-- Header Group -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>Header</span>
+                            <span class="badge bg-primary importance-badge">Required</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Identifies the type of SYNOP message and its priority.</p>
+                            <div class="example-box">
+                                <strong>Examples:</strong><br>
+                                <span class="synop-group">SMKN75 HKNC 230600</span> - Main SYNOP report<br>
+                                <span class="synop-group">SIKN75 HKNC 230900</span> - Intermediate SYNOP report<br>
+                                <span class="synop-group">SNKN75 HKNC 230700</span> - Hourly SYNOP report
+                            </div>
+                            <p><strong>Format:</strong> 5-character code indicating message type and priority.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Type of Station -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>Type of Station (AAXX)</span>
+                            <span class="badge bg-primary importance-badge">Required</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Identifies the type of station and report.</p>
+                            <div class="example-box">
+                                <strong>Fixed value:</strong> <span class="synop-group">AAXX</span> for land stations
+                            </div>
+                            <p><strong>Format:</strong> 
+                                <span class="code-value">A</span> = Report from land station, 
+                                <span class="code-value">A</span> = Report made at a scheduled time, 
+                                <span class="code-value">X</span> = Included for completeness, 
+                                <span class="code-value">X</span> = Included for completeness
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- YYGGiw Group -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>YYGGiw</span>
+                            <span class="badge bg-primary importance-badge">Required</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Date, time, and wind indicator.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> <span class="synop-group">23182</span><br>
+                                <span class="code-value">23</span> = Day of month (23rd)<br>
+                                <span class="code-value">18</span> = Time in UTC (18:00)<br>
+                                <span class="code-value">4</span> = Wind indicator (units and averaging period)
+                            </div>
+                            <p><strong>Wind Indicator (iw):</strong><br>
+                                <span class="code-value">0</span> = Wind in m/s, estimated<br>
+                                <span class="code-value">1</span> = Wind in m/s, measured by anemometer<br>
+                                <span class="code-value">3</span> = Wind in knots, estimated<br>
+                                <span class="code-value">4</span> = Wind in knots, measured by anemometer<br>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- IIiii Group -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>IIiii</span>
+                            <span class="badge bg-primary importance-badge">Required</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Station identification number.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> <span class="synop-group">63739</span><br>
+                                <span class="code-value">63</span> = Country or region code<br>
+                                <span class="code-value">739</span> = Station number within country/region
+                            </div>
+                            <p>Each country has a specific block number assigned by WMO. For example, block 03 is for the United States, 07 for France, etc.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Surface Observations -->
+        <section id="section2" class="mb-5">
+            <h2 class="section-title bg-white">Section 2: Surface Weather Observations</h2>
+            
+            <div class="row">
+                <!-- iRiXhVV Group -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>iRiXhVV</span>
+                            <span class="badge bg-primary importance-badge">Required</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Precipitation indicator, station operation, visibility.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> <span class="synop-group">32580</span><br>
+                                <span class="code-value">3</span> = Precipitation indicator (iR)<br>
+                                <span class="code-value">2</span> = Type of station and inclusion/omission of present and past wx(iX)()<br>
+                                <span class="code-value">5</span> = Height of base of cloud (h)<br>
+                                <span class="code-value">80</span> = Horizontal visibility (VV)
+                            </div>
+                            <p><strong>Components:</strong><br>
+                                <span class="code-value">iR</span>: Precipitation indicator (0-4)<br>
+                                <span class="code-value">iX</span>: Type of station (1=manual, 2=automatic)<br>
+                                <span class="code-value">h</span>: Height of base of lowest cloud (0-9)<br>
+                                <span class="code-value">VV</span>: Horizontal visibility in km (00-99)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Nddff Group -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>Nddff</span>
+                            <span class="badge bg-primary importance-badge">Required</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Cloud cover, wind direction, and wind speed.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> <span class="synop-group">52315</span><br>
+                                <span class="code-value">5</span> = Total cloud cover (N)<br>
+                                <span class="code-value">23</span> = Wind direction in tens of degrees (dd)<br>
+                                <span class="code-value">15</span> = Wind speed (ff)
+                            </div>
+                            <p><strong>Components:</strong><br>
+                                <span class="code-value">N</span>: Total cloud cover (0-8, 9=sky obscured)<br>
+                                <span class="code-value">dd</span>: True wind direction in tens of degrees (00-36)<br>
+                                <span class="code-value">ff</span>: Wind speed (units depend on iw in YYGGiw)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- 1SnTTT Group -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>1SnTTT</span>
+                            <span class="badge bg-primary importance-badge">Required</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Air temperature data.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> <span class="synop-group">10125</span><br>
+                                <span class="code-value">1</span> = Group indicator (fixed)<br>
+                                <span class="code-value">0</span> = Sign of temperature (Sn)<br>
+                                <span class="code-value">125</span> = Temperature in tenths of degrees (TTT)
+                            </div>
+                            <p><strong>Components:</strong><br>
+                                <span class="code-value">1</span>: Fixed indicator for temperature group<br>
+                                <span class="code-value">Sn</span>: Sign of temperature (0=positive, 1=negative)<br>
+                                <span class="code-value">TTT</span>: Temperature in tenths of degrees Celsius
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2SnTdTdTd Group -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>2SnTdTdTd</span>
+                            <span class="badge bg-primary importance-badge">Required</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Dew point temperature data.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> <span class="synop-group">20095</span><br>
+                                <span class="code-value">2</span> = Group indicator (fixed)<br>
+                                <span class="code-value">0</span> = Sign of dew point (Sn)<br>
+                                <span class="code-value">095</span> = Dew point in tenths of degrees (TdTdTd)
+                            </div>
+                            <p><strong>Components:</strong><br>
+                                <span class="code-value">2</span>: Fixed indicator for dew point group<br>
+                                <span class="code-value">Sn</span>: Sign of dew point (0=positive, 1=negative)<br>
+                                <span class="code-value">TdTdTd</span>: Dew point in tenths of degrees Celsius
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- 3PoPoPoPo Group -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>3PoPoPoPo</span>
+                            <span class="badge bg-primary importance-badge">Required</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Station pressure at sea level.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> <span class="synop-group">38384</span><br>
+                                <span class="code-value">3</span> = Group indicator (fixed)<br>
+                                <span class="code-value">8384</span> = Station pressure in tenths of hPa (PoPoPoPo)
+                            </div>
+                            <p><strong>Components:</strong><br>
+                                <span class="code-value">3</span>: Fixed indicator for station pressure group<br>
+                                <span class="code-value">PoPoPoPo</span>: Station pressure in tenths of hPa
+                            </p>
+                            <p>If the pressure is less than 1000 hPa, 10 is added to the first digit (e.g., 998.5 hPa becomes 0998 then 10998).</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 4aPPP Group -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>4aPPP or 8hhh</span>
+                            <span class="badge bg-primary importance-badge">Required</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Geopotential height.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> <span class="synop-group">48532</span><br>
+                                <span class="code-value">4</span> = Group indicator (fixed)<br>
+                                <span class="code-value">8</span> = isobaric pressure level<br>
+                                <span class="code-value">1532</span> = height of 850mb(geopotential height)
+                            </div>
+                            <p><strong>Components:</strong><br>
+                                <span class="code-value">4</span>: Fixed indicator for pressure group<br>
+                                <span class="code-value">a</span>: isobaric pressure level<br>
+                                <span class="code-value">hhh</span>: height of 850mb(geopotential height)
+                            </p>
+                            <p><strong>Characteristic (a) values:</strong><br>
+                                0-3: Rising, 4: Steady, 5-8: Falling
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- 5appp Group -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>5appp</span>
+                            <span class="badge bg-success importance-badge">Required</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Pressure change over 24 hours.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> <span class="synop-group">5012</span><br>
+                                <span class="code-value">5</span> = Group indicator (fixed)<br>
+                                <span class="code-value">0</span> = Sign of pressure change (a)<br>
+                                <span class="code-value">12</span> = Pressure change in tenths of hPa (ppp)
+                            </div>
+                            <p><strong>Components:</strong><br>
+                                <span class="code-value">5</span>: Fixed indicator for 24-hour pressure change<br>
+                                <span class="code-value">a</span>: Sign of pressure change (8=positive, 9=negative)<br>
+                                <span class="code-value">ppp</span>: Pressure change in tenths of hPa over 24 hours
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 6RRRtR Group -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>6RRRtR</span>
+                            <span class="badge bg-success importance-badge">Optional</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Amount of precipitation.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> <span class="synop-group">60051</span><br>
+                                <span class="code-value">6</span> = Group indicator (fixed)<br>
+                                <span class="code-value">005</span> = Amount of precipitation (RRR)<br>
+                                <span class="code-value">1</span> = Duration period (t)<br>
+                            </div>
+                            <p><strong>Components:</strong><br>
+                                <span class="code-value">6</span>: Fixed indicator for precipitation group<br>
+                                <span class="code-value">RRR</span>: Amount of precipitation in mm<br>
+                                <span class="code-value">t</span>: Duration period of precipitation measurement<br>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- 7wwW1W2 Group -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>7wwW1W2</span>
+                            <span class="badge bg-primary importance-badge">Required</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Present and past weather.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> <span class="synop-group">76186</span><br>
+                                <span class="code-value">7</span> = Group indicator (fixed)<br>
+                                <span class="code-value">61</span> = Present weather (ww)<br>
+                                <span class="code-value">8</span> = Past weather (W1)<br>
+                                <span class="code-value">6</span> = Past weather (W2)
+                            </div>
+                            <p><strong>Components:</strong><br>
+                                <span class="code-value">7</span>: Fixed indicator for weather group<br>
+                                <span class="code-value">ww</span>: Present weather code (00-99)<br>
+                                <span class="code-value">W1</span>: Past weather (1st period)<br>
+                                <span class="code-value">W2</span>: Past weather (2nd period)
+                            </p>
+                            <p>Weather codes describe conditions like rain, snow, fog, thunderstorms, etc.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 8NhClCmCh Group -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>8NhClCmCh</span>
+                            <span class="badge bg-primary importance-badge">Required</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Cloud types and amounts.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> <span class="synop-group">82352</span><br>
+                                <span class="code-value">8</span> = Group indicator (fixed)<br>
+                                <span class="code-value">2</span> = Amount of low clouds (N)<br>
+                                <span class="code-value">3</span> = Type of low clouds (Cl)<br>
+                                <span class="code-value">5</span> = Type of medium clouds (Cm)<br>
+                                <span class="code-value">2</span> = Type of high clouds (Ch)
+                            </div>
+                            <p><strong>Components:</strong><br>
+                                <span class="code-value">8</span>: Fixed indicator for cloud group<br>
+                                <span class="code-value">Nh</span>: Amount of low or middle clouds<br>
+                                <span class="code-value">Cl</span>: Type of low clouds<br>
+                                <span class="code-value">Cm</span>: Type of medium clouds<br>
+                                <span class="code-value">Ch</span>: Type of high clouds
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Additional Data -->
+        <section id="section3" class="mb-5">
+            <h2 class="section-title bg-white">Section 3: Additional & Regional Data</h2>
+            
+            <div class="row">
+                <!-- 1SnTxTxTx Group -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>1SnTxTxTx</span>
+                            <span class="badge bg-success importance-badge">Optional</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Maximum temperature over a period.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> <span class="synop-group">10225</span><br>
+                                <span class="code-value">1</span> = Group indicator (fixed)<br>
+                                <span class="code-value">0</span> = Sign of temperature (Sn)<br>
+                                <span class="code-value">225</span> = Maximum temperature in tenths of degrees (TxTxTx)
+                            </div>
+                            <p><strong>Components:</strong><br>
+                                <span class="code-value">1</span>: Fixed indicator for maximum temperature<br>
+                                <span class="code-value">Sn</span>: Sign of temperature (0=positive, 1=negative)<br>
+                                <span class="code-value">TxTxTx</span>: Maximum temperature in tenths of degrees Celsius
+                            </p>
+                            <p>This group reports the highest temperature observed over a specified period (usually 12 or 24 hours).</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2SnTnTnTn Group -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>2SnTnTnTn</span>
+                            <span class="badge bg-success importance-badge">Optional</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Minimum temperature over a period.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> <span class="synop-group">20085</span><br>
+                                <span class="code-value">2</span> = Group indicator (fixed)<br>
+                                <span class="code-value">0</span> = Sign of temperature (Sn)<br>
+                                <span class="code-value">085</span> = Minimum temperature in tenths of degrees (TnTnTn)
+                            </div>
+                            <p><strong>Components:</strong><br>
+                                <span class="code-value">2</span>: Fixed indicator for minimum temperature<br>
+                                <span class="code-value">Sn</span>: Sign of temperature (0=positive, 1=negative)<br>
+                                <span class="code-value">TnTnTn</span>: Minimum temperature in tenths of degrees Celsius
+                            </p>
+                            <p>This group reports the lowest temperature observed over a specified period (usually 12 or 24 hours).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+                
+                <!-- 8NsChshshs Group -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>8NsChshshs</span>
+                            <span class="badge bg-success importance-badge">Optional</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Significant cloud layers.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> <span class="synop-group">82126</span><br>
+                                <span class="code-value">8</span> = Group indicator (fixed)<br>
+                                <span class="code-value">2</span> = Amount of cloud (Ns)<br>
+                                <span class="code-value">1</span> = Type of cloud (Ch)<br>
+                                <span class="code-value">26</span> = Height of cloud base (hh)<br>
+                            </div>
+                            <p><strong>Components:</strong><br>
+                                <span class="code-value">8</span>: Fixed indicator for cloud layer group<br>
+                                <span class="code-value">Ns</span>: Amount of cloud layer<br>
+                                <span class="code-value">Ch</span>: Type of cloud<br>
+                                <span class="code-value">hh</span>: Height of cloud base<br>
+
+                            </p>
+                            <p>This group can be repeated for multiple significant cloud layers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+     
+    <!-- Footer -->
+    <footer class="py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 text-center text-md-start">
+                    <div class="footer-logo">
+                        <img src="logo.jpg" alt="P.K Logo">
+                    </div>
+                    <p>&copy; 2025 P.Kamesa. All rights reserved.</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <ul class="footer-links">
+                        <li><a href="/privacy-policy">Privacy Policy</a></li>
+                        <li><a href="/terms-of-service">Terms of Service</a></li>
+                        <li><a href="contact.html">Contact Me</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 text-center text-md-end">
+                    <div class="social-media mb-3">
+                        <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                    </div>
+                    <form class="contact-form d-flex justify-content-center justify-content-md-end">
+                        <input type="email" class="form-control me-2" placeholder="Enter your email" required style="max-width: 250px;">
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+            // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        displaySavedReports();
+        
+        // Redirect if not logged in
+        if (!localStorage.getItem('weatherAuthToken')) {
+            window.location.href = 'login.html';
+        }
+    });
+
+        document.addEventListener('DOMContentLoaded', function() {
+    // Get current page URL
+    const currentPage = window.location.pathname.split('/').pop();
+    
+    // Find all dropdown items
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+    
+    // Loop through each dropdown item
+    dropdownItems.forEach(item => {
+        // Get the href attribute and extract the filename
+        const itemPage = item.getAttribute('href').split('/').pop();
+        
+        // Check if it matches current page
+        if (itemPage === currentPage) {
+            // Add active class to this item
+            item.classList.add('active');
+            
+            // Also add active class to parent dropdown toggle
+            const dropdownToggle = item.closest('.dropdown-menu').previousElementSibling;
+            dropdownToggle.classList.add('active');
+        }
+    });
+});
+        function launchFirefox(url) {
+            // Try Firefox protocol (works if Firefox is set as handler)
+            window.location.href = 'firefox://open-url?url=' + encodeURIComponent(url);
+            
+            // Fallback: Open in a new tab (default browser) after a delay
+            setTimeout(function() {
+                window.open(url, '_blank');
+            }, 500);
+            
+            return false; // Prevent default link behavior
+        }
+        </script>
+    <script src="auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>  
+
+</body>
+</html>

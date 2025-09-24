@@ -85,12 +85,14 @@
         .contact-section {
             padding: 5rem 0;
             flex: 1;
+            
         }
         
         .contact-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            
         }
         
         .contact-section h2 {
@@ -134,7 +136,7 @@
         .contact-info {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             padding: 2.5rem;
-            border-radius: 0.5rem;
+            border-radius: 1.5rem;
             color: white;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
@@ -187,8 +189,8 @@
         
         .contact-form {
             background: white;
-            padding: 0.2rem;
-            border-radius: 0rem;
+            padding: 1.2rem;
+            border-radius: 1.5rem;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             
             
@@ -414,7 +416,19 @@
                       <a href="index.html" class="nav-link">Home</a>
                   </li>
 
-                                      <!-- Dropdown menu item for forms -->
+                    <!-- Dropdown menu item for notes -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Resources
+                        </a>
+                        <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="learn_metar.html">Metar Notes</a></li>
+                                        <li><a class="dropdown-item" href="learn_synop.html">Synop Notes</a></li>
+                                        <li><a class="dropdown-item" href="taf.html">TAF Notes</a></li>                      
+                        </ul>
+                    </li>
+
+                     <!-- Dropdown menu item for forms -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             WX Forms
@@ -522,8 +536,8 @@
 <!-- Contact Me Section -->
 <section id="contact" class="contact-section">
     <div class="contact-container">
-      <h2 class="animate">Contact Me</h2>
-      <p class="animate delay-1">Have questions or feedback? Reach out anytime!</p>
+      <h2 class="animate bg-white mx-auto col-md-4" style="border-radius: 1.0rem ;">Contact Me</h2>
+      <p class="animate delay-1 bg-white mx-auto col-md-4" style="border-radius: 1.0rem ;">Have questions or feedback? Reach out anytime!</p>
       
       <div class="contact-grid">
         <!-- Contact Info -->

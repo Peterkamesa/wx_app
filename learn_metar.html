@@ -1,0 +1,1556 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>METAR &amp; SPECI Notes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+                    /* Custom styles */
+        :root {
+      --primary-color: #1b1b53;
+      --secondary-color: #3a3a8f;
+      --accent-color: #06f07b;
+      --highlight-color: #ff4ed9;
+      --light-text: #f8f9fa;
+      --success-color: #28a745;
+      --info-color: #17a2b8;
+      --danger-color: #dc3545;
+    }
+    
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            background: url(cd1.jpg)  center center fixed;
+        }
+        
+        .navbar {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      background-color: var(--primary-color) !important;
+    }
+    
+    .navbar-brand img {
+      height: 30px;
+      transition: transform 0.3s ease;
+    }
+    
+    .navbar-brand:hover img {
+      transform: scale(1.05);
+    }
+    
+    .nav-link {
+      position: relative;
+      margin: 0 8px;
+      transition: color 0.3s ease;
+      color: var(--light-text) !important;
+    }
+    
+    .nav-link.active {
+      color: var(--accent-color) !important;
+      font-weight: bold;
+    }
+    
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--highlight-color);
+      border-radius: 3px;
+    }
+    
+    .dropdown-menu {
+      background-color: var(--secondary-color);
+      border: none;
+    }
+    
+    .dropdown-item {
+      color: var(--light-text);
+      transition: all 0.3s ease;
+    }
+    
+    .dropdown-item:hover {
+      background-color: var(--highlight-color);
+      color: white;
+    }
+            footer {
+            background-color: #1b1b53;
+            color: white;
+            padding: 2rem 0;
+            margin-top: auto;
+        }
+        
+        .footer-logo img {
+            height: 40px;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        
+        .footer-links a {
+            color: #adb5bd;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+
+        }
+        
+        .social-media a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 10px;
+        }
+        
+        .contact-form {
+            margin-top: 1rem;
+        }
+        
+        .contact-form input {
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            border: none;
+            margin-right: 0.5rem;
+        }
+        
+        .contact-form button {
+            padding: 0.5rem 1rem;
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+        }
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+            /* Page content */
+    main { flex: 1; }
+    .card { border-radius: .5rem; }
+    pre { white-space: pre-wrap; word-break: break-word; }
+
+    footer { background-color: var(--primary-color); color: #fff; }
+
+    /* Make tables consistent */
+    table.table thead { background-color: #f1f5f9; }
+    .section-title { border-bottom: 2px solid var(--secondary-color); padding-bottom: .5rem; margin-bottom: 1rem; }
+     /*body { background:#f8fafc; color:#111827; }*/
+    .hero { background: linear-gradient(135deg,var(--primary),var(--accent)); color:#fcfafa; padding:1.75rem; border-radius:.5rem; margin-bottom:1.5rem; }
+    .section-title { background:#eef2ff; border-bottom:3px solid var(--accent); display:inline-block; padding-bottom:.35rem; margin-bottom:.75rem; }
+    pre { background:#eef2ff; padding: .6rem; border-radius:.4rem; white-space: pre-wrap; word-break: break-word; }
+    .card { border-radius:.6rem; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace; }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Menu -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgb(27, 27, 83);">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="logo2.jpg" alt="P.Kamesa Logo" class="d-inline-block align-text-top"> Wx App
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link" aria-current="page">Home</a>
+                    </li>
+                    <!-- Dropdown menu item -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Resources
+                        </a>
+                        <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item active" href="learn_metar.html">Metar Notes</a></li>
+                                        <li><a class="dropdown-item" href="learn_synop.html">Synop Notes</a></li>
+                                        <li><a class="dropdown-item" href="taf.html">TAF Notes</a></li>                      
+                        </ul>
+                    </li>
+                    <!-- Dropdown menu item for forms -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            WX Forms
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item " href="form626.html">FORM 626</a></li>
+                            <li><a class="dropdown-item" href="c_sheet.html">C/SHEET</a></li>
+                            <li><a class="dropdown-item" href="form446.html">FORM 446</a></li>
+                            <li><a class="dropdown-item" href="wx_summary_may.html">WX SUMMARY</a></li>
+
+                            <!--
+                             Nested dropdown for WX SUMMARY
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">WX SUMMARY</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="wx_summary_jan.html">January</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_feb.html">February</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_mar.html">March</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_apr.html">April</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_may.html">May</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_jun.html">June</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_jul.html">July</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_aug.html">August</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_sep.html">September</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_oct.html">October</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_nov.html">November</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_dec.html">December</a></li>
+                                </ul>
+                            </li>
+                            -->
+                            <li><a class="dropdown-item" href="agro18_dek.html">AGRO18 DEK</a></li>
+                            <li><a class="dropdown-item" href="rainfallcart.html">FORM496(R/CART)</a></li>                              
+                        </ul>
+                    </li>
+                    <!-- Dropdown menu item -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Forecasts
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="daily_wx.html">Daily WX</a></li>
+                            <li><a class="dropdown-item" href="s_e.html">S.E</a></li>
+                            <li><a class="dropdown-item" href="coast.html">COAST</a></li>
+                            <li><a class="dropdown-item" href="central.html">CENTRAL</a></li>
+                            <li><a class="dropdown-item" href="western.html">WESTERN</a></li>
+                            <li><a class="dropdown-item" href="n_w.html">N.W</a></li>
+                            <li><a class="dropdown-item" href="n_e.html">N.E</a></li>                             
+                        </ul>
+                    </li>
+                    <!-- Dropdown menu item -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Observations
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="metar1.html">METAR/SPECI</a></li>
+                            <li><a class="dropdown-item" href="synop.html">SYNOP</a></li>
+                            <li><a class="dropdown-item" href="actuals.html">ACTUALS</a></li>
+                             <li><a class="dropdown-item" href="mon_brief.html">MON BRIEF</a></li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="launchFirefox('https://196.202.217.196/nsweb/FlightBriefing/?page=showQuery#showQuery')">FLIGHT FOLDER</a>
+                            </li>
+                            <!-- Nested dropdown for duty rosters -->
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">Duty Rosters</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="dutyroster_jan.html">January</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_feb.html">February</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_mar.html">March</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_apr.html">April</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_may.html">May</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_jun.html">June</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_jul.html">July</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_aug.html">August</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_sep.html">September</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_oct.html">October</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_nov.html">November</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_dec.html">December</a></li>
+                                </ul>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a href="about.html" class="nav-link">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="login.html" class="nav-link">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="signup.html" class="nav-link">Sign Up</a>
+                    </li>
+                    <li class="nav-item" id="logout-item" style="display: none;">
+                        <a href="#" class="nav-link" id="logout-link">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+  <!-- HEADER / HERO -->
+  <header class="py-4 mt-2 text-white" style="background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);">
+    <div class="container">
+            <!-- Header / Hero -->
+    <div class="hero text-center">
+      <h1 class="mb-1">MME 207; AERONAUTICAL METEOROLOGY for MMTC</h1>
+    </div>
+      <h1 class="h3 mb-1 text-center">METAR &amp; SPECI Notes</h1>
+      <p class="mb-0 small text-center">Aviation Meteorological Services</p>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="container my-4">
+    <!-- Container -->
+  <div class="container my-4">
+
+
+    <!-- General objectives -->
+    <section id="general-objectives" class="mb-4">
+      <h2 class="section-title">General objectives</h2>
+      <div class="card">
+        <div class="card-body">
+          <p><strong>At the end of this subject the trainee will be able to</strong></p>
+
+          <ul>
+            <li>Grasp observational techniques for aviation </li>
+            <li>Know  major hazards to aviation</li>
+            <li>understand the meteorological aspects of flight planning</li>
+            <li>Know how to code , report and disseminate meteorological messages as prescribed by ICAO/WMO guideline</li>
+            <li>Know ICAO terminologies  </li>
+            <li>Appreciate meteorological services for international aviation</li>
+            <li>Appreciate the air traffic services </li>
+            <li>Appreciate the operation of an aircraft </li>
+            <li>Appreciate aeronautical communication </li>
+            <li>Know WMO/ICAO documentation</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Topics -->
+    <section id="topics" class="mb-4">
+      <h2 class="section-title">Topics</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>Observation techniques for aviation, codes, report and disseminate meteorological messages 
+            (METAR, SPECI, SYNOP, TEMP), Major hazards to aviation, Meteorological aspects of flight planning, ICAO terminologies , Meteorological services for international aviation , Air traffic services , Operation of an aircraft , Aeronautical communication , WMO/ICAO documentation
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. Observation techniques for aviation -->
+    <section id="obs-tech" class="mb-4">
+      <h2 class="section-title">1. Observation techniques for aviation</h2>
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5>Specific objectives</h5>
+          <p><strong>At the end of this topic the trainee will be able to</strong></p>
+          <ul>
+            <li>Observe surface wind direction and speed including changes and variations</li>
+            <li>Determine visibility and runway visual range</li>
+            <li>Determine cloud observations </li>
+            <li>Measure air temperature and dew point   temperature </li>
+            <li>Measure pressure for the purpose of determination of QFE and QNH</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <h6>Subtopic</h6>
+          <p>Surface wind observation, Visibility and Runway Visual Range, Cloud observations, Measurement air temperature and dew point   temperature, Measurement of pressure.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h6>Observations (continued)</h6>
+          <p><strong>Meteorological Reports</strong></p>
+          <p>A meteorological report is a statement of observed weather conditions existing at a specified time and place and is issued to local air traffic service units as required. It is made available to the operators and other users of the aerodrome.</p>
+
+          <h6 class="mt-3">Routine Aerodrome observations</h6>
+          <p>-Made at intervals of half or one hour as determined by regional air navigation agreements. <br>
+          Aeronautical meteorological stations are mandated to make routine observations at fixed intervals. Observations are carried out throughout the 24hrs of each day except when otherwise agreed on by the meteorological authority, the appropriate ATS authority and the operators concerned.</p>
+
+          <h6 class="mt-3">Special aerodrome Observations</h6>
+          <p> At aerodromes, the routine observations shall be supplemented by special observations whenever specified changes occur in respect of surface wind, visibility, runway visual range, present weather, clouds and/or air temperature.
+Special observations are made at intervals between routine observations and refer to specified conditions involving deteriorations or improvement of one or more meteorological elements.</p>
+
+          <h6 class="mt-3">Runway Visual Observations</h6>
+          <p>Included in the meteorological reports (METAR, SPECI) during any operationally significant period when the horizontal visibility equals or is less than a specified value on runways in use during the period of such reduced visibility. RVR observations should be made when visibility is less than 1500m.</p>
+
+          <p>RVR observations are disseminated beyond the aerodrome of origin in accordance with regional air navigation agreement. </p>
+
+          <h6 class="mt-3">Observations for Take-off, holding operation or approach to land</h6>
+          <p>These observations relate and represent conditions existing prior to the transmission of the report.  </p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- METAR/SPECI description -->
+    <section id="metar-desc" class="mb-4">
+      <h2 class="section-title">METAR/SPECI (Observation techniques/Codes_encode/decode)</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>METAR is code name for a routine aviation report of meteorological conditions at an aerodrome.
+METAR- METeorological Aviation Report - Aerodrome routine meteorological reports</p>
+
+          <p>A SPECI is code name for a special report of meteorological conditions, issued when one or more elements meet specified criteria significant to aviation. SPECI presents observations recorded ten minutes following an improvement (in wind, visibility, weather or cloud).
+NB; Both METAR and SPECI have the same code form and have a TREND landing forecast appended to either. Data are reported primarily in an alphanumeric code formatted for aviation users.</p>
+
+          <p><strong>METAR/SPECI has two major sections: the Body (consisting of a maximum of 10 groups) and
+the Remarks (consisting of a maximum of 1 category).</strong></p>
+
+          <h6 class="mt-3">Contents of the reports</h6>
+          <p>The body of the local routine and special reports shall contain the following elements in the order indicated:
+Identification of the type of report;
+Location indicator;
+Date and time of the observation;
+Report Modifier -identification of an automated or missing report (when applicable)
+Surface wind direction and speed;
+Visibility  &amp; Runway visual range (when applicable)
+Present weather
+Couds (or vertical visibility if abblicable)
+Temperature and Dew Point
+QNH
+REw’w’
+Supplementary information- Manual and Plain Language</p>
+
+          <h6 class="mt-3">METAR/SPECI Code -REPORT FORMAT</h6>
+          <pre class="mono">METAR or SPECI CCCC YYGGggZ (AUTO/ COR) dddffGfmfmKT  dndndnVdxdxdx
+VVVVDv  RDRDR/VRVRVRVRFT/i or RDRDR/VRVRVRVRVVRVRVRVRFT/i  w'w'
+NsNsNshshshs and/or VVhshshs or SKC/NSC or CAVOK T'T'/T'dT'd  QPHPHPHPH 
+REw'w' WSRWYDRDR or WS ALL RWY RMKS.. 
+METAR or SPECI CCCC YYGGggZ COR dddff(f)Gfmfm(fm)KT dndndnVdxdxdx
+VVVVV w'w' [NNNhshshs or VVhshshs or SKC] T'T'/T'dT'd  QPHPHPHPH or APHPHPHPH REw’w’ RMK (Manual and Plain Language)</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Identification groups -->
+    <section id="identification-groups" class="mb-4">
+      <h2 class="section-title">Identification groups</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>These have three parts; Type of report identifier code, ICAO location indicator, Date and time</p>
+
+          <p>METAR/ SPECI; METAR is the code name for routine (scheduled) report.  SPECI is the code name for non-routine (unscheduled) weather report.
+Location CCCC; ICAO (International Civil Aviation Organization) location indicator for the station issuing the report</p>
+
+          <p>Date/Time YYGGggZ; The day of the month and the time of the report given in UTC (Coordinated Universal Time - Z). 
+YY- the day of the month; 
+GGgg- 4 digits for the time of observation; GG in hours and gg in minutes followed by letter Z, e.g. 291741Z (time of report is 1741 on the 29th of the month UTC). </p>
+
+          <p>AUTO; The abbreviation AUTO will be included when the report contains only automated observations. COR indicates a correction to a previously disseminated report</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Surface Wind details -->
+    <section id="surface-wind" class="mb-4">
+      <h2 class="section-title">Surface Wind (dddffGfmfm)</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>is a five figure group indicating the ten minute mean wind followed by units of wind speed
+ddd is wind direction rounded to the nearest 10degrees true, 
+ff is the wind speed, given in knots (KT). </p>
+
+          <h6 class="mt-3">Gusts</h6>
+          <p>Rapid fluctuations or sudden increases and decreases of wind speed with a variation of 10 knots or more between peaks and lulls.
+In the instances of wind gusting fmfm is the maximum gust during the sampling period. Maximum gust speed is reported when it exceeds the mean speed by 10knots/5ms-1 or more. The letter G is inserted after the mean wind followed by the gust value (fmfm). </p>
+
+          <h6 class="mt-3">Variability group</h6>
+          <p>dndndnVdxdxdx
+If during the ten minute averaging period the wind direction has varied by 60o or more and provided that the mean wind speed is more than 3kts or 2ms-1. Then the two extreme wind directions are indicated in a clockwise sense with a letter V inserted between the two directions values to indicate variability. E.g. dndndnVdxdxdx - 360V090 implies wind direction varied between north and east true during the period of observation.
+Occasionally some marked discontinuity occurs during the observation which demands that mean values be assessed after the discontinuity.</p>
+
+          <p><strong>Conditions for discontinuity;</strong><br>
+Direction change of 30o or more with a wind speeds of 10kts or 5ms-1 or more before or after the change. 
+Wind speed change of 10kts/5mps or more</p>
+
+          <h6 class="mt-3">Special cases for reporting wind</h6>
+          <p>Wind is coded as Variable only when the following conditions are satisfied;
+Wind speed is less than 3kts(2mps) 
+Wind speed is higher than 3kts but wind direction is impossible to determine due to variations especially during the time of thunderstorms, then the surface wind is indicated as Variable (VRB) for ddd. Variable wind direction with speed less than 3kts will be reported as VRB02KT.
+Calm wind is reported as 00000 KT for dddff KT- speed is Zero and direction is also Zero.
+Speeds of 100kts or more are encoded in full i.e. as 240115KT for a SW wind at 115knots or P99KT (P49mps or P199KMH) </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visibility intro -->
+    <section id="visibility-intro" class="mb-4">
+      <h2 class="section-title">Horizontal Visibility/surface visibility VVVV; VVVVDv; VxVxVxVxDx</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>Meteorological visibility refers: 
+DAY-the greatest distance at which a black object of suitable dimensions, situated near the ground, can be seen and recognized when observed against a bright background (meteorological optical range -MOR).
+NIGHT-the greatest distance at which lights in the vicinity of 1 000 candelas can be seen and identified against an 	unlit background (Varies with the background illumination).
+Meteorological visibility is therefore a measure of the atmospheric transparency at the earth’s surface in relation to human vision. When there are no marked directional variations in visibility, the minimum horizontal visibility will be reported meters (m) using four figures VVVV. 
+Marked directional variations are considered when the minimum visibility is less than 500m or the variations are at least 50% of the minimum visibility.
+When there are observed marked direction variations in visibility, the reported minimum visibility will be followed by one of the eight points of the compass Dv or Dx to indicate the direction of the minimum and maximum visibility respectively. 
+e.g. VVVVDv for 3000NE. 
+NB: If the lowest visibility is observed in more than one direction, the most operationally significant visibility is reported. Again if minimum visibility being less than 1500m and in another direction the visibility is more than 5000m the maximum visibility and its direction should also be reported e.g. VVVVDv VxVxVxVxDx; 1200SW 8000N  for minimum visibility of 1200m to the SW and a maximum visibility of 8000m in the northern side.
+When visibility is given by an automated sensor (in fully AUTOmated reports), only one group will be reported. </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RVR short -->
+    <section id="rvr-short" class="mb-4">
+      <h2 class="section-title">Runway Visual Range (RVR) RDRDR/VRVRVRVRi or RDRDR/VRVRVRVRVVRVRVRVRi);</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>The term Runway Visual Range denotes the greatest distance at which an object is visible to a particular observer in specified lighting conditions. 
+RVR is reported from aerodromes with RVR instrumentation whenever the RVR or the visibility is less than 1500 meters. It will be reported in the format RDRDR V1V1V1V1i or V2V2V2V2i.
+NB: where the observer records the greatest horizontal distance at which they can see runway marks by day or runway lights by night, this is called the runway visual range.</p>
+
+          <h6 class="mt-3">Code Description;</h6>
+          <p>R; is a fixed indicator of RVR information.
+DRDR; Designates the runway for which RVR is being reported. 
+-Parallel runways will be distinguished by the letter L, C or R indicating the Left, Centre or Right runway, respectively. 
+/; a fixed separator
+VRVRVRVRi ; Gives the last 10minute averaged  Runway visual range (RVR) value in metres, except when RVR has varied significantly in the last 10-minutes where it presents the minimum 1-minute average followed by maximum V V2V2V2V2i
+Examples; 
+R06/1000; on runway 06-North easterly direction RVR is 1000m. 
+R06/P1500; P here indicates a runway visual range greater than1500m 
+R06/M200; M indicates that the RVR which can be accessed on runway 06 now is 200m and the visibility along that runway is less than the Minimum value which can be assessed by the system. </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="rvr-continued" class="mb-4">
+      <h2 class="section-title">RDRDR/VRVRVRVRVVRVRVRVRi)</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>For minimum and maximum one minute mean values. Gives the last 10-minute average RVR value, except when the RVR has varied significantly during the 10 minutes in which case it gives the minimum 1-minute average value during this period (and is followed by V V2V2V2V2). 
+V is a conditional indicator, included only when RVR has varied significantly during the last 10 minutes. V2V2V2V2;- the maximum one-minute average value during the last ten minutes. </p>
+
+          <p>i presents the tendency of the change of RVR over the sampling period where adequate instrumentation is put in place to give one, two, five and ten minute mean values – i can be either U (upward), D (downward) or N (nil) for varying RVR. i is not reported if tendency not available. </p>
+
+          <h6 class="mt-3">Techniques to report Visibility</h6>
+          <ul>
+            <li>Up to 800m round downwards to nearest 50m</li>
+            <li>Between 800m and 5000m round down to the nearest 100m i.e. 1288m is reported as 1200</li>
+            <li>Between 5000m and 9999m rounded down to 1000m i.e. visibility at 5999m is encoded  as 5000</li>
+            <li>Visibility of 10km or more encoded as 9999</li>
+          </ul>
+
+          <p>NB: the RVR values to be reported shall be representative of touchdown zone of the active landing runway(s) up to a maximum of four.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Present weather -->
+    <section id="present-weather" class="mb-4">
+      <h2 class="section-title">Present Weather w’w’;</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>Weather phenomena are reported using the codes listed in the code table 4678 (WMO publication No. 306). 
+Intensity is indicated for precipitation, dust storms, sandstorms and funnel clouds etc by appending a prefix to show strength of the weather;  - for light intensity, + for heavy intensity and  no prefix for moderate intensity e.g. –DZ (Light drizzle); +RA (heavy rains); SHRA(moderate showers of rain). 
+When precipitation is reported with TS, the intensity indicator refers to the precipitation, e.g. -TSRA implies thunderstorm with light rain. 
+One or more codes may be grouped, e.g. +TSGR, -TSRASN.
+VC is used to indicate the weather in vicinity of the aerodrome i.e. not at the aerodrome and not further than 8km from the aerodrome reference point. The weather code is prefixed with the abbreviation VC e.g. VCSH for vicinity showers. 
+Techniques for reporting w’w’</p>
+
+          <p>Intensity is reported in association with;
+Precipitation (DZ, RA, SH, TS)
+Blowing dust (DU)
+Sand or snow(SA or SN)
+Dust storm or sandstorm (DS or SS)
+Reported when visibility has been reduced to 5000m or less 
+Ice crystals 
+Smoke (SM)
+Haze (HZ)
+Widespread dust and sand except for drifting snow
+Mist(BR) is a suspension of water droplets or ice crystals reported when horizontal visibility fall within range of 1000m to 3000m
+Fog (FG) is a suspension of ice crystals or water droplets in the air that reduces visibility to less than 1000m
+Hail (GR) is used only when diameter of the hailstones is 5mm or more. In all other cases GS is used.
+Visibility more than 5000m is reported when all the above phenomena are not present by definition and are not reported. Instances where visibility is 5001m to 5999m, it will still be encoded as 5000 but the phenomenon will not appear. Other elements that reduce visibility significantly include VA (volcanic ash), SQ (Squalls), PO (dust devils) etc. 
+NB:  Following table shows codes used as weather descriptors.</p>
+
+          <div class="table-responsive mt-3">
+            <table class="table table-bordered">
+              <thead><tr><th>Code </th><th>Weather Descriptor</th></tr></thead>
+              <tbody>
+                <tr><td>BC</td><td>Patches</td></tr>
+                <tr><td>DZ</td><td>Drizzle</td></tr>
+                <tr><td>BL</td><td>Blowing</td></tr>
+                <tr><td>RA</td><td>Rain</td></tr>
+                <tr><td>DR</td><td>Drifting</td></tr>
+                <tr><td>SH</td><td>Shower</td></tr>
+                <tr><td>FZ</td><td>Freezing</td></tr>
+                <tr><td>TS</td><td>Thunderstorm</td></tr>
+                <tr><td>MI</td><td>Shallow</td></tr>
+                <tr><td>BR</td><td>Mist</td></tr>
+                <tr><td>PR</td><td>Partial</td></tr>
+                <tr><td>GR</td><td>Hail</td></tr>
+                <tr><td>VC</td><td>In the vicinity</td></tr>
+                <tr><td>FG</td><td>Fog</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Cloud group -->
+    <section id="cloud-group" class="mb-4">
+      <h2 class="section-title">Cloud group or Vertical visibility (NsNsNshshshs/orVVhshshs);</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>for cloud amount and base.
+NsNsNs indicates the amount of the reported cloud and hshshs presents the base or cloud height in feet above the ground level.
+VV is the identifier for vertical visibility and hshshs is the vertical visibility in feet. 
+Code Cloud Amount;
+NsNsNs shows the amount of cloud based on the fraction of the sky dome covered by the cloud or Oktas.   Entire sky is taken to be 8 Oktas so;  </p>
+
+          <p>                   1 8 to 28   is reported as FEW (few),   58 to 78 is reported as BKN broken,
+
+                   38 to 48  is reported as SCT (Scattered) and  88 is reported as OVC (Overcast)</p>
+
+          <p>Note: NSC is used for Nil significant cloud and SKC is reported at manual stations when no clouds are 	observed.
+Cloud Base/height is given as a three-figure group (hshshs) in hundreds of feet above the aerodrome elevation, e.g. cloud at 700 feet is coded as 007. 
+Cloud type is identified only for convective clouds; cumulonimbus and towering cumulus, e.g. FEW030CB, SCT045TCU. 
+How to report cloud groups
+Different layers or masses of cloud may coexist and therefore the cloud group may be repeated to indicate the layers or masses of clouds but not more than three groups may qualify.
+Criteria for reporting clouds</p>
+
+          <ol class="mt-3">
+            <li>Cloud information is reported from the lowest to the highest layers in accordance with the following rules:</li>
+            <li>1st group: the lowest layer/mass regardless of amount.</li>
+            <li>2nd group: the next individual layer covering more than 2 Oktas of the sky.</li>
+            <li>3rd group: the next higher individual layer covering more than 4 Oktas.</li>
+            <li>NB: If the significant convective cloud- cumulonimbus (Cb) and/or towering cumulus (TCU) clouds is present and has not been reported in any of the above criteria then it should be reported as an additional group. </li>
+          </ol>
+
+          <p class="mt-2">Example;
+Suppose the following clouds are observed;  18 Stratus at 500ft, 28 Cumulonimbus at 1000ft, 38 Cumulus at 1800ft and  58 Stratocumulus at 2500ft.
+These should be reported based on above criteria as follows:  FEW005; FEW010CB; SCT018; BKN025
+Note that the clouds are reported in ascending order of height. Cloud type is reported in steps of 30m (100feet) up to 3000m (10,000ft) and in steps of 300m or 1000ft above this height. E.g. 48 Oktas of stratocumulus at a base of 1750ft will be encodes as SCT017 i.e. height is rounded downwards to 1700ft
+At the same time when an individual layer is composed of cumulonimbus (CB) and towering cumulus (TCU) with a common base, the cloud is reported as CB only but the amount is the total of the cloud types present. </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CAVOK and vertical visibility -->
+    <section id="cavok-vv" class="mb-4">
+      <h2 class="section-title">CAVOK; The abbreviation CAVOK (Cloud or Ceiling And Visibility OKay)</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>is the code word used to replace the Visibility, Present Weather and Cloud groups. For this code to apply the following conditions must prevail simultaneously:
+Visibility is 10 kilometres or more
+No cloud below 1500m (5000 feet)  or below the highest  minimum sector altitude, 			which-ever is the higher,
+No cumulonimbus and No towering cumulus
+ No other weather significance to aviation
+NB: If there are no clouds and the abbreviation CAVOK is not appropriate; SKC (Sky Clear) should be used. </p>
+
+          <h6 class="mt-3">Vertical visibility (VVhshshs)</h6>
+          <p>Vertical visibility is defined as the vertical visual range into an obscuring medium.
+Is reported when the sky is obscured and cloud details cannot be determined but information on vertical visibility is available. In this case the cloud group is replaced with a five character group (VVhshshs). 
+VV – the first two figures identifying vertical visibility
+hshshs -presents the vertical visibility in steps of 30m (100ft) 
+NB; in a state where the whole sky is obscured and the vertical visibility cannot be assed the group will read VV/// e.g. VV004 implies that vertical visibility is 400ft</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Temperature and dew point -->
+    <section id="temperature-dew" class="mb-4">
+      <h2 class="section-title">Temperature and dew point (T'T'/T'dT'd)</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>Air temperature and dew point values are rounded to the nearest whole degree. Negative values must be preceded by M indicating minus e.g. 34/M04 for T'T'=34oC and T'dT'd = -4oC. Temperature and dew point values of 0.5 degrees should be rounded up to the higher whole degree.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- QNH -->
+    <section id="qnh" class="mb-4">
+      <h2 class="section-title">Pressure QNH (QPHPHPHPH)</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>The QNH value is rounded down to the next whole hectopascal and is given using four figures prefixed by Q, e.g. 999.9 is given as Q0999</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Supplementary info & remarks -->
+    <section id="supplementary-remarks" class="mb-4">
+      <h2 class="section-title">Supplementary Information</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>Supplementary information is used to report:
+Recent Weather (REw'w')  – significant weather observed since the last report but not at the time of observation is given after the prefix RE, e.g. RERA for Recent Rain
+Wind Shear (WS RWYDRDR) - reports of wind shear experienced on take-off or landing are given after the indicator WS, e.g. WS R16.
+Remarks; The Remarks section (indicated by RMK) 
+Data Not Available; Where a data group is not available, solidi will be reported in lieu of the missing group, e.g. //// for visibility, // for weather and ////// for cloud. 
+NCD (No cloud detected) is only reported in fully automated reports when a cloud sensor (ceilometers) detects nil cloud. 
+Where no descent procedure is established for an aerodrome, the aerodrome’s alternate ceiling and visibility are 1500 feet and 8 kilometers respectively.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TREND FORECASTS -->
+    <section id="trend-forecasts" class="mb-4">
+      <h2 class="section-title">TREND FORECASTS; (Addendum 3)</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>Prediction of expected weather conditions/developments in the next two hours appended to a METAR or SPECI reports. Represents significant changes expected for one or several of the 	observed elements, e.g. wind, horizontal visibility, present weather, clouds or vertical visibility. Trend forecasts are presented by one of the following codes for change indicators TTTTT; BECMG or TEMPO & NOSIG 
+TTTTT-indicator for Trend or expected significant weather changes 
+TEMPO -Temporary changes
+BECMG -Regular changes
+NOSIG – no significant change</p>
+
+          <h6 class="mt-3">Examples;</h6>
+          <pre class="mono">METAR HKNY 221130Z 09012KT 8000 +SHRA FEW005CB OVC018 22/20 Q0999 NOSIG=
+METAR HKMO 221130Z 18010KT 9999 BKN030 30/25 Q1012 BECMG TSRA BKNO30CB=
+METAR HKJK 221130Z 05008KT 9999 SHRA SCT027 OVC110 27/22 Q1023 TEMPO 	35020KT 6000 –SHRA BKN035TCU=</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPECI Criteria (repeat) -->
+    <section id="speci-criteria" class="mb-4">
+      <h2 class="section-title">SPECI Criteria</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>SPECI is used to identify reports of observations when conditions are below specified levels of visibility and cloud base; when certain weather phenomena are present; and when the temperature, pressure or wind changes as defined.
+SPECI is also used to identify reports of observations recorded 10 minutes following an improvement in visibility, weather or cloud to METAR conditions.se table below. </p>
+
+          <div class="table-responsive mt-3">
+            <table class="table table-bordered">
+              <thead><tr><th>Element</th><th>Criterion</th></tr></thead>
+              <tbody>
+                <tr><td>Wind direction</td><td>Changes by 30o or more, mean speed before or after the change being 20KT</td></tr>
+                <tr><td>Wind speed </td><td>Change of 10KT or more, mean speed before or after change being 30KT or more </td></tr>
+                <tr><td>Wind Gust</td><td>Gust of 10KT or more above a mean speed of 15KT or more; Gusts exceeds the last reported gust by 10KT or more. </td></tr>
+                <tr><td>Visibility</td><td>When the prevailing visibility is below the aerodromes highest alternate minimum visibility or 5000m whichever is greater</td></tr>
+                <tr><td>weather</td><td>When any of the following begins, ends changes in intensity, or is occurring at a routine reporting time; TS, GR, RA,FG, DU</td></tr>
+                <tr><td>Cloud</td><td>When there is BKN or OVC cloud below the aerodromes highest alternate minimum cloud base or 1500ft, whichever is greater. </td></tr>
+                <tr><td>Temperature </td><td>When temperature changes by 5oc or more since last report </td></tr>
+                <tr><td>Pressure </td><td>When the QNH changes by 2hpa or more since last report</td></tr>
+                <tr><td>other</td><td>Upon receipt of advice of the existence of wind shear and incident of any other phenomenon likely to be significant.</td></tr>
+                <tr><td>Aircraft Mishap</td><td>Upon notification of an aircraft mishap unless there has been an intervening observation</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Encode / Decode messages -->
+    <section id="encode-decode" class="mb-4">
+      <h2 class="section-title">Encode /Decode messages</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>1. METAR HKNC 080800Z 05012KT 9999 SHRA FEW022CB SCT023 28/22 Q1023 NOSIG
+METAR for Routine Aerodrome Report
+HKNC ICAO location indicator is Nairobi Dagoretti Corner
+080800Z Date and time; Day 08; Time 0800Z
+05012KT Wind direction and speed; North easterly at 12knots
+9999 Visibility more than 10kms
+SHRA Present weather observed at time of observation was showers of light rain
+FEW022CB lowest cloud observed was 1-2 Oktas of cumulonimbus at 2200ft
+Next cloud level observed was 3-4 Oktas of low clouds at 2300ft
+28/22 Air temperature and dew point at 28oC and 22oC respectively.
+Q1023 Station pressure reduced to mean sea level pressure QNH was 1023
+NOSIG trend expected; no changes in the next three hours</p>
+
+          <p>2. SPECI HKJK 221945Z 14004KT 0600 R16/0600D R27/0550N FG ////// 08/08 Q1026
+Report Explanation (Decode).
+SPECI		 Special meteorological observation (for wind gust).
+YMML 	ICAO location indicator for Melbourne Airport.
+221945 	Time of observation is 1945 on the 22nd of the month UTC.
+14010G20KT 	Average wind during sampling period (normally ten minutes) is from 140
+			degrees True at 10 knots. Maximum gust during period is 20 knots.
+0600 		Visibility is 600 metres.
+R16/0600D 	Runway visual range on runway 16 threshold is 600 metres, and is
+			trending down.
+R27/0550N 	Runway visual range on runway 27 threshold is 550 metres; nil trend.
+FG 		Present weather is fog.
+////// 		Cloud observation not made (as sky obscured due fog).
+08/08 		The air temperature and the dewpoint temperature are both 8°C.
+Q1026 		The QNH is between 1026 and 1026.9 hectopascals.</p>
+
+          <p>3. Exercise; decode the following messages</p>
+          <pre class="mono">METAR HKNY 221130Z 28012KT 8000 1000 +SHRA FEW005 OVC110 27/22 Q0999 RERA 
+
+SPECI HKKI 171515Z AUTO 22015G25KT 190V250 9000 // NCD 13/09 Q1003
+
+
+METAR HKJK 070530Z 04009KT CAVOK 18/11 Q1021=
+
+METAR HKMO 070400Z 02005KT 9999 BKN019 25/22 Q1012 NOSIG=
+
+METAR HKJK 061600Z 05017KT 9999 FEW028 BKN090 24/10 Q1018=
+
+METAR HKMO 061600Z 05013KT 9999 FEW024 27/22 Q1009 NOSIG=
+
+METAR HKJK 062230Z 02006KT 9999 BKN033 18/11 Q1020 BECMG -SHRA BKN035TCU=
+
+METAR HKMO 062300Z 03003KT 9999 FEW020 25/23 Q1011 NOSIG=</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Summary and Flight planning -->
+    <section id="summary-flight" class="mb-4">
+      <h2 class="section-title">SUMMARY &amp; FLIGHT PLANNING</h2>
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <h6>Summary</h6>
+          <p>Certification of Observers
+ Aeronautical Meteorological Observers (AMOs) are ccertified by the National Weather Service (NWS) to take official surface weather observations. Observer certificates shall be available, on station, for review.
+Observer Responsibility
+Taking and disseminating accurate, scheduled observations. Together with that the observer must
+report significant changes in weather conditions that could have an adverse effect on safe and
+efficient aviation operations.
+Surface Observation
+A measurement or evaluation of one or more meteorological elements that describe the state of the atmosphere at the location(s) where the observation is taken.
+Standard Time of Observation
+The hour to which a record observation applies.
+Order of Observing
+Elements having the greatest rate of change are evaluated last. Weather elements to be evaluated in the following order;
+Elements evaluated outdoors.
+Elements evaluated indoors, with pressure last.
+Unofficial Weather Reports
+A report of one or more weather elements from individuals who are not certified to take weather
+observations e.g. a pilot on the ground and/or a law enforcement official.
+Aircraft Mishap
+An inclusive term to denote the occurrence of an aircraft accident or incident. SPECI reports are done when an aircraft accident or mishap occurs.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h6>FLIGHT PLANNING</h6>
+          <p>Defined as the process of producing a flight plan to describe a proposed aircraft flight. Flight planning is important for two safety critical aspects.
+Fuel calculation, to ensure that the aircraft can safely reach the destination.
+Compliance with air traffic control requirements, to minimize the risk of midair collision
+Requirements for en-route and aerodrome forecast
+It’s important for the airlines/operators and crew to get Up-to-date weather and NOTAMs briefing for the entire route before preparing and filing their flight plans.</p>
+
+          <p class="mt-2">ICAO & WMO established the World Area Forecast System (WAFS) with two designated World Area Forecast Centre (WAFC); (London & Washington) for providing specialist global aviation weather services. These centres are responsible for producing global aviation wind, temperature and significant weather forecasts in support of flight planning.</p>
+
+          <p class="mt-2">The aerodrome meteorological offices are able to receive the WAFS digital forecast products for compilation of flight documents and provision of weather information to suit the requirements of airlines and flight crews in flight planning and operations.
+NB: Currently aircrews do self-briefing using either internet-based briefing services or using documentation retrieved from Web-based servers or sent via facsimile.</p>
+
+          <h6 class="mt-3">Optimized flight plans have strengths in the following aspects.</h6>
+          <ul>
+            <li>Reduces fuel costs and provides for the best possible route. </li>
+            <li>Allows for the issuance of the correct over-flight and landing permits.</li>
+            <li>Leads to allocation of the appropriate slots for departure, arrival, and parking. </li>
+            <li>Provides for an appropriate ground handling assistance</li>
+            <li>Suitable ground transportation and hotel arrangements.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ATS continued -->
+    <section id="ats-continued" class="mb-4">
+      <h2 class="section-title">AIR TRAFFIC SERVICES (ATS)</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>These are the services that contribute to the safety, the smooth flow and the efficiency of the international air navigation. 
+ATS are provided to aircraft in flight and on the maneuvering area of an aerodrome to achieve the following objectives;
+Prevent collision between Aircrafts
+Prevent collisions between aircrafts and objects on the maneuvering area of the aerodrome
+Expedite and maintain an orderly flow of air traffic 
+Provide advice and information for safe and efficient conduct of flights
+Notify appropriate organizations regarding aircraft in need of search and rescue aid and assist such organizations as required.
+Flight Information Region (FIR)
+An area (airspace) of defined dimensions within which air traffic services are provided.
+ATS comprises of the following 
+Flight information service
+Alerting service
+Air traffic Control Service
+Flight Rules
+Rules designed to provide an acceptable level of safety for all aircrafts
+General Information Rules (GIR)
+Visual Flight Rules (VFR)
+Instrument Flight Rules(IFR)
+Air traffic control Service
+Area control service 
+approach control service
+aerodrome control service
+The ATS require input for meteorological information to the following for the fulfillment of their tasks.</p>
+
+          <ul class="mt-3">
+            <li>Operators(Air line operators)</li>
+            <li>The crews </li>
+            <li>The air traffic units </li>
+            <li>The search and rescue units</li>
+            <li>The airport management </li>
+            <li>All the other parties concerned with air traffic operations. </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="ats-info" class="mb-4">
+      <h2 class="section-title">List of information for the aerodrome control tower</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>Meteorological information from an aerodrome meteorological office supplied to the aerodrome control tower for ATS.</p>
+
+          <ul>
+            <li>Local routine and special reports, METAR and SPECI, TAF and trend forecasts and any necessary amendments to the reports.</li>
+            <li>Forecasts of upper winds, upper-air temperatures and significant en-route weather phenomena and amendments</li>
+            <li>SIGMET and AIRMET information, wind shear warnings and alerts and aerodrome warnings</li>
+            <li>Any additional meteorological information agreed upon locally, e.g.  forecasts of surface wind for the determination of possible runway changes;</li>
+            <li>Information received on volcanic ash cloud, for which a SIGMET has not already been issued.</li>
+            <li>Information received on pre-eruption volcanic activity and/or a volcanic eruption </li>
+            <li>Information received concerning the accidental release of radioactive materials into the atmosphere.</li>
+            <li>Tropical cyclone advisory information issued by a TCAC in its area of responsibility.</li>
+            <li>Information necessary for the preparation of NOTAM or ASHTAM.</li>
+            <li>Information supplied to rescue coordination centres for search and rescue operations, including the meteorological conditions that existed in the last known position of a missing aircraft and along the intended route of that aircraft.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Significant En-route phenomena -->
+    <section id="enroute-phenomena" class="mb-4">
+      <h2 class="section-title">Significant En-route weather phenomena</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>The following significant meteorological phenomena are considered to be hazardous to aircraft in flight, and which therefore shall be reported by aerodrome meteorological offices, area control centers or meteorological watch offices:</p>
+          <ul>
+            <li>Thunderstorms (TS) with or without hail (GR)</li>
+            <li>Squall lines (SQL)</li>
+            <li>Tropical cyclones (TC)</li>
+            <li>Severe turbulence (SEV TURB)</li>
+            <li>Severe icing (SEV ICE)</li>
+            <li>Severe mountain wave (SEV MTW)</li>
+            <li>Heavy dust storm (HVY DS)</li>
+            <li>Heavy sandstorm (HVY SS)</li>
+            <li>Volcanic ash cloud (VA)</li>
+            <li>Radioactive cloud</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Flight documentation -->
+    <section id="flight-docs" class="mb-4">
+      <h2 class="section-title">Flight Documentation</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>Flight documentation is a package of documents that contains significant meteorological information prepared for a flight crew before departure. The documentation includes charts, forecasts, reports and other necessary information concerning weather conditions expected during the flight.</p>
+
+          <h6 class="mt-3">The main documents include:</h6>
+          <ul>
+            <li>TAF for the destination and alternate aerodromes</li>
+            <li>Trend forecasts appended to METAR/SPECI</li>
+            <li>SIGMET and AIRMET information</li>
+            <li>Forecasts of upper wind and temperature</li>
+            <li>Significant weather charts (SWC)</li>
+            <li>Tropical cyclone and volcanic ash advisories</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ICAO Terminologies -->
+    <section id="icao-terms" class="mb-4">
+      <h2 class="section-title">ICAO Terminologies</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>Some ICAO terms used in aeronautical meteorology include:</p>
+          <ul>
+            <li><strong>AIRMET</strong> – Information concerning weather phenomena which may affect the safety of low-level flights.</li>
+            <li><strong>SIGMET</strong> – Information issued concerning significant en-route weather phenomena which may affect the safety of aircraft operations.</li>
+            <li><strong>TAF</strong> – Aerodrome forecast covering a period of usually 9, 18, or 30 hours for a particular aerodrome.</li>
+            <li><strong>VOLMET</strong> – Meteorological information for aircraft in flight, broadcast on HF/VHF frequencies.</li>
+            <li><strong>WAFS</strong> – World Area Forecast System for global significant weather forecasting.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- VOLMET -->
+    <section id="volmet" class="mb-4">
+      <h2 class="section-title">VOLMET</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>VOLMET is the provision of meteorological information by means of continuous voice broadcasts, on specified HF and VHF frequencies, of METAR, SPECI and TAF reports and SIGMET information for selected aerodromes. This service enables aircraft in flight to receive updated weather information for route and destination planning.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- AFTN -->
+    <section id="aftn" class="mb-4">
+      <h2 class="section-title">AFTN (Aeronautical Fixed Telecommunication Network)</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>The AFTN is a global system of aeronautical fixed circuits provided mainly for the exchange of messages and/or digital data between aeronautical fixed stations having the same or compatible communication characteristics.</p>
+
+          <h6 class="mt-3">AFTN Messages include:</h6>
+          <ul>
+            <li>Flight Safety messages (METAR, TAF, SIGMET, etc.)</li>
+            <li>Flight Regularity messages (company messages, flight plans)</li>
+            <li>Administrative messages</li>
+          </ul>
+
+          <p class="mt-3">The AFTN message format includes:</p>
+          <pre class="mono">ZCZC
+GG HKNAZQZX
+081030 HKNAZQZX
+METAR HKJK 081000Z 04008KT 9999 FEW020 SCT025 24/18 Q1018 NOSIG=
+NNNN</pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="wmo-docs" class="mb-4">
+      <h2 class="section-title">WMO/ICAO Documentation</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>The following documents are fundamental references in aeronautical meteorology:</p>
+          <ul>
+            <li><strong>WMO No. 8</strong> – Guide to Meteorological Instruments and Methods of Observation.</li>
+            <li><strong>WMO No. 9 Vol. A</strong> – Weather Reporting Practices.</li>
+            <li><strong>WMO No. 306</strong> – Manual on Codes.</li>
+            <li><strong>ICAO Annex 3</strong> – Meteorological Service for International Air Navigation.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Examples / Decode -->
+    <section id="examples" class="mb-4">
+      <h2 class="section-title">Examples (Encode/Decode)</h2>
+      <div class="card">
+        <div class="card-body">
+          <pre class="mono">
+METAR HKNC 080800Z 05012KT 9999 SHRA FEW022CB SCT023 28/22 Q1023 NOSIG
+→ Routine aerodrome report: showers of rain, cumulonimbus at 2200ft, QNH 1023 hPa, no significant change.
+
+SPECI HKJK 221945Z 14004KT 0600 R16/0600D R27/0550N FG ////// 08/08 Q1026
+→ Special report: visibility 600m, fog, temperature/dewpoint 8°C, QNH 1026 hPa.
+
+METAR HKNY 221130Z 28012KT 8000 1000 +SHRA FEW005 OVC110 27/22 Q0999 RERA
+→ Heavy showers of rain, cumulonimbus clouds, recent rain.
+
+METAR HKJK 070530Z 04009KT CAVOK 18/11 Q1021
+→ CAVOK conditions (10km+ visibility, no CB/TCU, no significant weather).
+          </pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Exercises -->
+    <section id="exercises" class="mb-4">
+      <h2 class="section-title">Exercises</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>Decode the following METAR/SPECI messages:</p>
+          <ul>
+            <li>METAR HKMO 070400Z 02005KT 9999 BKN019 25/22 Q1012 NOSIG</li>
+            <li>METAR HKJK 061600Z 05017KT 9999 FEW028 BKN090 24/10 Q1018</li>
+            <li>SPECI HKKI 171515Z AUTO 22015G25KT 190V250 9000 // NCD 13/09 Q1003</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Summary -->
+    <section id="summary" class="mb-4">
+      <h2 class="section-title">Summary</h2>
+      <div class="card">
+        <div class="card-body">
+          <p><strong>Certification of Observers</strong>: Aeronautical Meteorological Observers (AMOs) must be certified by the National Weather Service to take official surface observations.</p>
+          <p><strong>Observer Responsibility</strong>: To take accurate, scheduled observations and report significant changes in weather conditions affecting aviation safety.</p>
+          <p><strong>Surface Observation</strong>: Measurement of meteorological elements at the observation site.</p>
+          <p><strong>Standard Time of Observation</strong>: The hour to which an observation applies.</p>
+          <p><strong>Unofficial Reports</strong>: Weather elements reported by non-certified individuals (e.g. pilots, police).</p>
+          <p><strong>Aircraft Mishap</strong>: SPECI reports are required when aircraft accidents/incidents occur.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Flight Planning -->
+    <section id="flight-planning" class="mb-4">
+      <h2 class="section-title">Flight Planning</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>Flight planning ensures fuel safety, ATC compliance, and route optimization. Requires up-to-date METAR, TAF, SIGMET, NOTAMs, and WAFS charts.</p>
+          <p>Optimized flight plans reduce fuel costs, allocate departure/arrival slots, ensure permits, and support crew preparation.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ATS -->
+    <section id="ats" class="mb-4">
+      <h2 class="section-title">Air Traffic Services (ATS)</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>ATS objectives include preventing collisions, maintaining orderly flow, providing advice, and aiding search and rescue.</p>
+          <p>Components: Flight Information Service, Alerting Service, Air Traffic Control Service.</p>
+          <p>ATS requires meteorological input: local reports, TAF, SIGMET, AIRMET, volcanic ash info, tropical cyclone advisories, and data for NOTAMs.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- AFTN Closing -->
+    <section id="aftn-final" class="mb-4">
+      <h2 class="section-title">Aeronautical Fixed Telecommunication Network (AFTN)</h2>
+      <div class="card">
+        <div class="card-body">
+          <p>AFTN transmits Distress (SS), Urgency (DD), Flight Safety (FF), Meteorological (GG), Flight Regularity (GG), and Administrative (KK) messages.</p>
+          <pre class="mono">
+ZCZC LAA005 12032000
+DD OPKCZQZX
+120900 OPSTZQZX
+MESSAGE TEXT
+NNNN
+          </pre>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Introduction -->
+    <section class="card shadow mb-4">
+      <div class="card-body">
+        <h2 class="h5 section-title">LEARN MORE ABOUT METAR/SPECI</h2>
+        <p><strong>A METAR</strong> is a routine report of meteorological conditions at an aerodrome.</p>
+        <p><strong>A SPECI</strong> is a special report of meteorological conditions, issued when one or more elements meet specified criteria significant to aviation. SPECI is also used to identify reports of observations recorded ten minutes following an improvement (in visibility, weather or cloud) to above SPECI conditions.</p>
+      </div>
+    </section>
+
+    <!-- Location & Date/Time -->
+    <section class="card shadow mb-4">
+      <div class="card-body row">
+        <div class="col-md-6">
+          <h3 class="h6 section-title">Location</h3>
+          <p>The location is indicated by either the ICAO (International Civil Aviation Organization) location indicator or another approved abbreviation.</p>
+        </div>
+        <div class="col-md-6">
+          <h3 class="h6 section-title">Date/Time</h3>
+          <p>The day of month and the time of the report is given in UTC (Coordinated Universal Time) using six figures followed by the letter <code>Z</code>. The first two digits are the day of the month; the following 4 digits are the time in hours and minutes, e.g. <code>291741Z</code> (time of report is 1741 on the 29th of the month UTC).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- AUTO -->
+    <section class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="h6 section-title">AUTO</h3>
+        <p>The abbreviation <strong>AUTO</strong> will be included when the report contains only automated observations.</p>
+      </div>
+    </section>
+
+    <!-- Surface Wind -->
+    <section class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="h6 section-title">Surface Wind</h3>
+        <p>The wind direction, given in degrees true rounded to the nearest 10 degrees, is the mean value over the sampling period which is normally ten minutes. A variable wind direction is given as <code>VRB</code>.</p>
+        <p>The wind speed, given in knots (KT), is the mean value over the sampling period. The maximum gust during the sampling period is reported when it exceeds the mean speed by 10 knots or more. It is indicated by the letter <code>G</code> which is followed by the gust value.</p>
+        <p>At selected aerodromes, an additional wind group will be given when the direction varies by 60 degrees or more during the sampling period. The group gives the extreme range of directions in clockwise order, e.g. <code>360V090</code>.</p>
+      </div>
+    </section>
+
+    <!-- Visibility -->
+    <section class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="h6 section-title">Visibility</h3>
+        <p>The visibility is given in metres up to 9000 metres, with <code>9999</code> being used to indicate 10 kilometres or greater. When the visibility is estimated manually, two groups (the prevailing - the greatest visibility reached in at least half the horizon circle - and the minimum) will be reported when: the visibility is not the same in different directions and is not fluctuation rapidly; and the minimum visibility is not the prevailing visibility; and the minimum visibility is less than 1500 metres, or is between 1500 and 5000 metres and less than 50% of the prevailing visibility. In these cases, the prevailing visibility will be given first, followed by the minimum visibility with its direction (using one of the eight points of the compass) from the observing station e.g. <code>9000 2000N</code>.</p>
+        <p>When visibility is given by an automated sensor (in fully AUTOmated reports), only one group will be reported, i.e. any variation in visibility that may exist will not be given.</p>
+      </div>
+    </section>
+
+    <!-- Short note: Aviation Weather Products (example) -->
+    <section class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="h6 section-title">Aviation Weather Products — Example</h3>
+        <pre class="border rounded p-3 bg-light">METAR YPPH 221130Z
+28012KT 8000 1000 +SHRA
+FEW005 OVC110 27/22
+Q0999 RERA
+RMK RF00.6/003.4
+
+SPECI YSCB 171515Z AUTO
+22015G25KT 190V250 9000 
+// NCD 13/09 Q1003 RMK
+RF00.8/003.0</pre>
+        <p class="mt-2 small text-muted">Indicates elements which may not be included: Date/Time, AUTO, Wind Var., TEMP/DEW PT, QNH, RMK, Cloud, RVR, VIS, WX, CAVOK, Wind Supp. Info. RF</p>
+      </div>
+    </section>
+
+    <!-- RVR -->
+    <section class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="h6 section-title">Runway Visual Range (RVR)</h3>
+        <p>RVR will be reported from aerodromes with RVR instrumentation whenever the RVR or the visibility are less than 1500 metres. It will be reported in the format <code>RDD[r]/[n] V1V1V1V1 [V[n]V2V2V2V2][i]</code>. The elements in [] are included only when applicable.</p>
+
+        <div class="table-responsive mt-3">
+          <table class="table table-bordered table-sm">
+            <tbody>
+              <tr><td><strong>R</strong></td><td>A fixed indicator, denoting that RVR information follows.</td></tr>
+              <tr><td><strong>DD</strong></td><td>Designates runway threshold for which RVR is being reported.</td></tr>
+              <tr><td><strong>r</strong></td><td>Parallel runways will be distinguished by the letter L, C or R indicating the left, centre or right runway, respectively.</td></tr>
+              <tr><td><strong>/</strong></td><td>A fixed separator.</td></tr>
+              <tr><td><strong>n</strong></td><td>n will only be reported when the RVR is assessed to be one of the following:
+                <ul class="mb-0">
+                  <li>greater than 2000 metres, in which case n will be reported as P, and the group will be reported as P2000;</li>
+                  <li>greater than the maximum value which can be assessed by the system, and this maximum value is 2000 metres or less, in which case n will be reported as P, and VVVV will report the maximum value, e.g. P1700;</li>
+                  <li>less than 50 metres, in which case n will be reported as M, and the group will be reported as M0050;</li>
+                  <li>less than the minimum value which can be assessed by the system, and this minimum value is 50 metres or more, in which case n will be reported as M, and VVVV will report the minimum value, e.g. M0100.</li>
+                </ul>
+              </td></tr>
+              <tr><td><strong>V1V1V1V1</strong></td><td>Gives the last 10-minute average RVR value, except when the RVR has varied significantly during the 10 minutes in which case it gives the minimum 1-minute average value during this period (and is followed by V[n]V2V2V2V2).</td></tr>
+              <tr><td><strong>V</strong></td><td>A conditional indicator, included only when RVR has varied significantly during the last 10 minutes.</td></tr>
+              <tr><td><strong>V2V2V2V2</strong></td><td>Gives the maximum one-minute average value during the last ten minutes. Only included when RVR has varied significantly during the ten minutes.</td></tr>
+              <tr><td><strong>i</strong></td><td>Gives any distinct RVR tendency over the sampling period – either U (upward), D (downward) or N (nil). Is not reported if tendency not available.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Weather: descriptors, phenomena, intensity -->
+    <section class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="h6 section-title">Weather — Descriptors, Phenomena &amp; Intensity</h3>
+
+        <h4 class="h6 mt-3">Code — Weather Descriptor</h4>
+        <div class="table-responsive mt-2">
+          <table class="table table-bordered table-sm">
+            <thead><tr><th>Code</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>BC</td><td>Patches</td></tr>
+              <tr class="table-secondary"><td>BL</td><td>Blowing</td></tr>
+              <tr><td>DL</td><td>Distant lightning</td></tr>
+              <tr class="table-secondary"><td>DR</td><td>Drifting</td></tr>
+              <tr><td>FZ</td><td>Freezing</td></tr>
+              <tr class="table-secondary"><td>MI</td><td>Shallow</td></tr>
+              <tr><td>PR</td><td>Partial</td></tr>
+              <tr class="table-secondary"><td>SH</td><td>Showers</td></tr>
+              <tr><td>TS</td><td>Thunderstorm</td></tr>
+              <tr class="table-secondary"><td>VC</td><td>in the Vicinity</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4 class="h6 mt-4">Code — Weather Phenomenon</h4>
+        <div class="table-responsive mt-2">
+          <table class="table table-bordered table-sm">
+            <thead><tr><th>Code</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>BR</td><td>Mist</td></tr>
+              <tr class="table-secondary"><td>DU</td><td>Dust</td></tr>
+              <tr><td>DS</td><td>Duststorm</td></tr>
+              <tr class="table-secondary"><td>DZ</td><td>Drizzle</td></tr>
+              <tr><td>FC</td><td>Funnel cloud</td></tr>
+              <tr class="table-secondary"><td>FG</td><td>Fog</td></tr>
+              <tr><td>FU</td><td>Smoke</td></tr>
+              <tr class="table-secondary"><td>GR</td><td>Hail</td></tr>
+              <tr><td>GS</td><td>Small hail / snow pellets</td></tr>
+              <tr class="table-secondary"><td>HZ</td><td>Haze</td></tr>
+              <tr><td>PL</td><td>Ice pellets</td></tr>
+              <tr class="table-secondary"><td>PO</td><td>Dust devil</td></tr>
+              <tr><td>RA</td><td>Rain</td></tr>
+              <tr class="table-secondary"><td>SA</td><td>Sand</td></tr>
+              <tr><td>SG</td><td>Snow grains</td></tr>
+              <tr class="table-secondary"><td>SN</td><td>Snow</td></tr>
+              <tr><td>SQ</td><td>Squall</td></tr>
+              <tr class="table-secondary"><td>SS</td><td>Sandstorm</td></tr>
+              <tr><td>VA</td><td>Volcanic ash</td></tr>
+              <tr class="table-secondary"><td>UP</td><td>Unidentified precipitation</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4 class="h6 mt-4">Intensity Prefixes</h4>
+        <div class="table-responsive mt-2">
+          <table class="table table-bordered table-sm">
+            <thead><tr><th>Prefix</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td>+</td><td>Heavy (e.g. <code>+RA</code>)</td></tr>
+              <tr class="table-secondary"><td>-</td><td>Light (e.g. <code>-DZ</code>)</td></tr>
+              <tr><td>(no prefix)</td><td>Moderate (e.g. <code>SHRA</code>)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-2">When precipitation is reported with <code>TS</code>, the intensity indicator refers to the precipitation, e.g. <code>-TSRA</code> = thunderstorm with light rain. One or more codes may be grouped, e.g. <code>+TSGR</code>, <code>-TSRASN</code>. A report from an AWS may include information on vicinity thunderstorms (<code>VCTS</code>) or distant lightning (<code>DL</code>), where vicinity refers to 8–16 km and distant is greater than 16 km. Direction of VCTS or DL may be included in remarks, e.g. <code>DL-NE</code>.</p>
+      </div>
+    </section>
+
+    <!-- Cloud -->
+    <section class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="h6 section-title">Cloud</h3>
+        <p>Cloud information is reported from the lowest to the highest layers in accordance with the following rules:</p>
+        <ul>
+          <li>1st group: the lowest layer regardless of amount.</li>
+          <li>2nd group: the next layer covering more than 2 oktas of the sky.</li>
+          <li>3rd group: the next higher layer covering more than 4 oktas of the sky.</li>
+          <li>Extra groups: for cumulonimbus and/or towering cumulus clouds, whenever observed and not reported in any of the above.</li>
+        </ul>
+
+        <div class="table-responsive mt-3">
+          <table class="table table-bordered table-sm">
+            <thead><tr><th>Code</th><th>Cloud Amount</th></tr></thead>
+            <tbody>
+              <tr><td>FEW</td><td>Few (1 to 2 oktas)</td></tr>
+              <tr class="table-secondary"><td>SCT</td><td>Scattered (3 to 4 oktas)</td></tr>
+              <tr><td>BKN</td><td>Broken (5 to 7 oktas)</td></tr>
+              <tr class="table-secondary"><td>OVC</td><td>Overcast (8 oktas)</td></tr>
+              <tr><td>NSC</td><td>Nil significant cloud</td></tr>
+              <tr class="table-secondary"><td>NCD</td><td>Nil cloud detected (only reported in fully automated reports when a cloud sensor detects nil cloud)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="mt-3">Cloud height is given as a three-figure group in hundreds of feet above the aerodrome elevation, e.g. cloud at 700 feet is shown as <code>007</code>. Cloud type is identified only for cumulonimbus and towering cumulus, e.g. <code>FEW030CB</code>, <code>SCT045TCU</code>. When an individual layer is composed of cumulonimbus and towering cumulus with a common base, the cloud is reported as <code>CB</code> only.</p>
+      </div>
+    </section>
+
+    <!-- CAVOK -->
+    <section class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="h6 section-title">CAVOK</h3>
+        <p>The abbreviation <strong>CAVOK</strong> (Cloud And Visibility OK) is used when the following conditions are observed simultaneously:</p>
+        <ul>
+          <li>Visibility is 10 kilometres or more;</li>
+          <li>No cloud below 5000 feet or below the highest 25NM minimum sector altitude, whichever is the higher, and no cumulonimbus and no towering cumulus;</li>
+          <li>No weather of significance to aviation, i.e. none of the weather phenomena listed in the weather table.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Temperature & QNH -->
+    <section class="card shadow mb-4">
+      <div class="card-body row">
+        <div class="col-md-6">
+          <h4 class="h6 section-title">Temperature</h4>
+          <p>Air temperature and dew point values are rounded to the nearest whole degree. Negative values are indicated by <code>M</code> (minus) before the numeral, e.g. <code>34/M04</code>.</p>
+        </div>
+        <div class="col-md-6">
+          <h4 class="h6 section-title">Pressure (QNH)</h4>
+          <p>The QNH value is rounded down to the next whole hectopascal and is given using four figures prefixed by <code>Q</code>, e.g. 999.9 is given as <code>Q0999</code>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Supplementary Info & Remarks -->
+    <section class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="h6 section-title">Supplementary Information &amp; Remarks</h3>
+        <p><strong>Supplementary Information</strong> is used to report:</p>
+        <ul>
+          <li>Recent Weather — significant weather observed since the last report but not at the time of observation is given after the prefix <code>RE</code>, e.g. <code>RERA</code>.</li>
+          <li>Wind Shear — reports of wind shear experienced on take-off or landing are given after the indicator <code>WS</code>, e.g. <code>WS R16</code>.</li>
+        </ul>
+
+        <p><strong>Remarks (RMK)</strong> may contain:</p>
+        <ul>
+          <li>Quantitative information on past rainfall is given in millimeters in the form <code>RFRR.R/RRR.R</code> e.g. <code>RF00.2/004.2</code>, gives the rainfall recorded in the ten minutes prior to the observation time, followed by the rainfall recorded in the period since 0900 local time.</li>
+          <li>Information of operational significance not reported in the body of the message, for example: information about significant conditions (such as bushfires and distant thunderstorms) beyond the immediate vicinity of the aerodrome;</li>
+          <li>any BKN or OVC low or middle cloud present at or above 5000 feet when CAVOK has been included in the body of the message;</li>
+          <li>CLD:SKY MAY BE OBSC may be reported in fully automated reports when the ceilometer (cloud sensor) detects nil cloud and the visibility sensor estimates horizontal visibility as less than 1000 metres.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Data Not Available -->
+    <section class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="h6 section-title">Data Not Available</h3>
+        <p>Where a data group is not available, solidi will be reported in lieu of the missing group, e.g. <code>////</code> for visibility, <code>//</code> for weather and <code>//////</code> for cloud.</p>
+        <p class="small text-muted">* NCD is only reported in fully automated reports when a cloud sensor detects nil cloud.</p>
+      </div>
+    </section>
+
+    <!-- SPECI Criteria -->
+    <section class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="h6 section-title">SPECI Criteria</h3>
+        <p>SPECI is used to identify reports of observations when conditions are below specified levels of visibility and cloud base; when certain weather phenomena are present; and when the temperature, pressure or wind change by defined amounts (outlined in the table on the right).</p>
+
+        <div class="table-responsive mt-3">
+          <table class="table table-bordered table-sm">
+            <thead class="table-light"><tr><th>Element</th><th>Criterion</th></tr></thead>
+            <tbody>
+              <tr><td>Wind Direction</td><td>Changes of 30° or more, the mean speed before or after the change being 20KT or more</td></tr>
+              <tr class="table-secondary"><td>Wind Speed</td><td>Changes of 10KT or more, the mean speed before or after the change being 30KT or more</td></tr>
+              <tr><td>Wind Gust</td><td>• Gusts of 10KT or more above a mean speed of 15KT or more<br>• Gust exceeds the last reported gust by 10KT or more</td></tr>
+              <tr class="table-secondary"><td>Visibility</td><td>When the prevailing visibility is below the aerodrome’s highest alternate minimum visibility or 5000M, whichever is greater*</td></tr>
+              <tr><td>Weather</td><td>When any of the following begins, ends, changes in intensity, or is occurring at a routine reporting time: thunderstorm, hailstorm, mixed snow and rain, freezing precipitation, drifting snow, squall, fog (including shallow fog, fog patches and fog at a distance), dust storm, sandstorm, funnel cloud, moderate or heavy precipitation</td></tr>
+              <tr class="table-secondary"><td>Cloud</td><td>When there is BKN or OVC cloud below the aerodrome’s highest alternate minimum cloud base or 1500FT, whichever is greater*</td></tr>
+              <tr><td>Temperature</td><td>When the temperature changes by 5°C or more since last report</td></tr>
+              <tr class="table-secondary"><td>Pressure</td><td>When the QNH changes by 2hPa or more since last report</td></tr>
+              <tr><td>Other</td><td>• Upon receipt of advice of the existence of wind shear • The incidence of any other phenomenon likely to be significant</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="mt-3 small text-muted">* Where no descent procedure is established for an aerodrome, the aerodrome’s alternate ceiling and visibility are 1500 feet and 8 kilometres respectively.</p>
+      </div>
+    </section>
+
+    <!-- Examples -->
+    <section class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="h6 section-title">METAR/SPECI Example</h3>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="p-3 bg-light rounded">
+              <h5 class="h6">METAR YPPH 221130Z</h5>
+              <pre class="mb-2">28012KT 8000 1000 +SHRA
+FEW005 OVC110 27/22
+Q0999 RERA
+RMK RF00.6/003.4</pre>
+              <p class="small text-muted">Example showing wind, visibility, weather, clouds, temperature/dew and QNH; remarks show rainfall.</p>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="p-3 bg-light rounded">
+              <h5 class="h6">SPECI YSCB 171515Z AUTO</h5>
+              <pre class="mb-2">22015G25KT 190V250 9000
+// NCD 13/09 Q1003 RMK
+RF00.8/003.0</pre>
+              <p class="small text-muted">Special automated report showing gusts, variable wind, nil cloud detected, temps and rainfall in remarks.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <h5 class="h6">SPECI Explained</h5>
+          <pre class="mb-2">SPECI YMML 221945Z 14003KT 0600 R16/0600D R27/0550N FG ////// 08/08 Q1026 RMK RF000.0/001.8</pre>
+          <ul>
+            <li><strong>YMML</strong> ICAO location indicator for Melbourne Airport.</li>
+            <li><strong>221945Z</strong> Time of observation is 1945 on the 22nd of the month UTC.</li>
+            <li><strong>14003KT</strong> Average wind during sampling period (normally ten minutes) is from 140 degrees True at 3 knots.</li>
+            <li><strong>0600</strong> Visibility is 600 metres.</li>
+            <li><strong>R16/0600D</strong> Runway visual range on runway 16 threshold is 600 metres, and is trending down.</li>
+            <li><strong>R27/0550N</strong> Runway visual range on runway 27 threshold is 550 metres; nil trend.</li>
+            <li><strong>FG</strong> Present weather is fog.</li>
+            <li><strong>//////</strong> Cloud observation not made (as sky obscured due fog).</li>
+            <li><strong>08/08</strong> The air temperature and the dewpoint temperature are both 8°C.</li>
+            <li><strong>Q1026</strong> The QNH is between 1026 and 1026.9 hectopascals.</li>
+            <li><strong>RMK RF000.0/001.8</strong> There has been nil rain in the last 10 minutes; 1.8 mm has fallen since 0900 local time.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Attribution -->
+    <section class="text-muted small mb-5 bg-light rounded">
+      <p>© Commonwealth of Australia, 5 June 2020 — source material: Bureau of Meteorology / Airservices Australia.</p>
+      <p>Airservices Australia is the official distributor of aviation forecasts, warnings and observations issued by the Bureau of Meteorology. Airservices’ flight briefing services are available at their website. Other brochures produced by the Bureau of Meteorology’s aviation meteorological services program can be found at www.bom.gov.au/aviation/knowledge-centre.</p>
+      <p class="mt-2">A vertical line in the margin indicates a text amendment since last update.</p>
+    </section>
+
+  </main>
+
+
+    <!-- Footer -->
+    <footer class="py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 text-center text-md-start">
+                    <div class="footer-logo">
+                        <img src="logo.jpg" alt="P.K Logo">
+                    </div>
+                    <p>&copy; 2025 P.Kamesa. All rights reserved.</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <ul class="footer-links">
+                        <li><a href="/privacy-policy">Privacy Policy</a></li>
+                        <li><a href="/terms-of-service">Terms of Service</a></li>
+                        <li><a href="contact.html">Contact Me</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 text-center text-md-end">
+                    <div class="social-media mb-3">
+                        <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                    </div>
+                    <form class="contact-form d-flex justify-content-center justify-content-md-end">
+                        <input type="email" class="form-control me-2" placeholder="Enter your email" required style="max-width: 250px;">
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+            // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        displaySavedReports();
+        
+        // Redirect if not logged in
+        if (!localStorage.getItem('weatherAuthToken')) {
+            window.location.href = 'login.html';
+        }
+    });
+
+        document.addEventListener('DOMContentLoaded', function() {
+    // Get current page URL
+    const currentPage = window.location.pathname.split('/').pop();
+    
+    // Find all dropdown items
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+    
+    // Loop through each dropdown item
+    dropdownItems.forEach(item => {
+        // Get the href attribute and extract the filename
+        const itemPage = item.getAttribute('href').split('/').pop();
+        
+        // Check if it matches current page
+        if (itemPage === currentPage) {
+            // Add active class to this item
+            item.classList.add('active');
+            
+            // Also add active class to parent dropdown toggle
+            const dropdownToggle = item.closest('.dropdown-menu').previousElementSibling;
+            dropdownToggle.classList.add('active');
+        }
+    });
+});
+        function launchFirefox(url) {
+            // Try Firefox protocol (works if Firefox is set as handler)
+            window.location.href = 'firefox://open-url?url=' + encodeURIComponent(url);
+            
+            // Fallback: Open in a new tab (default browser) after a delay
+            setTimeout(function() {
+                window.open(url, '_blank');
+            }, 500);
+            
+            return false; // Prevent default link behavior
+        }
+        </script>
+    <script src="auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>  
+
+</body>
+</html>

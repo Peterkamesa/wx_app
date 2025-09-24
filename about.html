@@ -88,10 +88,11 @@
         }
         
         .hero-about {
-            background: linear-gradient(150deg, var(--secondary-color) 10%, var(--success-color) 0%);
+            background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);
             color: white;
             padding: 4rem 0;
-            margin-bottom: 3rem;
+            margin-bottom: 1rem;
+            margin-top: 1rem;
             border-radius: 0.5rem;
             text-align: center;
             position: relative;
@@ -321,6 +322,17 @@
                     <li class="nav-item">
                         <a href="index.html" class="nav-link">Home</a>
                     </li>
+                    <!-- Dropdown menu item for notes -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Resources
+                        </a>
+                        <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="learn_metar.html">Metar Notes</a></li>
+                                        <li><a class="dropdown-item" href="learn_synop.html">Synop Notes</a></li>
+                                        <li><a class="dropdown-item" href="taf.html">TAF Notes</a></li>                      
+                        </ul>
+                    </li>
                     
                     <!-- Dropdown menu item for forms -->
                     <li class="nav-item dropdown">
@@ -455,7 +467,7 @@
             
             <!-- Technical Details -->
             <section class="animate delay-2">
-                <h2 class="text-center mb-4" style="color: var(--primary-color);">Technical Details</h2>
+                <h2 class="text-center mb-4 bg-white col-md-3 mx-auto" style="color: var(--primary-color);">Technical Details</h2>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="feature-card h-100">
