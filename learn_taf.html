@@ -1,15 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="mobile-web-app-capable" content="yes">
-    <title>Central</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TAF Notes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <style>
+  <style>
                     /* Custom styles */
         :root {
       --primary-color: #1b1b53;
@@ -27,6 +25,7 @@
             flex-direction: column;
             min-height: 100vh;
             background-color: #f8f9fa;
+            background: url(cd1.jpg)  center center fixed;
         }
         
         .navbar {
@@ -136,58 +135,23 @@
             border: none;
             border-radius: 0.25rem;
         }
-
-.iframe-container {
-    position: relative;
-    width: 100%;
-    height: 100vh; /* Full viewport height */
-    overflow: auto;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-}
-
-iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-     /* Ensure it doesn't get smaller than viewport */
-}
-.h1 {
-    font-size: 20px;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    justify-items: center;
-    text-transform: uppercase;
-    color: #0d6efd;
-}
-/* tablet-specific adjustments */
-@media (max-width: 991px) {
-    .iframe-container {
-        height: calc(100vh - 120px);
-    }
-    
-    iframe {
-        zoom: 0.90; /* Optional: scale down if content is too wide */
-        width: 100%; /* Allow horizontal scrolling */
-        left: -100px;
-    }
-}
-/* Mobile-specific adjustments */
-@media (max-width: 768px) {
-    .iframe-container {
-        height: calc(100vh - 120px);
-    }
-    
-    iframe {
-        zoom: 0.50; /* Optional: scale down if content is too wide */
-        min-width: 160%; /* Allow horizontal scrolling */
-        left: -240px;
-    }
-}
-        
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+.hero { background: linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; padding:2rem; border-radius:.5rem; margin-bottom:2rem; }
+    .section-title { background:#eef2ff; border-bottom:3px solid var(--accent); display:inline-block; padding-bottom:.35rem; margin-bottom:1rem; }
+    .card { border-radius:.6rem; margin-bottom:1.25rem; }
+    pre { background:#eef2ff; padding:.75rem; border-radius:.4rem; white-space:pre-wrap; word-break:break-word; }
     </style>
 </head>
 
@@ -209,8 +173,7 @@ iframe {
                     <li class="nav-item">
                         <a href="index.html" class="nav-link" aria-current="page">Home</a>
                     </li>
-
-                    <!-- Dropdown menu item for notes -->
+                    <!-- Dropdown menu item -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Resources
@@ -218,17 +181,16 @@ iframe {
                         <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="learn_metar.html">Metar Notes</a></li>
                                         <li><a class="dropdown-item" href="learn_synop.html">Synop Notes</a></li>
-                                        <li><a class="dropdown-item" href="learn_taf.html">TAF Notes</a></li>                       
+                                        <li><a class="dropdown-item active" href="learn_taf.html">TAF Notes</a></li>                       
                         </ul>
                     </li>
-                    
                     <!-- Dropdown menu item for forms -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             WX Forms
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="form626.html">FORM 626</a></li>
+                            <li><a class="dropdown-item " href="form626.html">FORM 626</a></li>
                             <li><a class="dropdown-item" href="c_sheet.html">C/SHEET</a></li>
                             <li><a class="dropdown-item" href="form446.html">FORM 446</a></li>
                             <li><a class="dropdown-item" href="wx_summary_may.html">WX SUMMARY</a></li>
@@ -254,7 +216,7 @@ iframe {
                             </li>
                             -->
                             <li><a class="dropdown-item" href="agro18_dek.html">AGRO18 DEK</a></li>
-                            <li><a class="dropdown-item" href="rainfallcart.html">FORM496(R/CART)</a></li>                            
+                            <li><a class="dropdown-item" href="rainfallcart.html">FORM496(R/CART)</a></li>                              
                         </ul>
                     </li>
                     <!-- Dropdown menu item -->
@@ -266,10 +228,10 @@ iframe {
                             <li><a class="dropdown-item" href="daily_wx.html">Daily WX</a></li>
                             <li><a class="dropdown-item" href="s_e.html">S.E</a></li>
                             <li><a class="dropdown-item" href="coast.html">COAST</a></li>
-                            <li><a class="dropdown-item active" href="central.html">CENTRAL</a></li>
+                            <li><a class="dropdown-item" href="central.html">CENTRAL</a></li>
                             <li><a class="dropdown-item" href="western.html">WESTERN</a></li>
                             <li><a class="dropdown-item" href="n_w.html">N.W</a></li>
-                            <li><a class="dropdown-item" href="n_e.html">N.E</a></li>                            
+                            <li><a class="dropdown-item" href="n_e.html">N.E</a></li>                             
                         </ul>
                     </li>
                     <!-- Dropdown menu item -->
@@ -327,11 +289,141 @@ iframe {
             </div>
         </div>
     </nav>
-    <h1 class="h1">mab-met route forecast.</h1>
 
-<div class="iframe-container">
-    <iframe src="https://docs.google.com/document/d/1oMeTBTgx5pKVjzkEAN0-9MxidsS0fK06qzsRKgX2tK8/edit?usp=sharing"></iframe>
-</div>
+  <!-- HEADER / HERO -->
+  <header class="py-4 mt-2 mx-auto text-white" style="background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);">
+    <div class="container">
+    <!-- Hero -->
+    <div class="hero text-center">
+      <h1 class="mb-2">TAF — Terminal Aerodrome Forecast</h1>
+      <p class="lead mb-0">Understanding Terminal Aerodrome Forecasts and Key Terms</p>
+    </div>
+  </header>
+ <div class="container my-4">
+
+
+
+    <!-- What is TAF -->
+    <section id="intro">
+      <h2 class="section-title bg-white">What is a TAF?</h2>
+      <div class="card"><div class="card-body">
+        <p>
+          A <strong>Terminal Aerodrome Forecast (TAF)</strong> is an aviation weather forecast 
+          for a specific aerodrome (airport), describing expected weather conditions within a 
+          radius of 4 NM (8 km) from the aerodrome reference point. It is coded in a concise 
+          alphanumeric format and follows ICAO/WMO standards.
+        </p>
+        <p>
+          TAFs are issued at regular intervals (usually every 6 hours) and typically cover 
+          <strong>24 to 30 hours</strong>, depending on the country or region. Some high-traffic 
+          airports issue <strong>9-hour short TAFs (TAF SHORT)</strong> to provide more frequent updates.
+        </p>
+      </div></div>
+    </section>
+
+    <!-- Structure -->
+    <section id="structure">
+      <h2 class="section-title">Structure of a TAF</h2>
+      <div class="card"><div class="card-body">
+        <p>The general format of a TAF report includes:</p>
+        <pre>
+TAF CCCC YYGGggZ DDHH/DDHH dddff(f)KT VVVV w'w' NsNsNshshshs ...
+        </pre>
+        <ul>
+          <li><strong>TAF</strong> — Report identifier</li>
+          <li><strong>CCCC</strong> — ICAO location indicator (4-letter airport code)</li>
+          <li><strong>YYGGggZ</strong> — Date and time of issue (UTC)</li>
+          <li><strong>DDHH/DDHH</strong> — Validity period (day/hour to day/hour)</li>
+          <li><strong>dddffKT</strong> — Wind direction (° true) and speed (knots)</li>
+          <li><strong>VVVV</strong> — Visibility (in meters or 9999 for ≥10km)</li>
+          <li><strong>w’w’</strong> — Weather phenomena (e.g. RA = rain, FG = fog)</li>
+          <li><strong>NsNsNshshshs</strong> — Cloud amount, type, and height</li>
+          <li>Optional modifiers such as <strong>BECMG, TEMPO, PROB</strong> describe changes.</li>
+        </ul>
+      </div></div>
+    </section>
+
+    <!-- Key Terms -->
+    <section id="keyterms">
+      <h2 class="section-title">Key Change Indicators</h2>
+
+      <!-- BECMG -->
+      <div class="card">
+        <div class="card-header bg-primary text-white">BECMG (Becoming)</div>
+        <div class="card-body">
+          <p>
+            <strong>BECMG</strong> indicates a <em>permanent or long-term change</em> in weather 
+            conditions is expected to occur gradually, usually over a 2-hour period unless otherwise 
+            specified. Once the change is complete, the new condition will persist.
+          </p>
+          <pre>
+Example: BECMG 1214 30015KT
+→ Between 12:00 and 14:00 UTC, wind will gradually become 300° at 15 knots.
+          </pre>
+          <p><strong>Key point:</strong> Change is gradual and lasting, not temporary.</p>
+        </div>
+      </div>
+
+      <!-- TEMPO -->
+      <div class="card">
+        <div class="card-header bg-warning">TEMPO (Temporary)</div>
+        <div class="card-body">
+          <p>
+            <strong>TEMPO</strong> indicates that temporary fluctuations in weather are expected. 
+            Each fluctuation usually lasts <strong>less than 1 hour</strong> and in total covers 
+            <strong>less than half of the forecast period</strong>.
+          </p>
+          <pre>
+Example: TEMPO 1014 2000 SHRA
+→ Between 10:00 and 14:00 UTC, expect occasional showers reducing visibility to 2000 m,
+   but only for short durations (temporary).
+          </pre>
+          <p><strong>Key point:</strong> Weather changes are short-lived and intermittent.</p>
+        </div>
+      </div>
+
+      <!-- PROB -->
+      <div class="card">
+        <div class="card-header bg-info text-white">PROB (Probability)</div>
+        <div class="card-body">
+          <p>
+            <strong>PROB30</strong> or <strong>PROB40</strong> indicates the <em>probability 
+            (30% or 40%)</em> of a weather event occurring during the specified period. 
+            Commonly used for low-confidence phenomena such as thunderstorms or fog.
+          </p>
+          <pre>
+Example: PROB30 TEMPO 1822 TSRA
+→ Between 18:00 and 22:00 UTC, there is a 30% chance of temporary thunderstorms with rain.
+          </pre>
+          <p><strong>Key point:</strong> Adds uncertainty to the forecast. If combined with TEMPO, 
+          it means the event is both temporary and not certain.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Example TAF -->
+    <section id="example">
+      <h2 class="section-title">Example of a Full TAF</h2>
+      <div class="card"><div class="card-body">
+        <pre>
+TAF HKRE 220500Z 2206/2306 06012KT 9999 SCT020 BKN100 
+     TEMPO 2209/2212 4000 SHRA BKN015 
+     BECMG 2212/2214 09015KT 
+     PROB30 TEMPO 2218/2222 2000 TSRA FEW020CB BKN021
+        </pre>
+        <p><strong>Decoded:</strong></p>
+        <ul>
+          <li>Issued at 08:00 UTC on the 22nd for MOI AIR BASE, NAIROBI (HKRE).</li>
+          <li>Valid from 09:00 UTC on the 22nd to 12:00 UTC on the 23rd.</li>
+          <li>Initially: wind 060° at 12 kt, visibility 10 km+, scattered clouds at 2000 ft, broken at 10,000 ft.</li>
+          <li><strong>TEMPO</strong>: Between 09–12 UTC, temporary showers reducing visibility to 4000 m, broken cloud at 1500 ft.</li>
+          <li><strong>BECMG</strong>: Between 12–14 UTC, wind will gradually become 090° at 15 kt.</li>
+          <li><strong>PROB30 TEMPO</strong>: Between 18–22 UTC, 30% chance of temporary thunderstorms with rain, FEW cumulonimbus at 2000 ft AND BROKEN CUMULUS CLOUDS at 2100ft.</li>
+        </ul>
+      </div></div>
+    </section>
+    </div>
+ 
 
     <!-- Footer -->
     <footer class="py-4">
@@ -364,6 +456,7 @@ iframe {
             </div>
         </div>
     </footer>
+
     <script>
             // Initialize on page load
     document.addEventListener('DOMContentLoaded', function() {
@@ -398,25 +491,20 @@ iframe {
         }
     });
 });
-document.addEventListener('DOMContentLoaded', function() {
-    const iframe = document.querySelector('iframe');
-    
-    // Adjust iframe height on resize
-    function resizeIframe() {
-        const container = document.querySelector('.iframe-container');
-        if (window.innerWidth < 768) {
-            container.style.height = (window.innerHeight - 120) + 'px';
-        } else {
-            container.style.height = '100vh';
+        function launchFirefox(url) {
+            // Try Firefox protocol (works if Firefox is set as handler)
+            window.location.href = 'firefox://open-url?url=' + encodeURIComponent(url);
+            
+            // Fallback: Open in a new tab (default browser) after a delay
+            setTimeout(function() {
+                window.open(url, '_blank');
+            }, 500);
+            
+            return false; // Prevent default link behavior
         }
-    }
-    
-    window.addEventListener('resize', resizeIframe);
-    resizeIframe();
-});
-</script>
+        </script>
+    <script src="auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>  
 
-        <script src="auth.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

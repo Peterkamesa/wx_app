@@ -3,126 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Forecast</title>
+    <title>Daily Weather Forecast</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :root {
-      --primary-color: #1b1b53;
-      --secondary-color: #3a3a8f;
-      --accent-color: #06f07b;
-      --highlight-color: #ff4ed9;
-      --light-text: #f8f9fa;
-      --success-color: #28a745;
-      --info-color: #17a2b8;
-      --danger-color: #dc3545;
-    }
+            --primary-color: #1b1b53;
+            --secondary-color: #3a3a8f;
+            --accent-color: #06f07b;
+            --highlight-color: #ff4ed9;
+            --light-text: #f8f9fa;
+            --success-color: #28a745;
+            --info-color: #17a2b8;
+            --danger-color: #dc3545;
+        }
+        
         body {
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            background: url(cd1.jpg)  center center fixed;
-            /*background-size: cover;*/
+            background: linear-gradient(135deg, #1b1b53 0%, #3a3a8f 100%);
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         .navbar {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      background-color: var(--primary-color) !important;
-    }
-    
-    .navbar-brand img {
-      height: 30px;
-      transition: transform 0.3s ease;
-    }
-    
-    .navbar-brand:hover img {
-      transform: scale(1.05);
-    }
-    
-    .nav-link {
-      position: relative;
-      margin: 0 8px;
-      transition: color 0.3s ease;
-      color: var(--light-text) !important;
-    }
-    
-    .nav-link.active {
-      color: var(--accent-color) !important;
-      font-weight: bold;
-    }
-    
-    .nav-link.active::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: var(--highlight-color);
-      border-radius: 3px;
-    }
-    
-    .dropdown-menu {
-      background-color: var(--secondary-color);
-      border: none;
-    }
-    
-    .dropdown-item {
-      color: var(--light-text);
-      transition: all 0.3s ease;
-    }
-    
-    .dropdown-item:hover {
-      background-color: var(--highlight-color);
-      color: white;
-    }
-        .map-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 1000px;
-            height: auto;
-            margin: 0 auto;
-            margin-top: 10px;
-            background-color: skyblue;
-
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background-color: var(--primary-color) !important;
         }
-        .map-container h1 {
-            font-size: 30px;
-            color: rgb(18, 18, 18);
+        
+        .navbar-brand img {
+            height: 30px;
+            transition: transform 0.3s ease;
+        }
+        
+        .navbar-brand:hover img {
+            transform: scale(1.05);
+        }
+        
+        .nav-link {
+            position: relative;
+            margin: 0 8px;
+            transition: color 0.3s ease;
+            color: var(--light-text) !important;
+        }
+        
+        .nav-link.active {
+            color: var(--accent-color) !important;
             font-weight: bold;
-            text-transform: capitalize;
         }
-        .map-container p {
-            display: flex;
-            align-items: center;
-            text-align: start;
-            justify-content: center;
-            font-size: 20px;
-            color: black; 
-            font-weight: 500;
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--highlight-color);
+            border-radius: 3px;
         }
-        .content {
-            width: 500px;
-            justify-content: center;
-            align-items: center;
+        
+        .dropdown-menu {
+            background-color: var(--secondary-color);
+            border: none;
+        }
+        
+        .dropdown-item {
+            color: var(--light-text);
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background-color: var(--highlight-color);
+            color: white;
+        }
+        
+        /* Main Content Styling */
+        .main-content {
+            flex: 1;
+            padding: 2rem 0;
+        }
+        
+        .page-header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .forecast-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .forecast-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .forecast-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 1.5rem;
             text-align: center;
         }
-
-        .img {
-            margin-bottom: 30px;
-            height: 550px;
-            width: 500px;
+        
+        .card-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
         }
-        .img1 {
-            margin-bottom: 30px;
-            height: 500px;
-            width: 680px;
+        
+        .card-body {
+            padding: 1.5rem;
         }
-            footer {
+        
+        .card-body p {
+            color: #333;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .weather-image {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .data-sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
+        }
+        
+        .data-sidebar h3 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .data-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--info-color);
+        }
+        
+        .data-box h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .data-content {
+            font-family: monospace;
+            background: white;
+            padding: 0.75rem;
+            border-radius: 5px;
+            border: 1px solid #e9ecef;
+            min-height: 100px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+        }
+        
+        footer {
             background-color: #1b1b53;
             color: white;
             padding: 2rem 0;
@@ -151,7 +230,6 @@
         
         .footer-links a:hover {
             color: white;
-
         }
         
         .social-media a {
@@ -160,201 +238,35 @@
             margin: 0 10px;
         }
         
-        .contact-form {
-            margin-top: 1rem;
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .forecast-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .page-header p {
+                font-size: 1rem;
+            }
         }
         
-        .contact-form input {
-            padding: 0.5rem;
-            border-radius: 0.25rem;
-            border: none;
-            margin-right: 0.5rem;
+        @media (max-width: 576px) {
+            .card-body {
+                padding: 1rem;
+            }
+            
+            .data-sidebar {
+                padding: 1rem;
+            }
         }
-        
-        .contact-form button {
-            padding: 0.5rem 1rem;
-            background-color: #0d6efd;
-            color: white;
-            border: none;
-            border-radius: 0.25rem;
-        }
-        .taf {
-            width: 600px;
-            height: auto;
-            background-color: #f8f9fa;
-            color: black;
-            border: solid 1px black;
-            margin-bottom: 20px;
-            padding: 4px 8px;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        /* Media Queries for Responsive Design */
-@media (max-width: 1200px) {
-    .map-container {
-        width: 900px;
-    }
-    .img1 {
-        width: 600px;
-    }
-    .taf {
-        width: 550px;
-        font-size: 18px;
-    }
-}
-
-@media (max-width: 992px) {
-    .map-container {
-        width: 750px;
-    }
-    .img {
-        width: 450px;
-        height: 500px;
-    }
-    .img1 {
-        width: 500px;
-        height: 450px;
-    }
-    .content {
-        width: 450px;
-    }
-    .navbar-nav {
-        text-align: start;
-    }
-    .footer-links li {
-        display: block;
-        margin: 5px 0;
-    }
-    .dropdown-menu {
-        background-color: var(--secondary-color);
-    }
-    .taf {
-        width: 500px;
-        font-size: 17px;
-    }
-}
-
-@media (max-width: 768px) {
-    .map-container {
-        width: 90%;
-        padding: 15px;
-    }
-    .img, .img1 {
-        width: 100%;
-        height: auto;
-    }
-    .content {
-        width: 100%;
-    }
-    h1 {
-        font-size: 24px;
-    }
-    p {
-        font-size: 16px;
-    }
-
-    .navbar-brand img {
-        height: 25px;
-    }
-    .taf {
-        width: 100%; /* Takes full width on smaller screens */
-        max-width: 500px; /* Prevents excessive stretching */
-        font-size: 16px;
-        margin: 0 auto 15px; /* Centers the TAF box */
-    }
-}
-
-@media (max-width: 576px) {
-    .map-container {
-        margin-top: 5px;
-    }
-    h1 {
-        font-size: 20px;
-    }
-    p {
-        font-size: 14px;
-    }
-    .footer-logo img {
-        height: 30px;
-    }
-
-    .dropdown-menu {
-        background-color: var(--secondary-color);
-    }
-    .taf {
-        font-size: 15px;
-        padding: 3px 6px;
-    }
-}
-
-@media (max-width: 400px) {
-    .map-container h1 {
-        font-size: 18px;
-    }
-    .map-container p {
-        font-size: 13px;
-    }
-    .navbar-brand img {
-        height: 20px;
-    }
-    .nav-link {
-        font-size: 14px;
-        margin: 0 5px;
-    }
-    .footer p {
-        font-size: 12px;
-    }
-    .dropdown-menu {
-        background-color: var(--secondary-color);
-    }
-    .taf {
-        font-size: 14px;
-    }
-}
-
-/* For very small screens (e.g., flip phones) */
-@media (max-width: 320px) {
-    .map-container h1 {
-        font-size: 16px;
-    }
-    .map-container p {
-        font-size: 12px;
-    }
-    .contact-form input {
-        width: 100%;
-    }
-    .taf {
-        width: 80%;
-        font-size: 15px;
-    }
-}
-
-/* Landscape orientation adjustments */
-@media (max-height: 500px) and (orientation: landscape) {
-    .map-container {
-        padding: 5px 0;
-    }
-    .img, .img1 {
-        height: 300px;
-    }
-    .content {
-        margin: 5px 0;
-    }
-}
-
-/* High resolution displays */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) { 
-    .navbar-brand img {
-        height: 35px;
-    }
-    .footer-logo img {
-        height: 45px;
-    }
-}
     </style>
 </head>
+<body>
     <!-- Navigation Menu -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgb(27, 27, 83);">
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
             <a class="navbar-brand" href="#">
                 <img src="logo2.jpg" alt="P.Kamesa Logo" class="d-inline-block align-text-top"> Wx App
@@ -366,7 +278,6 @@
             
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav ms-auto">
-
                     <li class="nav-item">
                         <a href="index.html" class="nav-link" aria-current="page">Home</a>
                     </li>
@@ -377,9 +288,9 @@
                             Resources
                         </a>
                         <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="learn_metar.html">Metar Notes</a></li>
-                                        <li><a class="dropdown-item" href="learn_synop.html">Synop Notes</a></li>
-                                        <li><a class="dropdown-item" href="taf.html">TAF Notes</a></li>                      
+                            <li><a class="dropdown-item" href="learn_metar.html">Metar Notes</a></li>
+                            <li><a class="dropdown-item" href="learn_synop.html">Synop Notes</a></li>
+                            <li><a class="dropdown-item" href="learn_taf.html">TAF Notes</a></li>                       
                         </ul>
                     </li>
 
@@ -393,27 +304,6 @@
                             <li><a class="dropdown-item" href="c_sheet.html">C/SHEET</a></li>
                             <li><a class="dropdown-item" href="form446.html">FORM 446</a></li>
                             <li><a class="dropdown-item" href="wx_summary_may.html">WX SUMMARY</a></li>
-
-                            <!--
-                             Nested dropdown for WX SUMMARY
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="#">WX SUMMARY</a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="wx_summary_jan.html">January</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_feb.html">February</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_mar.html">March</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_apr.html">April</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_may.html">May</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_jun.html">June</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_jul.html">July</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_aug.html">August</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_sep.html">September</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_oct.html">October</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_nov.html">November</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_dec.html">December</a></li>
-                                </ul>
-                            </li>
-                            -->
                             <li><a class="dropdown-item" href="agro18_dek.html">AGRO18 DEK</a></li>
                             <li><a class="dropdown-item" href="rainfallcart.html">FORM496(R/CART)</a></li>                             
                         </ul>
@@ -421,7 +311,7 @@
                     
                     <!-- Dropdown menu item for rofors -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Forecasts
                         </a>
                         <ul class="dropdown-menu">
@@ -434,6 +324,7 @@
                             <li><a class="dropdown-item" href="n_e.html">N.E</a></li>                            
                         </ul>
                     </li>
+                    
                     <!-- Dropdown menu item for wx messages -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -443,7 +334,8 @@
                             <li><a class="dropdown-item" href="metar1.html">METAR/SPECI</a></li>
                             <li><a class="dropdown-item" href="synop.html">SYNOP</a></li>
                             <li><a class="dropdown-item" href="actuals.html">ACTUALS</a></li>
-                             <li><a class="dropdown-item" href="mon_brief.html">MON BRIEF</a></li>
+                            <li><a class="dropdown-item" href="taf.html">TAF</a></li>
+                            <li><a class="dropdown-item" href="mon_brief.html">MON BRIEF</a></li>
                             <li>
                                 <a class="dropdown-item" href="#" onclick="launchFirefox('https://196.202.217.196/nsweb/FlightBriefing/?page=showQuery#showQuery')">FLIGHT FOLDER</a>
                             </li>
@@ -465,7 +357,6 @@
                                     <li><a class="dropdown-item" href="dutyroster_dec.html">December</a></li>
                                 </ul>
                             </li>
-                            
                         </ul>
                     </li>
                     
@@ -489,75 +380,109 @@
         </div>
     </nav>
 
-<body>
-    <div class = "map-container">
-        <div class="content">
-        <h1>Moi Air Base Daily Forecast From 25th to 26th June 2025.</h1>
-        <p>Rainfall is expected over few parts of the country.</p>
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Daily Weather Forecast</h1>
+                <p>Moi Air Base Forecast from 25th to 26th September 2025</p>
+            </div>
+            
+            <div class="row">
+                <!-- Sidebar with METAR and TAF data -->
+                <div class="col-lg-4">
+                    <div class="data-sidebar">
+                        <h3><i class="fas fa-cloud-sun me-2"></i>Latest Weather Data</h3>
+                        
+                        <div class="data-box">
+                            <h4><i class="fas fa-plane me-2"></i>Latest METAR</h4>
+                            <div id="latest" class="data-content">Loading METAR data...</div>
+                        </div>
+                        
+                        <div class="data-box">
+                            <h4><i class="fas fa-cloud-meatball me-2"></i>Latest TAF</h4>
+                            <div id="latest-taf" class="data-content">Loading TAF data...</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Main forecast content -->
+                <div class="col-lg-8">
+                    <div class="forecast-container">
+                        <!-- Rainfall Forecast -->
+                        <div class="forecast-card">
+                            <div class="card-header">
+                                <h2>Rainfall Forecast</h2>
+                            </div>
+                            <div class="card-body">
+                                <p>Rainfall is expected over few parts of the country.</p>
+                                <img src="24hr_ppt.png" alt="24-hour precipitation forecast" class="weather-image">
+                            </div>
+                        </div>
+                        
+                        <!-- Nairobi County Forecast -->
+                        <div class="forecast-card">
+                            <div class="card-header">
+                                <h2>Nairobi County Forecast</h2>
+                            </div>
+                            <div class="card-body">
+                                <p>Cloudy conditions expected in the morning breaking into sunny intervals with a chance of showers over few places in the evening.</p>
+                                <img src="nairobi.png" alt="Nairobi weather forecast" class="weather-image">
+                            </div>
+                        </div>
+                        
+                        <!-- Surface Winds -->
+                        <div class="forecast-card">
+                            <div class="card-header">
+                                <h2>Surface Winds</h2>
+                            </div>
+                            <div class="card-body">
+                                <p>Southerly winds are expected at the surface veering to south-easterlies over the north-western parts of the country.</p>
+                                <img src="Surface_Maxwind.png" alt="Surface wind forecast" class="weather-image">
+                            </div>
+                        </div>
+                        
+                        <!-- 700MB Level Winds -->
+                        <div class="forecast-card">
+                            <div class="card-header">
+                                <h2>700MB Level Winds</h2>
+                            </div>
+                            <div class="card-body">
+                                <p>Westerly winds are expected at the 700mb level over most parts of the country.</p>
+                                <img src="24HR_700mb_wind.png" alt="700mb wind forecast" class="weather-image">
+                            </div>
+                        </div>
+                        
+                        <!-- Maximum Temperatures -->
+                        <div class="forecast-card">
+                            <div class="card-header">
+                                <h2>Maximum Surface Temperatures</h2>
+                            </div>
+                            <div class="card-body">
+                                <p>Maximum temperatures are expected to range from 5 degrees Celsius to 30 degrees Celsius.</p>
+                                <img src="mab_max_temp.png" alt="Maximum temperature forecast" class="weather-image">
+                            </div>
+                        </div>
+                        
+                        <!-- Minimum Temperatures -->
+                        <div class="forecast-card">
+                            <div class="card-header">
+                                <h2>Minimum Surface Temperatures</h2>
+                            </div>
+                            <div class="card-body">
+                                <p>Minimum temperatures are expected to range from 4 degrees Celsius to 20 degrees Celsius.</p>
+                                <img src="mab_min_temp.png" alt="Minimum temperature forecast" class="weather-image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <img src="24hr_ppt.png" class =img>
-
     </div>
 
-    <div class = "map-container">
-        <div class="content">
-        <h1>Nairobi county forecast</h1>
-        <p>Cloudy conditions are expected in the morning breaking into sunny intervals the rest of the day.
-        </p>
-        </div>
-        <img src="nairobi.png" class =img1>
-        
-
-    </div>
-    
-     <div class = "map-container">
-        <div class="content">
-        <h1>Surface Winds</h1>
-        <p>Southerly winds are expected at the surface veering to south-easterlies over the north-western parts of the country.</p>
-        </div>
-      <img src="Surface_Maxwind.png" class =img>
-
-    </div>
-
-    <div class = "map-container">
-        <div class = "content">
-        <h1>700MB level winds.</h1>
-        <p>Westerly winds are expected at the 700mb level over most parts of the country.</p>
-        </div>
-        <img src="24HR_700mb_wind.png" class =img>
-
-    </div>
-
-    <div class = "map-container">
-        <div class = "content">
-        <h1>maximum surface temperatures.</h1>
-        <p>Maximum temperatures are expected to range from 5 degrees celcius to 30  degrees celcius.</p>
-    </div>
-        <img src="mab_max_temp.png" class =img>
-
-    </div>
-
-        <div class = "map-container">
-            <div class = "content">
-        <h1>minimum surface temperatures</h1>
-        <p>Minimum temperatures are expected to range from 4 degrees celcius to 20 degrees celcius.</p>
-        </div>
-        <img src="mab_min_temp.png" class =img>
-
-    </div>
-            <div class = "map-container">
-            <div class = "content">
-        <h1>terminal aerodrome forecast(TAF).</h1>
-        <p>TAF will be updated after 6hrs!</p>
-        </div>
-        <div class = taf>
-            TAF HKRQ 250500 2506/2506<br>
-            12006KT 9999 BKN022 BECMG 2506/2511 SCT020 BECMG 2512/2518 BKN023 BECMG 2519/2523 BKN019 BECMG 2600/2605
-            00000KT BKN016=
-        </div>
-    </div>
     <!-- Footer -->
-    <footer class="py-4">
+    <footer>
         <div class="container">
             <div class="row">
                 <div class="col-md-4 text-center text-md-start">
@@ -587,57 +512,58 @@
             </div>
         </div>
     </footer>
-    <script>
-            // Initialize on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        displaySavedReports();
-        
-        // Redirect if not logged in
-        if (!localStorage.getItem('weatherAuthToken')) {
-            window.location.href = 'login.html';
-        }
-    });
 
+    <script>
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
-    // Get current page URL
-    const currentPage = window.location.pathname.split('/').pop();
-    
-    // Find all dropdown items
-    const dropdownItems = document.querySelectorAll('.dropdown-item');
-    
-    // Loop through each dropdown item
-    dropdownItems.forEach(item => {
-        // Get the href attribute and extract the filename
-        const itemPage = item.getAttribute('href').split('/').pop();
-        
-        // Check if it matches current page
-        if (itemPage === currentPage) {
-            // Add active class to this item
-            item.classList.add('active');
             
-            // Also add active class to parent dropdown toggle
-            const dropdownToggle = item.closest('.dropdown-menu').previousElementSibling;
-            dropdownToggle.classList.add('active');
-        }
-    });
-});
-document.addEventListener('DOMContentLoaded', function() {
-    const iframe = document.querySelector('iframe');
-    
-    // Adjust iframe height on resize
-    function resizeIframe() {
-        const container = document.querySelector('.iframe-container');
-        if (window.innerWidth < 768) {
-            container.style.height = (window.innerHeight - 120) + 'px';
-        } else {
-            container.style.height = '100vh';
-        }
-    }
-    
-    window.addEventListener('resize', resizeIframe);
-    resizeIframe();
-});
-</script>
+            // Load latest METAR
+            async function loadLatestMetar() {
+                try {
+                    const res = await fetch("https://wxbackend-production.up.railway.app/api/reports/METAR/latest"); 
+                    const data = await res.json();
+                    document.getElementById("latest").innerText = `${data.content}`;
+                } catch (err) {
+                    document.getElementById("latest").innerText = "Error loading METAR data.";
+                }
+            }
+
+            // Load latest TAF
+            async function loadLatestTAF() {
+                try {
+                    const res = await fetch("https://wxbackend-production.up.railway.app/api/reports/TAF/latest"); 
+                    const data = await res.json();
+                    document.getElementById("latest-taf").innerText = `${data.content}`;
+                } catch (err) {
+                    document.getElementById("latest-taf").innerText = "Error loading TAF data.";
+                }
+            }
+
+            // Load both when page starts
+            loadLatestMetar();
+            loadLatestTAF();
+
+            // Redirect if not logged in
+            if (!localStorage.getItem('weatherAuthToken')) {
+                window.location.href = 'login.html';
+            }
+            
+            // Set active menu item
+            const currentPage = window.location.pathname.split('/').pop();
+            const dropdownItems = document.querySelectorAll('.dropdown-item');
+            
+            dropdownItems.forEach(item => {
+                const itemPage = item.getAttribute('href').split('/').pop();
+                if (itemPage === currentPage) {
+                    item.classList.add('active');
+                    const dropdownToggle = item.closest('.dropdown-menu').previousElementSibling;
+                    if (dropdownToggle) {
+                        dropdownToggle.classList.add('active');
+                    }
+                }
+            });
+        });
+    </script>
 
     <script src="auth.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

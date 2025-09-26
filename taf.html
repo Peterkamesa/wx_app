@@ -1,15 +1,13 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TAF Notes</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAF - Terminal Aerodrome Forecast</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-                    /* Custom styles */
-        :root {
+    :root {
       --primary-color: #1b1b53;
       --secondary-color: #3a3a8f;
       --accent-color: #06f07b;
@@ -20,15 +18,18 @@
       --danger-color: #dc3545;
     }
     
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            background-color: #f8f9fa;
-            background: url(cd1.jpg)  center center fixed;
-        }
-        
-        .navbar {
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      /*background-color: #f8f9fa;*/
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: url(cd1.jpg)  center center fixed;
+    /*background-size: cover;*/
+    }
+
+    .navbar {
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       background-color: var(--primary-color) !important;
     }
@@ -79,431 +80,583 @@
       background-color: var(--highlight-color);
       color: white;
     }
-            footer {
-            background-color: #1b1b53;
-            color: white;
-            padding: 2rem 0;
-            margin-top: auto;
-        }
-        
-        .footer-logo img {
-            height: 40px;
-            margin-bottom: 1rem;
-        }
-        
-        .footer-links {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .footer-links li {
-            display: inline-block;
-            margin: 0 10px;
-        }
-        
-        .footer-links a {
-            color: #adb5bd;
-            text-decoration: none;
-        }
-        
-        .footer-links a:hover {
-            color: white;
 
-        }
-        
-        .social-media a {
-            color: white;
-            font-size: 1.5rem;
-            margin: 0 10px;
-        }
-        
-        .contact-form {
-            margin-top: 1rem;
-        }
-        
-        .contact-form input {
-            padding: 0.5rem;
-            border-radius: 0.25rem;
-            border: none;
-            margin-right: 0.5rem;
-        }
-        
-        .contact-form button {
-            padding: 0.5rem 1rem;
-            background-color: #0d6efd;
-            color: white;
-            border: none;
-            border-radius: 0.25rem;
-        }
-        .iframe-container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-        }
-        iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-.hero { background: linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; padding:2rem; border-radius:.5rem; margin-bottom:2rem; }
-    .section-title { background:#eef2ff; border-bottom:3px solid var(--accent); display:inline-block; padding-bottom:.35rem; margin-bottom:1rem; }
-    .card { border-radius:.6rem; margin-bottom:1.25rem; }
-    pre { background:#eef2ff; padding:.75rem; border-radius:.4rem; white-space:pre-wrap; word-break:break-word; }
-    </style>
+    .btn-custom {
+      width: 100%;
+      padding: 0.8rem;
+      background-color: var(--highlight-color);
+      color: white;
+      border: none;
+      border-radius: 0.3rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+    }
+    
+    .btn-custom:hover {
+      background-color: var(--accent-color);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .auth-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: #666;
+    }
+    
+    .auth-footer a {
+      color: var(--highlight-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .auth-footer a:hover {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+
+    /* Footer - Matched to About Page */
+    footer {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 3rem 0 2rem;
+      margin-top: auto;
+    }
+    
+    .footer-logo img {
+      height: 40px;
+      margin-bottom: 1rem;
+      transition: transform 0.3s ease;
+    }
+    
+    .footer-logo:hover img {
+      transform: scale(1.05);
+    }
+    
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .footer-links li {
+      display: inline-block;
+      margin: 0 12px;
+    }
+    
+    .footer-links a {
+      color: #adb5bd;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+    
+    .footer-links a:hover {
+      color: white;
+    }
+    
+    .footer-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+    
+    .footer-links a:hover::after {
+      width: 100%;
+    }
+    
+    .social-media a {
+      color: white;
+      font-size: 1.3rem;
+      margin: 0 12px;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    
+    .social-media a:hover {
+      color: var(--accent-color);
+      transform: translateY(-3px);
+    }
+    
+    .card {
+      border: none;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background-color: #cdd9e7;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border: solid 2px var(--highlight-color);
+    }
+    
+    .card-title {
+      color: var(--primary-color);
+      font-weight: 600;
+      margin-bottom: 0rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+    
+    .card-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background-color: var(--highlight-color);
+    }
+    
+    .form-section {
+      margin-bottom: 0rem;
+    }
+    
+    .form-section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #dee2e6;
+      padding-bottom: 0.5rem;
+    }
+    
+    .form-group {
+      margin-bottom: 0rem;
+    }
+    
+    .form-group label {
+      font-weight: 500;
+      margin-bottom: 0.1rem;
+      display: block;
+      color: black;
+      font-weight: bold;
+    }
+    
+    .form-control {
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+    }
+    
+    .form-control:focus {
+      border-color: var(--highlight-color);
+      box-shadow: 0 0 0 0.25rem rgba(255, 78, 217, 0.2);
+    }
+    
+    /* Main content styling */
+    .content {
+      flex: 1;
+      padding: 2rem 0;
+    }
+    
+    .hero-section {
+      background: linear-gradient(135deg, #1b1b53 0%, #3a3a8f 100%);
+      color: white;
+      padding: 3rem 0;
+      margin-bottom: 2rem;
+      border-radius: 0.5rem;
+    }
+    
+    /* TAF container styling */
+    .taf-container {
+      max-width: 800px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      margin-bottom: 2rem;
+    }
+    
+    .taf-header {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--accent-color);
+      padding-bottom: 15px;
+    }
+    
+    .taf-header h1 {
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    
+    .taf-header p {
+      color: #666;
+      font-size: 1.1rem;
+    }
+    
+    .form-label {
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+    
+    .taf-textarea {
+      width: 100%;
+      min-height: 250px;
+      font-family: monospace;
+      font-size: 16px;
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      resize: vertical;
+      transition: border-color 0.3s;
+    }
+    
+    .taf-textarea:focus {
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 0.2rem rgba(58, 58, 143, 0.25);
+      outline: none;
+    }
+    
+    .btn-save {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px 25px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      transition: all 0.3s;
+      display: block;
+      margin: 20px auto 0;
+    }
+    
+    .btn-save:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .status {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    
+    .status.success {
+      background-color: rgba(40, 167, 69, 0.1);
+      color: var(--success-color);
+      border: 1px solid var(--success-color);
+    }
+    
+    .status.error {
+      background-color: rgba(220, 53, 69, 0.1);
+      color: var(--danger-color);
+      border: 1px solid var(--danger-color);
+    }
+    
+    .status.info {
+      background-color: rgba(23, 162, 184, 0.1);
+      color: var(--info-color);
+      border: 1px solid var(--info-color);
+    }
+    
+    /* Footer styling */
+    footer {
+      background-color: #1b1b53;
+      color: white;
+      padding: 2rem 0;
+      margin-top: auto;
+    }
+    
+    .footer-logo img {
+      height: 40px;
+      margin-bottom: 1rem;
+    }
+    
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .footer-links li {
+      display: inline-block;
+      margin: 0 10px;
+    }
+    
+    .footer-links a {
+      color: #adb5bd;
+      text-decoration: none;
+    }
+    
+    .footer-links a:hover {
+      color: white;
+    }
+    
+    .social-media a {
+      color: white;
+      font-size: 1.5rem;
+      margin: 0 10px;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .taf-container {
+        padding: 20px;
+        margin: 0 10px;
+      }
+      
+      .taf-textarea {
+        min-height: 200px;
+      }
+    }
+  </style>
 </head>
-
 <body>
-    <!-- Navigation Menu -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgb(27, 27, 83);">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="logo2.jpg" alt="P.Kamesa Logo" class="d-inline-block align-text-top"> Wx App
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="logo2.jpg" alt="P.Kamesa Logo" class="d-inline-block align-text-top"> Wx App
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+
+          <!-- Dropdown menu item for notes -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Resources
             </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="learn_metar.html">Metar Notes</a></li>
+              <li><a class="dropdown-item" href="learn_synop.html">Synop Notes</a></li>
+              <li><a class="dropdown-item" href="learn_taf.html">TAF Notes</a></li>                      
+            </ul>
+          </li>
+
+          <!-- Dropdown menu item for forms -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              WX Forms
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="form626.html">FORM 626</a></li>
+              <li><a class="dropdown-item" href="c_sheet.html">C/SHEET</a></li>
+              <li><a class="dropdown-item" href="form446.html">FORM 446</a></li>
+              <li><a class="dropdown-item" href="wx_summary_may.html">WX SUMMARY</a></li>
+              <li><a class="dropdown-item" href="agro18_dek.html">AGRO18 DEK</a></li>
+              <li><a class="dropdown-item" href="rainfallcart.html">FORM496(R/CART)</a></li>                             
+            </ul>
+          </li>
+          
+          <!-- Dropdown menu item -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Forecasts
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="daily_wx.html">Daily WX</a></li>
+              <li><a class="dropdown-item" href="s_e.html">S.E</a></li>
+              <li><a class="dropdown-item" href="coast.html">COAST</a></li>
+              <li><a class="dropdown-item" href="central.html">CENTRAL</a></li>
+              <li><a class="dropdown-item" href="western.html">WESTERN</a></li>
+              <li><a class="dropdown-item" href="n_w.html">N.W</a></li>
+              <li><a class="dropdown-item" href="n_e.html">N.E</a></li>                             
+            </ul>
+          </li>
+          
+          <!-- Dropdown menu item -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Observations
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="metar1.html">METAR/SPECI</a></li>
+              <li><a class="dropdown-item" href="synop.html">SYNOP</a></li>
+              <li><a class="dropdown-item" href="actuals.html">ACTUALS</a></li>
+              <li><a class="dropdown-item active" href="taf.html">TAF</a></li>
+              <li><a class="dropdown-item" href="mon_brief.html">MON BRIEF</a></li>
+              <li>
+                <a class="dropdown-item" href="#" onclick="launchFirefox('https://196.202.217.196/nsweb/FlightBriefing/?page=showQuery#showQuery')">FLIGHT FOLDER</a>
+              </li>
+              
+              <!-- Nested dropdown for duty rosters -->
+              <li class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="#">Duty Rosters</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="dutyroster_jan.html">January</a></li>
+                  <li><a class="dropdown-item" href="dutyroster_feb.html">February</a></li>
+                  <li><a class="dropdown-item" href="dutyroster_mar.html">March</a></li>
+                  <li><a class="dropdown-item" href="dutyroster_apr.html">April</a></li>
+                  <li><a class="dropdown-item" href="dutyroster_may.html">May</a></li>
+                  <li><a class="dropdown-item" href="dutyroster_jun.html">June</a></li>
+                  <li><a class="dropdown-item" href="dutyroster_jul.html">July</a></li>
+                  <li><a class="dropdown-item" href="dutyroster_aug.html">August</a></li>
+                  <li><a class="dropdown-item" href="dutyroster_sep.html">September</a></li>
+                  <li><a class="dropdown-item" href="dutyroster_oct.html">October</a></li>
+                  <li><a class="dropdown-item" href="dutyroster_nov.html">November</a></li>
+                  <li><a class="dropdown-item" href="dutyroster_dec.html">December</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          
+          <li class="nav-item">
+            <a href="about.html" class="nav-link">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="contact.html" class="nav-link">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a href="login.html" class="nav-link">Login</a>
+          </li>
+          <li class="nav-item">
+            <a href="signup.html" class="nav-link">Sign Up</a>
+          </li>
+          <li class="nav-item" id="logout-item" style="display: none;">
+            <a href="#" class="nav-link" id="logout-link">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="taf-container">
+            <div class="taf-header">
+              <h1>Terminal Aerodrome Forecast (TAF)</h1>
+              <p>Enter or edit the TAF report below. The latest saved TAF will be loaded automatically.</p>
+            </div>
             
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+            <div class="mb-4">
+              <label for="taf-input" class="form-label">TAF Report:</label>
+              <textarea id="taf-input" class="taf-textarea" placeholder="Enter TAF report here..."></textarea>
+            </div>
+            
+            <button class="btn btn-save" onclick="saveTAF()">
+              <i class="fas fa-save me-2"></i>Save TAF
             </button>
             
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav ms-auto">
-
-                    <li class="nav-item">
-                        <a href="index.html" class="nav-link" aria-current="page">Home</a>
-                    </li>
-                    <!-- Dropdown menu item -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Resources
-                        </a>
-                        <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="learn_metar.html">Metar Notes</a></li>
-                                        <li><a class="dropdown-item" href="learn_synop.html">Synop Notes</a></li>
-                                        <li><a class="dropdown-item active" href="taf.html">TAF Notes</a></li>                      
-                        </ul>
-                    </li>
-                    <!-- Dropdown menu item for forms -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            WX Forms
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item " href="form626.html">FORM 626</a></li>
-                            <li><a class="dropdown-item" href="c_sheet.html">C/SHEET</a></li>
-                            <li><a class="dropdown-item" href="form446.html">FORM 446</a></li>
-                            <li><a class="dropdown-item" href="wx_summary_may.html">WX SUMMARY</a></li>
-
-                            <!--
-                             Nested dropdown for WX SUMMARY
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="#">WX SUMMARY</a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="wx_summary_jan.html">January</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_feb.html">February</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_mar.html">March</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_apr.html">April</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_may.html">May</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_jun.html">June</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_jul.html">July</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_aug.html">August</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_sep.html">September</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_oct.html">October</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_nov.html">November</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_dec.html">December</a></li>
-                                </ul>
-                            </li>
-                            -->
-                            <li><a class="dropdown-item" href="agro18_dek.html">AGRO18 DEK</a></li>
-                            <li><a class="dropdown-item" href="rainfallcart.html">FORM496(R/CART)</a></li>                              
-                        </ul>
-                    </li>
-                    <!-- Dropdown menu item -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Forecasts
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="daily_wx.html">Daily WX</a></li>
-                            <li><a class="dropdown-item" href="s_e.html">S.E</a></li>
-                            <li><a class="dropdown-item" href="coast.html">COAST</a></li>
-                            <li><a class="dropdown-item" href="central.html">CENTRAL</a></li>
-                            <li><a class="dropdown-item" href="western.html">WESTERN</a></li>
-                            <li><a class="dropdown-item" href="n_w.html">N.W</a></li>
-                            <li><a class="dropdown-item" href="n_e.html">N.E</a></li>                             
-                        </ul>
-                    </li>
-                    <!-- Dropdown menu item -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Observations
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="metar1.html">METAR/SPECI</a></li>
-                            <li><a class="dropdown-item" href="synop.html">SYNOP</a></li>
-                            <li><a class="dropdown-item" href="actuals.html">ACTUALS</a></li>
-                             <li><a class="dropdown-item" href="mon_brief.html">MON BRIEF</a></li>
-                            <li>
-                                <a class="dropdown-item" href="#" onclick="launchFirefox('https://196.202.217.196/nsweb/FlightBriefing/?page=showQuery#showQuery')">FLIGHT FOLDER</a>
-                            </li>
-                            <!-- Nested dropdown for duty rosters -->
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="#">Duty Rosters</a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="dutyroster_jan.html">January</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_feb.html">February</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_mar.html">March</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_apr.html">April</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_may.html">May</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_jun.html">June</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_jul.html">July</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_aug.html">August</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_sep.html">September</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_oct.html">October</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_nov.html">November</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_dec.html">December</a></li>
-                                </ul>
-                            </li>
-                            
-                        </ul>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a href="about.html" class="nav-link">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="contact.html" class="nav-link">Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="login.html" class="nav-link">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="signup.html" class="nav-link">Sign Up</a>
-                    </li>
-                    <li class="nav-item" id="logout-item" style="display: none;">
-                        <a href="#" class="nav-link" id="logout-link">Logout</a>
-                    </li>
-                </ul>
-            </div>
+            <div class="status" id="status"></div>
+          </div>
         </div>
-    </nav>
-
-  <!-- HEADER / HERO -->
-  <header class="py-4 mt-2 text-white" style="background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);">
-    <div class="container">
-    <!-- Hero -->
-    <div class="hero text-center">
-      <h1 class="mb-2">TAF — Terminal Aerodrome Forecast</h1>
-      <p class="lead mb-0">Understanding Terminal Aerodrome Forecasts and Key Terms</p>
+      </div>
     </div>
-  </header>
- <div class="container my-4">
-
-
-
-    <!-- What is TAF -->
-    <section id="intro">
-      <h2 class="section-title bg-white">What is a TAF?</h2>
-      <div class="card"><div class="card-body">
-        <p>
-          A <strong>Terminal Aerodrome Forecast (TAF)</strong> is an aviation weather forecast 
-          for a specific aerodrome (airport), describing expected weather conditions within a 
-          radius of 4 NM (8 km) from the aerodrome reference point. It is coded in a concise 
-          alphanumeric format and follows ICAO/WMO standards.
-        </p>
-        <p>
-          TAFs are issued at regular intervals (usually every 6 hours) and typically cover 
-          <strong>24 to 30 hours</strong>, depending on the country or region. Some high-traffic 
-          airports issue <strong>9-hour short TAFs (TAF SHORT)</strong> to provide more frequent updates.
-        </p>
-      </div></div>
-    </section>
-
-    <!-- Structure -->
-    <section id="structure">
-      <h2 class="section-title">Structure of a TAF</h2>
-      <div class="card"><div class="card-body">
-        <p>The general format of a TAF report includes:</p>
-        <pre>
-TAF CCCC YYGGggZ DDHH/DDHH dddff(f)KT VVVV w'w' NsNsNshshshs ...
-        </pre>
-        <ul>
-          <li><strong>TAF</strong> — Report identifier</li>
-          <li><strong>CCCC</strong> — ICAO location indicator (4-letter airport code)</li>
-          <li><strong>YYGGggZ</strong> — Date and time of issue (UTC)</li>
-          <li><strong>DDHH/DDHH</strong> — Validity period (day/hour to day/hour)</li>
-          <li><strong>dddffKT</strong> — Wind direction (° true) and speed (knots)</li>
-          <li><strong>VVVV</strong> — Visibility (in meters or 9999 for ≥10km)</li>
-          <li><strong>w’w’</strong> — Weather phenomena (e.g. RA = rain, FG = fog)</li>
-          <li><strong>NsNsNshshshs</strong> — Cloud amount, type, and height</li>
-          <li>Optional modifiers such as <strong>BECMG, TEMPO, PROB</strong> describe changes.</li>
-        </ul>
-      </div></div>
-    </section>
-
-    <!-- Key Terms -->
-    <section id="keyterms">
-      <h2 class="section-title">Key Change Indicators</h2>
-
-      <!-- BECMG -->
-      <div class="card">
-        <div class="card-header bg-primary text-white">BECMG (Becoming)</div>
-        <div class="card-body">
-          <p>
-            <strong>BECMG</strong> indicates a <em>permanent or long-term change</em> in weather 
-            conditions is expected to occur gradually, usually over a 2-hour period unless otherwise 
-            specified. Once the change is complete, the new condition will persist.
-          </p>
-          <pre>
-Example: BECMG 1214 30015KT
-→ Between 12:00 and 14:00 UTC, wind will gradually become 300° at 15 knots.
-          </pre>
-          <p><strong>Key point:</strong> Change is gradual and lasting, not temporary.</p>
-        </div>
-      </div>
-
-      <!-- TEMPO -->
-      <div class="card">
-        <div class="card-header bg-warning">TEMPO (Temporary)</div>
-        <div class="card-body">
-          <p>
-            <strong>TEMPO</strong> indicates that temporary fluctuations in weather are expected. 
-            Each fluctuation usually lasts <strong>less than 1 hour</strong> and in total covers 
-            <strong>less than half of the forecast period</strong>.
-          </p>
-          <pre>
-Example: TEMPO 1014 2000 SHRA
-→ Between 10:00 and 14:00 UTC, expect occasional showers reducing visibility to 2000 m,
-   but only for short durations (temporary).
-          </pre>
-          <p><strong>Key point:</strong> Weather changes are short-lived and intermittent.</p>
-        </div>
-      </div>
-
-      <!-- PROB -->
-      <div class="card">
-        <div class="card-header bg-info text-white">PROB (Probability)</div>
-        <div class="card-body">
-          <p>
-            <strong>PROB30</strong> or <strong>PROB40</strong> indicates the <em>probability 
-            (30% or 40%)</em> of a weather event occurring during the specified period. 
-            Commonly used for low-confidence phenomena such as thunderstorms or fog.
-          </p>
-          <pre>
-Example: PROB30 TEMPO 1822 TSRA
-→ Between 18:00 and 22:00 UTC, there is a 30% chance of temporary thunderstorms with rain.
-          </pre>
-          <p><strong>Key point:</strong> Adds uncertainty to the forecast. If combined with TEMPO, 
-          it means the event is both temporary and not certain.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Example TAF -->
-    <section id="example">
-      <h2 class="section-title">Example of a Full TAF</h2>
-      <div class="card"><div class="card-body">
-        <pre>
-TAF HKRE 220500Z 2206/2306 06012KT 9999 SCT020 BKN100 
-     TEMPO 2209/2212 4000 SHRA BKN015 
-     BECMG 2212/2214 09015KT 
-     PROB30 TEMPO 2218/2222 2000 TSRA FEW020CB BKN021
-        </pre>
-        <p><strong>Decoded:</strong></p>
-        <ul>
-          <li>Issued at 08:00 UTC on the 22nd for MOI AIR BASE, NAIROBI (HKRE).</li>
-          <li>Valid from 09:00 UTC on the 22nd to 12:00 UTC on the 23rd.</li>
-          <li>Initially: wind 060° at 12 kt, visibility 10 km+, scattered clouds at 2000 ft, broken at 10,000 ft.</li>
-          <li><strong>TEMPO</strong>: Between 09–12 UTC, temporary showers reducing visibility to 4000 m, broken cloud at 1500 ft.</li>
-          <li><strong>BECMG</strong>: Between 12–14 UTC, wind will gradually become 090° at 15 kt.</li>
-          <li><strong>PROB30 TEMPO</strong>: Between 18–22 UTC, 30% chance of temporary thunderstorms with rain, FEW cumulonimbus at 2000 ft AND BROKEN CUMULUS CLOUDS at 2100ft.</li>
-        </ul>
-      </div></div>
-    </section>
-    </div>
- 
+  </div>
 
     <!-- Footer -->
     <footer class="py-4">
         <div class="container">
-            <div class="row">
-                <div class="col-md-4 text-center text-md-start">
-                    <div class="footer-logo">
-                        <img src="logo.jpg" alt="P.K Logo">
-                    </div>
-                    <p>&copy; 2025 P.Kamesa. All rights reserved.</p>
-                </div>
-                <div class="col-md-4 text-center">
-                    <ul class="footer-links">
-                        <li><a href="/privacy-policy">Privacy Policy</a></li>
-                        <li><a href="/terms-of-service">Terms of Service</a></li>
-                        <li><a href="contact.html">Contact Me</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4 text-center text-md-end">
-                    <div class="social-media mb-3">
-                        <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
-                        <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
-                        <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-                    </div>
-                    <form class="contact-form d-flex justify-content-center justify-content-md-end">
-                        <input type="email" class="form-control me-2" placeholder="Enter your email" required style="max-width: 250px;">
-                        <button type="submit" class="btn btn-primary">Subscribe</button>
-                    </form>
-                </div>
+          <div class="row">
+            <div class="col-md-4 text-center text-md-start">
+              <div class="footer-logo">
+                <img src="logo.jpg" alt="P.K Logo">
+              </div>
+              <p>&copy; 2025 P.Kamesa. All rights reserved.</p>
             </div>
+            <div class="col-md-4 text-center">
+              <ul class="footer-links">
+                <li><a href="/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/terms-of-service">Terms of Service</a></li>
+                <li><a href="contact.html">Contact Me</a></li>
+              </ul>
+            </div>
+            <div class="col-md-4 text-center text-md-end">
+              <div class="social-media mb-3">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+              </div>
+              <form class="contact-form d-flex justify-content-center justify-content-md-end">
+                <input type="email" class="form-control me-2" placeholder="Enter your email" required style="max-width: 250px;">
+                <button type="submit" class="btn" style="background-color: var(--accent-color); color: var(--primary-color);">Subscribe</button>
+              </form>
+            </div>
+          </div>
         </div>
     </footer>
 
-    <script>
-            // Initialize on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        displaySavedReports();
-        
-        // Redirect if not logged in
-        if (!localStorage.getItem('weatherAuthToken')) {
-            window.location.href = 'login.html';
-        }
-    });
+  <script>
+    const apiUrl = "https://wxbackend-production.up.railway.app/api/reports/TAF"; 
 
-        document.addEventListener('DOMContentLoaded', function() {
-    // Get current page URL
-    const currentPage = window.location.pathname.split('/').pop();
-    
-    // Find all dropdown items
-    const dropdownItems = document.querySelectorAll('.dropdown-item');
-    
-    // Loop through each dropdown item
-    dropdownItems.forEach(item => {
-        // Get the href attribute and extract the filename
-        const itemPage = item.getAttribute('href').split('/').pop();
+    // Load latest TAF on page load
+    async function loadLatestTAF() {
+      try {
+        const res = await fetch(apiUrl + "/latest");
+        const data = await res.json();
+        const statusDiv = document.getElementById("status");
         
-        // Check if it matches current page
-        if (itemPage === currentPage) {
-            // Add active class to this item
-            item.classList.add('active');
-            
-            // Also add active class to parent dropdown toggle
-            const dropdownToggle = item.closest('.dropdown-menu').previousElementSibling;
-            dropdownToggle.classList.add('active');
+        if (data && data.content) {
+          document.getElementById("taf-input").value = data.content;
+          statusDiv.innerText = "✅ Latest TAF loaded successfully!";
+          statusDiv.className = "status success";
+        } else {
+          document.getElementById("taf-input").value = "";
+          statusDiv.innerText = "ℹ️ No TAF available. Enter a new TAF report.";
+          statusDiv.className = "status info";
         }
-    });
-});
-        function launchFirefox(url) {
-            // Try Firefox protocol (works if Firefox is set as handler)
-            window.location.href = 'firefox://open-url?url=' + encodeURIComponent(url);
-            
-            // Fallback: Open in a new tab (default browser) after a delay
-            setTimeout(function() {
-                window.open(url, '_blank');
-            }, 500);
-            
-            return false; // Prevent default link behavior
-        }
-        </script>
-    <script src="auth.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>  
+      } catch (err) {
+        document.getElementById("taf-input").value = "";
+        const statusDiv = document.getElementById("status");
+        statusDiv.innerText = "⚠️ Error loading TAF. Check your connection.";
+        statusDiv.className = "status error";
+      }
+    }
 
+    // Save edited TAF
+    async function saveTAF() {
+      const tafContent = document.getElementById("taf-input").value;
+      const statusDiv = document.getElementById("status");
+
+      if (!tafContent.trim()) {
+        statusDiv.innerText = "⚠️ Please enter a TAF report before saving.";
+        statusDiv.className = "status error";
+        return;
+      }
+
+      try {
+        const res = await fetch('https://wxbackend-production.up.railway.app/api/reports', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ type: "TAF", content: tafContent }),
+        });
+
+        if (res.ok) {
+          statusDiv.innerText = "✅ TAF saved successfully!";
+          statusDiv.className = "status success";
+        } else {
+          statusDiv.innerText = "❌ Failed to save TAF. Please try again.";
+          statusDiv.className = "status error";
+        }
+      } catch (err) {
+        statusDiv.innerText = "⚠️ Error connecting to server. Check your connection.";
+        statusDiv.className = "status error";
+      }
+    }
+
+    // Load TAF when page opens
+    document.addEventListener("DOMContentLoaded", loadLatestTAF);
+  </script>
+  
+  <script src="auth.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
