@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Weather Forecast</title>
+    <link rel="icon" type="image/x-icon" href="logo.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -369,9 +370,9 @@
                     <li class="nav-item">
                         <a href="login.html" class="nav-link">Login</a>
                     </li>
-                    <li class="nav-item">
+                    <!--<li class="nav-item">
                         <a href="signup.html" class="nav-link">Sign Up</a>
-                    </li>
+                    </li>-->
                     <li class="nav-item" id="logout-item" style="display: none;">
                         <a href="#" class="nav-link" id="logout-link">Logout</a>
                     </li>
@@ -386,7 +387,7 @@
             <!-- Page Header -->
             <div class="page-header">
                 <h1>Daily Weather Forecast</h1>
-                <p>Moi Air Base Forecast from 25th to 26th September 2025</p>
+                <p>Moi Air Base Forecast from 26th to 27th September 2025</p>
             </div>
             
             <div class="row">
@@ -449,7 +450,7 @@
                                 <h2>700MB Level Winds</h2>
                             </div>
                             <div class="card-body">
-                                <p>Westerly winds are expected at the 700mb level over most parts of the country.</p>
+                                <p>South Westerly winds are expected at the 700mb level over most parts of the country.</p>
                                 <img src="24HR_700mb_wind.png" alt="700mb wind forecast" class="weather-image">
                             </div>
                         </div>
@@ -544,9 +545,10 @@
             loadLatestTAF();
 
             // Redirect if not logged in
+            /*
             if (!localStorage.getItem('weatherAuthToken')) {
                 window.location.href = 'login.html';
-            }
+            }*/
             
             // Set active menu item
             const currentPage = window.location.pathname.split('/').pop();

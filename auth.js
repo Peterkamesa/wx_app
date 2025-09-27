@@ -16,28 +16,23 @@ function checkAuthStatus() {
     const token = localStorage.getItem(AUTH_KEY);
     const isLoggedIn = token !== null;
     
-    // Toggle logout button visibility
     const logoutBtn = document.getElementById('logout-item');
-    if (logoutBtn) {
-        logoutBtn.style.display = isLoggedIn ? 'block' : 'none';
-    }
+    if (logoutBtn) logoutBtn.style.display = isLoggedIn ? 'block' : 'none';
     
-    // Toggle login button visibility
     const loginBtn = document.getElementById('login-item');
-    if (loginBtn) {
-        loginBtn.style.display = isLoggedIn ? 'none' : 'block';
-    }
+    if (loginBtn) loginBtn.style.display = isLoggedIn ? 'none' : 'block';
     
-    // Update user greeting if exists
     const userGreeting = document.getElementById('user-greeting');
     if (userGreeting && isLoggedIn) {
         try {
-            const decoded = jwt.decode(token);
+            const decoded = jwt.decode(token); // Make sure you included jwt-decode lib
             userGreeting.style.display = 'block';
             document.getElementById('username').textContent = decoded.station;
         } catch (e) {
             console.error('Error decoding token:', e);
         }
+    } else if (userGreeting) {
+        userGreeting.style.display = 'none';
     }
 }
 
