@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>SYNOP Notes</title>
+  <link rel="icon" type="image/x-icon" href="logo.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -409,9 +410,9 @@
                     <li class="nav-item">
                         <a href="login.html" class="nav-link">Login</a>
                     </li>
-                    <li class="nav-item">
+                    <!--<li class="nav-item">
                         <a href="signup.html" class="nav-link">Sign Up</a>
-                    </li>
+                    </li>-->
                     <li class="nav-item" id="logout-item" style="display: none;">
                         <a href="#" class="nav-link" id="logout-link">Logout</a>
                     </li>
@@ -536,7 +537,7 @@
                             <p class="card-text">Station identification number.</p>
                             <div class="example-box">
                                 <strong>Example:</strong> <span class="synop-group">63739</span><br>
-                                <span class="code-value">63</span> = Country or region code<br>
+                                <span class="code-value">63</span> = Country or region code/block number<br>
                                 <span class="code-value">739</span> = Station number within country/region
                             </div>
                             <p>Each country has a specific block number assigned by WMO. For example, block 03 is for the United States, 07 for France, etc.</p>
@@ -696,38 +697,15 @@
                                 <span class="code-value">a</span>: isobaric pressure level<br>
                                 <span class="code-value">hhh</span>: height of 850mb(geopotential height)
                             </p>
-                            <p><strong>Characteristic (a) values:</strong><br>
+                            <!--<p><strong>Characteristic (a) values:</strong><br>
                                 0-3: Rising, 4: Steady, 5-8: Falling
-                            </p>
-                        </div>
+                            </p>-->
                     </div>
                 </div>
             </div>
             
             <div class="row">
-                <!-- 5appp Group -->
-                <div class="col-lg-6 mb-4">
-                    <div class="card h-100">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <span>5appp</span>
-                            <span class="badge bg-success importance-badge">Required</span>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">Pressure change over 24 hours.</p>
-                            <div class="example-box">
-                                <strong>Example:</strong> <span class="synop-group">5012</span><br>
-                                <span class="code-value">5</span> = Group indicator (fixed)<br>
-                                <span class="code-value">0</span> = Sign of pressure change (a)<br>
-                                <span class="code-value">12</span> = Pressure change in tenths of hPa (ppp)
-                            </div>
-                            <p><strong>Components:</strong><br>
-                                <span class="code-value">5</span>: Fixed indicator for 24-hour pressure change<br>
-                                <span class="code-value">a</span>: Sign of pressure change (8=positive, 9=negative)<br>
-                                <span class="code-value">ppp</span>: Pressure change in tenths of hPa over 24 hours
-                            </p>
-                        </div>
-                    </div>
-                </div>
+
                 
                 <!-- 6RRRtR Group -->
                 <div class="col-lg-6 mb-4">
@@ -752,10 +730,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="row">
-                <!-- 7wwW1W2 Group -->
+                                <!-- 7wwW1W2 Group -->
                 <div class="col-lg-6 mb-4">
                     <div class="card h-100">
                         <div class="card-header d-flex justify-content-between align-items-center">
@@ -781,6 +756,11 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            
+            <div class="row">
+
                 
                 <!-- 8NhClCmCh Group -->
                 <div class="col-lg-6 mb-4">
@@ -867,8 +847,30 @@
                     </div>
                 </div>
             </div>
-            
-                
+        <div class="row">
+                <!-- 5appp Group -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>5appp</span>
+                            <span class="badge bg-success importance-badge">Required</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Pressure change over 24 hours.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> <span class="synop-group">5012</span><br>
+                                <span class="code-value">5</span> = Group indicator (fixed)<br>
+                                <span class="code-value">0</span> = Sign of pressure change (a)<br>
+                                <span class="code-value">12</span> = Pressure change in tenths of hPa (ppp)
+                            </div>
+                            <p><strong>Components:</strong><br>
+                                <span class="code-value">5</span>: Fixed indicator for 24-hour pressure change<br>
+                                <span class="code-value">a</span>: Sign of pressure change (8=positive, 9=negative)<br>
+                                <span class="code-value">ppp</span>: Pressure change in tenths of hPa over 24 hours
+                            </p>
+                        </div>
+                    </div>
+                </div>
                 <!-- 8NsChshshs Group -->
                 <div class="col-lg-6 mb-4">
                     <div class="card h-100">
@@ -897,6 +899,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </section>
      
     <!-- Footer -->

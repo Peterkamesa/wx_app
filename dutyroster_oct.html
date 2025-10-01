@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MAB-MET DUTY ROSTER</title>
+    <link rel="icon" type="image/x-icon" href="logo.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -154,32 +155,32 @@
         }
 
         /* Highlight specific columns */
-        .MAB-MET td:nth-child(2),  
-        .MAB-MET td:nth-child(8),
-        .MAB-MET td:nth-child(9),
-        .MAB-MET td:nth-child(15),
-        .MAB-MET td:nth-child(16),
-        .MAB-MET td:nth-child(22),
-        .MAB-MET td:nth-child(23),
-        .MAB-MET td:nth-child(29),
-        .MAB-MET td:nth-child(30),
-        .MAB-MET td:nth-child(36),
+        .MAB-MET td:nth-child(5),  
+        .MAB-MET td:nth-child(6),
+        .MAB-MET td:nth-child(12),
+        .MAB-MET td:nth-child(13),
+        .MAB-MET td:nth-child(19),
+        .MAB-MET td:nth-child(20),
+        .MAB-MET td:nth-child(26),
+        .MAB-MET td:nth-child(27),
+        .MAB-MET td:nth-child(33),
+        .MAB-MET td:nth-child(34),
         .MAB-MET td:nth-child(37)  {
             background-color: #ffeb3b;
             color: #000;
             font-weight: bold;
         }
 
-        .MAB-MET th:nth-child(2),
-        .MAB-MET th:nth-child(8),
-        .MAB-MET th:nth-child(9),
-        .MAB-MET th:nth-child(15),
-        .MAB-MET th:nth-child(16),
-        .MAB-MET th:nth-child(22),
-        .MAB-MET th:nth-child(23),
-        .MAB-MET th:nth-child(29),
-        .MAB-MET th:nth-child(30),
-        .MAB-MET th:nth-child(36),
+        .MAB-MET th:nth-child(5),
+        .MAB-MET th:nth-child(6),
+        .MAB-MET th:nth-child(12),
+        .MAB-MET th:nth-child(13),
+        .MAB-MET th:nth-child(19),
+        .MAB-MET th:nth-child(20),
+        .MAB-MET th:nth-child(26),
+        .MAB-MET th:nth-child(27),
+        .MAB-MET th:nth-child(33),
+        .MAB-MET th:nth-child(34),
         .MAB-MET th:nth-child(37) {
             background-color: #ffc107;
             color: #000;
@@ -470,9 +471,9 @@
                     <li class="nav-item">
                         <a href="login.html" class="nav-link">Login</a>
                     </li>
-                    <li class="nav-item">
+                    <!--<li class="nav-item">
                         <a href="signup.html" class="nav-link">Sign Up</a>
-                    </li>
+                    </li>-->
                     <li class="nav-item" id="logout-item" style="display: none;">
                         <a href="#" class="nav-link" id="logout-link">Logout</a>
                     </li>
@@ -494,9 +495,6 @@
                     <thead>
                         <tr>
                             <th colspan="3" class="date">DAYS</th>
-                            <th>S</th>
-                            <th>M</th>
-                            <th>T</th>
                             <th>W</th>
                             <th>T</th>
                             <th>F</th>
@@ -524,7 +522,10 @@
                             <th>S</th>
                             <th>S</th>
                             <th>M</th>
-                            
+                            <th>T</th>
+                            <th>W</th>
+                            <th>T</th>
+                            <th>F</th>
 
                         </tr>
                         <tr>
@@ -559,19 +560,17 @@
                             <th>28</th>
                             <th>29</th>
                             <th>30</th>
+                            <th>31</th>
                             
                         </tr>
                     </thead>
                     
                     <tbody>
                         <tr>
-                            <td colspan="33" class="title">FORECASTERS</td>
+                            <td colspan="34" class="title">FORECASTERS</td>
                         </tr>
                         <tr>
                             <td colspan="3" class="name-header">KURGAT</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>D</td>
                             <td>D</td>
                             <td>D</td>
                             <td>D</td>
@@ -598,10 +597,32 @@
                             <td>D</td>
                             <td>-</td>
                             <td>-</td>
+                            <td>D</td>
+                            <td>D</td>
+                            <td>D</td>
+                            <td>D</td>
                             <td>D</td>
                         </tr>
                         <tr>
                             <td colspan="3" class="name-header">NJENGA</td>
+                            <td>D</td>
+                            <td>D</td>
+                            
+                            <td>-</td>
+                            <td>D</td>
+                            <td>D</td>
+                            <td>-</td>
+                            
+                            <td>-</td>
+                            <td>D</td>
+                            <td>D</td>
+                            <td>-</td>
+                            <td>D</td>
+                            <td>D</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>D</td>
+                            <td>D</td>
                             <td>-</td>
                             <td>-</td>
                             <td>D</td>
@@ -611,31 +632,62 @@
                             <td>D</td>
                             <td>D</td>
                             <td>-</td>
-                            <td>L</td>
-                            <td>E</td>
-                            <td>A</td>
-                            <td>V</td>
-                            <td>E</td>
+                            <td>-</td>
+                            <td>D</td>
+                            <td>D</td>
                             <td>-</td>
                             <td>-</td>
-                            <td>L</td>
-                            <td>E</td>
-                            <td>A</td>
-                            <td>V</td>
-                            <td>E</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>L</td>
-                            <td>E</td>
-                            <td>A</td>
-                            <td>V</td>
-                            <td>E</td>
-                            <td>-</td>
-                            <td>-</td>
+                            <td>D</td>
+                            
                           </tr>
                           
                           <tr>
                             <td colspan="3" class="name-header">KOGO</td>
+                            <td>L</td>
+                            <td>E</td>
+                            <td>A</td>
+                            <td>V</td>
+                            <td>E</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>L</td>
+                            <td>E</td>
+                            <td>A</td>
+                            <td>V</td>
+                            <td>E</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>L</td>
+                            <td>E</td>
+                            <td>A</td>
+                            <td>V</td>
+                            <td>E</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>L</td>
+                            <td>E</td>
+                            <td>A</td>
+                            <td>V</td>
+                            <td>E</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>L</td>
+                            <td>E</td>
+                            <td>-</td>
+                          </tr>
+
+                                                  <tr>
+                            <td colspan="3" class="name-header">KIMOLI</td>
+                            <td>-</td>
+                            <td>-</td>
+                            
+                            <td>D</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>D</td>
+                            
+                            <td>D</td>
+                            <td>D</td>
                             <td>D</td>
                             <td>D</td>
                             <td>-</td>
@@ -646,19 +698,12 @@
                             <td>-</td>
                             <td>D</td>
                             <td>D</td>
-                            <td>D</td>
                             <td>-</td>
                             <td>-</td>
                             <td>D</td>
                             <td>D</td>
-                            <td>D</td>
-                            <td>D</td>
-                            <td>D</td>
                             <td>-</td>
                             <td>-</td>
-                            <td>D</td>
-                            <td>D</td>
-                            <td>D</td>
                             <td>D</td>
                             <td>D</td>
                             <td>-</td>
@@ -669,47 +714,10 @@
                           </tr>
 
                           <tr>
-                            <td colspan="33" class="title">OBSERVERS</td>
-                          </tr>
-                          <tr>
-                            <td colspan="3" class="name-header">MBUGUA</td>
-                            <td>D</td>
-                            <td>N</td>
-                            <td>E</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>N</td>
-                            <td>E</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>N</td>
-                            <td>E</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>N</td>
-                            <td>E</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>N</td>
-                            <td>E</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>N</td>
-                            <td>E</td>
-                            <td>-</td>
-                            <td>-</td>
-                          
+                            <td colspan="34" class="title">OBSERVERS</td>
                           </tr>
                           <tr>
                             <td colspan="3" class="name-header">CHELULE</td>
-                            <td>E</td>
-                            <td>-</td>
-                            <td>-</td>
                             <td>D</td>
                             <td>N</td>
                             <td>E</td>
@@ -737,14 +745,13 @@
                             <td>-</td>
                             <td>D</td>
                             <td>N</td>
-                          
-                          
+                            <td>E</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>D</td>
                           </tr>
-                          <tr>
-                            <td colspan="3" class="name-header">MUCHAI</td>
-                            <td>N</td>
-                            <td>E</td>
-                            <td>-</td>
+                            <tr>
+                            <td colspan="3" class="name-header">MBUGUA</td>
                             <td>-</td>
                             <td>D</td>
                             <td>N</td>
@@ -772,46 +779,89 @@
                             <td>-</td>
                             <td>-</td>
                             <td>D</td>
-                          
+                            <td>N</td>
+                            <td>E</td>
+                            <td>-</td>
+                            <td>-</td>
+                            
                           
                           </tr>
                           <tr>
                             <td colspan="3" class="name-header">KIOKO</td>
-                            <td>L</td>
                             <td>E</td>
-                            <td>A</td>
-                            <td>V</td>
+                            
+                            <td>-</td>
+                            <td>D</td>
+                            <td>N</td>
                             <td>E</td>
                             <td>-</td>
                             <td>-</td>
-                            <td>L</td>
-                            <td>E</td>
-                            <td>A</td>
-                            <td>V</td>
+                            <td>D</td>
+                            <td>N</td>
                             <td>E</td>
                             <td>-</td>
                             <td>-</td>
-                            <td>L</td>
-                            <td>E</td>
-                            <td>A</td>
-                            <td>V</td>
+                            <td>D</td>
+                            <td>N</td>
                             <td>E</td>
                             <td>-</td>
                             <td>-</td>
-                            <td>L</td>
-                            <td>E</td>
-                            <td>A</td>
-                            <td>V</td>
+                            <td>D</td>
+                            <td>N</td>
                             <td>E</td>
                             <td>-</td>
                             <td>-</td>
-                            <td>L</td>
+                            <td>D</td>
+                            <td>N</td>
                             <td>E</td>
-                          
+                            <td>-</td>
+                            <td>-</td>
+                            <td>D</td>
+                            <td>N</td>
+                            <td>E</td>
+                            <td>-</td>
+                          </tr>
+                            <tr>
+                            <td colspan="3" class="name-header">ADOLWA</td>
+                            <td>N</td>
+                            <td>E</td>
+                            
+                            <td>-</td>
+                            <td>D</td>
+                            <td>N</td>
+                            <td>E</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>D</td>
+                            <td>N</td>
+                            <td>E</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>D</td>
+                            <td>N</td>
+                            <td>E</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>D</td>
+                            <td>N</td>
+                            <td>E</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>D</td>
+                            <td>N</td>
+                            <td>E</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>D</td>
+                            <td>N</td>
+                            <td>E</td>
                           </tr>
                           <tr>
                             <td colspan="3" class="name-header">MUTWIRI</td>
                             <td>-</td>
+                            <td>-</td>
+                            <td>D</td>
+                            <td>-</td>
                             <td>D</td>
                             <td>N</td>
                             <td>E</td>
@@ -839,85 +889,52 @@
                             <td>-</td>
                             <td>D</td>
                             <td>N</td>
-                            <td>E</td>
-                            <td>-</td>
                           
                           
                           </tr>
                           <tr>
-                            <td colspan="3" class="name-header">ADOLWA</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>N</td>
-                            <td>E</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>N</td>
-                            <td>E</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>N</td>
-                            <td>E</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>N</td>
-                            <td>E</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>N</td>
-                            <td>E</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>N</td>
-                            <td>E</td>
-                          
+                            <td colspan="34" class="title">TECHNICIANS</td>
                           </tr>
-                          <tr>
-                            <td colspan="33" class="title">TECHNICIANS</td>
+                            <tr>
+                            <td colspan="3" class="name-header">OKELLO</td>
+                            
+                            <td>D</td>
+                            <td>D</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>D</td>
+                            <td>D</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>D</td>
+                            <td>D</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>D</td>
+                            <td>D</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>D</td>
+                            <td>D</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>D</td>
+                            <td>D</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>D</td>
+                            <td>D</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>D</td>
+                            <td>D</td>
+                            <td>-</td>
+                           
                           </tr>
                           <tr>
                             <td colspan="3" class="name-header">LOSIRIM</td>
-                            <td>D</td>
+
                             <td>-</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>D</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>D</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>D</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>D</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>D</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>D</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>D</td>
-                            <td>-</td>
-                            
-                           
-                          </tr>
-                          <tr>
-                            <td colspan="3" class="name-header">OKELLO</td>
                             <td>-</td>
                             <td>D</td>
                             <td>D</td>
@@ -950,14 +967,12 @@
                             <td>D</td>
                            
                           </tr>
+
                           <tr>
-                            <td colspan="33" class="title">SUPERVISOR CLEANER</td>
+                            <td colspan="34" class="title">SUPERVISOR CLEANER</td>
                           </tr>
                           <tr>
                             <td colspan="3" class="name-header">ADICHAREH</td>
-                            <td>-</td>
-                            <td>D</td>
-                            <td>D</td>
                             <td>D</td>
                             <td>D</td>
                             <td>D</td>
@@ -984,6 +999,10 @@
                             <td>D</td>
                             <td>-</td>
                             <td>-</td>
+                            <td>D</td>
+                            <td>D</td>
+                            <td>D</td>
+                            <td>D</td>
                             <td>D</td>     
                           </tr>
                     </tbody>
