@@ -297,7 +297,7 @@
     }
     </style>
 </head>
-<body>
+<body onload="populateActualsFromObservation()">
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
@@ -383,6 +383,7 @@
                             Observations
                         </a>
                         <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="obs_slip.html">Obs Slip</a></li>
                             <li><a class="dropdown-item" href="metar1.html">METAR/SPECI</a></li>
                             <li><a class="dropdown-item" href="synop.html">SYNOP</a></li>
                             <li><a class="dropdown-item active" href="actuals.html">ACTUALS</a></li>
@@ -592,6 +593,28 @@
     </footer>
 
     <script>
+async function populateActualsFromObservation() {
+  try {
+    const response = await fetch('https://wxbackend-production.up.railway.app/api/latest-observation');
+    if (!response.ok) throw new Error("Failed to fetch latest observation");
+    const obs = await response.json();
+
+    // Populate fields
+    document.getElementById('MAX').value = obs.max_temp || '';
+    document.getElementById('MIN').value = obs.min_temp || '';
+    document.getElementById('G/MIN').value = obs.g_min || '';
+    document.getElementById('A/RF').value = obs.rainfall || '';
+    document.getElementById('R/H').value = obs.dry_bulb || '';
+    document.getElementById('W/RF').value = obs.w_rf || '';
+
+    // Optional: auto-generate after populating
+    // generateActualsReport();
+
+  } catch (err) {
+    console.error("Error loading observation data:", err);
+    alert("Could not load latest observation data.");
+  }
+}
         function generateActualsReport() {
             // Get values from input fields
             const actualsHeader = document.getElementById('actuals').value;

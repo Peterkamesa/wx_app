@@ -3,15 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Observation Slip - KMD</title>
+    <title>Observation Slip- KMD</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="logo.svg">
+    <style>
+        /* Custom styles */
+        :root {
+      --primary-color: #1b1b53;
+      --secondary-color: #3a3a8f;
+      --accent-color: #06f07b;
+      --highlight-color: #ff4ed9;
+      --light-text: #f8f9fa;
+      --success-color: #28a745;
+      --info-color: #17a2b8;
+      --danger-color: #dc3545;
+    }
+    
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: url(cd1.jpg)  center center fixed;
+            /*background-size: cover;*/
+        }
+        
+        .navbar {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      background-color: var(--primary-color) !important;
+    }
+    
+    .navbar-brand img {
+      height: 30px;
+      transition: transform 0.3s ease;
+    }
+    
+    .navbar-brand:hover img {
+      transform: scale(1.05);
+    }
+    
+    .nav-link {
+      position: relative;
+      margin: 0 8px;
+      transition: color 0.3s ease;
+      color: var(--light-text) !important;
+    }
+    
+    .nav-link.active {
+      color: var(--accent-color) !important;
+      font-weight: bold;
+    }
+    
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--highlight-color);
+      border-radius: 3px;
+    }
+    
+    .dropdown-menu {
+      background-color: var(--secondary-color);
+      border: none;
+    }
+    
+    .dropdown-item {
+      color: var(--light-text);
+      transition: all 0.3s ease;
+    }
+    
+    .dropdown-item:hover {
+      background-color: var(--highlight-color);
+      color: white;
+    }
+
+         
+        .content {
+            flex: 1;
+            padding: 2rem 0;
+            font-size: 15.5px;
+            font-weight: bold;
+        }
+        
+        .hero-section {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+        }
+        
+        .feature-list {
+            margin: 2rem 0;
+        }
+        
+        .feature-list li {
+            margin-bottom: 0.5rem;
+        }
+        
+        footer {
+            background-color: #1b1b53;
+            color: white;
+            padding: 2rem 0;
+            margin-top: auto;
+        }
+        
+        .footer-logo img {
+            height: 40px;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        
+        .footer-links a {
+            color: #adb5bd;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+
+        }
+        
+        .social-media a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 10px;
+        }
+        
+        .contact-form {
+            margin-top: 1rem;
+        }
+        
+        .contact-form input {
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            border: none;
+            margin-right: 0.5rem;
+        }
+        
+        .contact-form button {
+            padding: 0.5rem 1rem;
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <div class="container my-4">
+<body>
+    <!-- Navigation Menu -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgb(27, 27, 83);">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="logo2.jpg" alt="P.Kamesa Logo" class="d-inline-block align-text-top"> Wx App
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link" aria-current="page">Home</a>
+                    </li>
+                    <!-- Dropdown menu item for notes -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Resources
+                        </a>
+                        <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="learn_metar.html">Metar Notes</a></li>
+                                        <li><a class="dropdown-item" href="learn_synop.html">Synop Notes</a></li>
+                                        <li><a class="dropdown-item" href="learn_taf.html">TAF Notes</a></li>                      
+                        </ul>
+                    </li>
+                    <!-- Dropdown menu item for forms -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            WX Forms
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item " href="form626.html">FORM 626</a></li>
+                            <li><a class="dropdown-item" href="c_sheet.html">C/SHEET</a></li>
+                            <li><a class="dropdown-item" href="form446.html">FORM 446</a></li>
+                            <li><a class="dropdown-item" href="wx_summary_may.html">WX SUMMARY</a></li>
+
+                            <!--
+                             Nested dropdown for WX SUMMARY
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">WX SUMMARY</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="wx_summary_jan.html">January</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_feb.html">February</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_mar.html">March</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_apr.html">April</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_may.html">May</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_jun.html">June</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_jul.html">July</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_aug.html">August</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_sep.html">September</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_oct.html">October</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_nov.html">November</a></li>
+                                    <li><a class="dropdown-item" href="wx_summary_dec.html">December</a></li>
+                                </ul>
+                            </li>
+                            -->
+                            <li><a class="dropdown-item" href="agro18_dek.html">AGRO18 DEK</a></li>
+                            <li><a class="dropdown-item" href="rainfallcart.html">FORM496(R/CART)</a></li>                              
+                        </ul>
+                    </li>
+                    <!-- Dropdown menu item -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Forecasts
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="daily_wx.html">Daily WX</a></li>
+                            <li><a class="dropdown-item" href="s_e.html">S.E</a></li>
+                            <li><a class="dropdown-item" href="coast.html">COAST</a></li>
+                            <li><a class="dropdown-item" href="central.html">CENTRAL</a></li>
+                            <li><a class="dropdown-item" href="western.html">WESTERN</a></li>
+                            <li><a class="dropdown-item" href="n_w.html">N.W</a></li>
+                            <li><a class="dropdown-item" href="n_e.html">N.E</a></li>                             
+                        </ul>
+                    </li>
+                    <!-- Dropdown menu item -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Observations
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item active" href="obs_slip.html">Obs Slip</a></li>
+                            <li><a class="dropdown-item" href="metar1.html">METAR/SPECI</a></li>
+                            <li><a class="dropdown-item" href="synop.html">SYNOP</a></li>
+                            <li><a class="dropdown-item" href="actuals.html">ACTUALS</a></li>
+                            <li><a class="dropdown-item" href="taf.html">TAF</a></li>
+                             <li><a class="dropdown-item" href="mon_brief.html">MON BRIEF</a></li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="launchFirefox('https://196.202.217.196/nsweb/FlightBriefing/?page=showQuery#showQuery')">FLIGHT FOLDER</a>
+                            </li>
+                            <!-- Nested dropdown for duty rosters -->
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#">Duty Rosters</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="dutyroster_jan.html">January</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_feb.html">February</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_mar.html">March</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_apr.html">April</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_may.html">May</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_jun.html">June</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_jul.html">July</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_aug.html">August</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_sep.html">September</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_oct.html">October</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_nov.html">November</a></li>
+                                    <li><a class="dropdown-item" href="dutyroster_dec.html">December</a></li>
+                                </ul>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a href="about.html" class="nav-link">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="login.html" class="nav-link">Login</a>
+                    </li>
+                    <!--<li class="nav-item">
+                        <a href="signup.html" class="nav-link">Sign Up</a>
+                    </li>-->
+                    <li class="nav-item" id="logout-item" style="display: none;">
+                        <a href="#" class="nav-link" id="logout-link">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container my-4 bg-light">
         <h2 class="text-center text-primary mb-4">KENYA METEOROLOGICAL DEPARTMENT</h2>
         <h4 class="text-center mb-3">Observation Slip (Form 393 Rev. 9/2011)</h4>
         
-        <form id="obsForm" method="POST" action="/save-observation">
+        <form id="obsForm" method="POST" action="https://wxbackend-production.up.railway.app/save-observation">
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label class="form-label">Time (GMT)</label>
@@ -46,13 +336,17 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label>Cloud Searchlight Alidade Reading (°)</label>
                     <input name="alidade" class="form-control">
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label>Rainfall (mm)</label>
                     <input name="rainfall" class="form-control">
+                </div>
+                    <div class="col-md-4">
+                    <label>W/Rainfall (mm)</label>
+                    <input name="w_rf" class="form-control">
                 </div>
             </div>
 
@@ -63,6 +357,7 @@
                 <div class="col"><label>Dew Point</label><input name="dew_point" class="form-control"></div>
                 <div class="col"><label>Max Temp</label><input name="max_temp" class="form-control"></div>
                 <div class="col"><label>Min Temp</label><input name="min_temp" class="form-control"></div>
+                <div class="col"><label>G/Min</label><input name="g_min" class="form-control"></div>
             </div>
 
             <h5>c) OUTDOOR</h5>
@@ -101,5 +396,46 @@
             </div>
         </form>
     </div>
+
+    <Script>
+        document.addEventListener('DOMContentLoaded', function() {
+    // Get current page URL
+    const currentPage = window.location.pathname.split('/').pop();
+    
+    // Find all dropdown items
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+    
+    // Loop through each dropdown item
+    dropdownItems.forEach(item => {
+        // Get the href attribute and extract the filename
+        const itemPage = item.getAttribute('href').split('/').pop();
+        
+        // Check if it matches current page
+        if (itemPage === currentPage) {
+            // Add active class to this item
+            item.classList.add('active');
+            
+            // Also add active class to parent dropdown toggle
+            const dropdownToggle = item.closest('.dropdown-menu').previousElementSibling;
+            dropdownToggle.classList.add('active');
+        }
+    });
+  });
+    </script>
+        <script>
+          function launchFirefox(url) {
+              // Try Firefox protocol (works if Firefox is set as handler)
+              window.location.href = 'firefox://open-url?url=' + encodeURIComponent(url);
+              
+              // Fallback: Open in a new tab (default browser) after a delay
+              setTimeout(function() {
+                  window.open(url, '_blank');
+              }, 500);
+              
+              return false; // Prevent default link behavior
+          }
+          </script>
+    <script src="auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
