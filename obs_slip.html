@@ -160,6 +160,33 @@
             border: none;
             border-radius: 0.25rem;
         }
+  .title {
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: #f8f9fa;
+    text-align: center;
+    padding: 6px;
+    border-radius: 4px;
+  }
+
+  .datacell {
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 6px 10px;
+    text-align: center;
+    background-color: #fff;
+    min-width: 60px;
+  }
+
+  .datacell::before {
+    content: attr(placeholder);
+    color: #6c757d;
+    font-style: italic;
+  }
+
+  table.inner-table td {
+    vertical-align: middle;
+  }
     </style>
 </head>
 <body>
@@ -298,7 +325,7 @@
         </div>
     </nav>
     <div class="container my-4 bg-light">
-        <h2 class="text-center text-primary mb-4">KENYA METEOROLOGICAL DEPARTMENT</h2>
+        <h2 class="text-center text-primary mb-3 mt-3">KENYA METEOROLOGICAL DEPARTMENT</h2>
         <h4 class="text-center mb-3">Observation Slip (Form 393 Rev. 9/2011)</h4>
         
         <form id="obsForm" >
@@ -315,6 +342,7 @@
 
             <h5 class="mt-4">a) CLOUDS</h5>
             <div class="table-responsive">
+                <!--
                 <table class="table table-bordered table-sm">
                     <thead>
                         <tr>
@@ -322,17 +350,143 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>Low1</td><td><input name="low_type1" class="form-control"></td><td><input name="low_oktas1" class="form-control"></td><td><input name="low_height1" class="form-control"></td><td><input name="low_cl1" class="form-control"></td></tr>
-                        <tr><td>Low2</td><td><input name="low_type2" class="form-control"></td><td><input name="low_oktas2" class="form-control"></td><td><input name="low_height2" class="form-control"></td><td><input name="low_cl2" class="form-control"></td></tr>
-                        <tr><td>Low3</td><td><input name="low_type3" class="form-control"></td><td><input name="low_oktas3" class="form-control"></td><td><input name="low_height3" class="form-control"></td><td><input name="low_cl3" class="form-control"></td></tr>
-                        <tr><td>Medium1</td><td><input name="med_type1" class="form-control"></td><td><input name="med_oktas1" class="form-control"></td><td><input name="med_height1" class="form-control"></td><td><input name="med_cl1" class="form-control"></td></tr>
-                        <tr><td>Medium2</td><td><input name="med_type2" class="form-control"></td><td><input name="med_oktas2" class="form-control"></td><td><input name="med_height2" class="form-control"></td><td><input name="med_cl2" class="form-control"></td></tr>
-                        <tr><td>Medium3</td><td><input name="med_type3" class="form-control"></td><td><input name="med_oktas3" class="form-control"></td><td><input name="med_height3" class="form-control"></td><td><input name="med_cl3" class="form-control"></td></tr>
-                        <tr><td>High1</td><td><input name="high_type1" class="form-control"></td><td><input name="high_oktas1" class="form-control"></td><td><input name="high_height1" class="form-control"></td><td><input name="high_cl1" class="form-control"></td></tr>
-                        <tr><td>High2</td><td><input name="high_type2" class="form-control"></td><td><input name="high_oktas2" class="form-control"></td><td><input name="high_height2" class="form-control"></td><td><input name="high_cl2" class="form-control"></td></tr>
-                        <tr><td>High3</td><td><input name="high_type3" class="form-control"></td><td><input name="high_oktas3" class="form-control"></td><td><input name="high_height3" class="form-control"></td><td><input name="high_cl3" class="form-control"></td></tr>
+                        <tr><td>Low1</td>
+                            <td><input name="low_type1" class="form-control"></td>
+                            <td><input name="low_oktas1" class="form-control"></td>
+                            <td><input name="low_height1" class="form-control"></td>
+                            <td><input name="low_cl1" class="form-control"></td>
+                        </tr>
+                        <tr><td>Low2</td>
+                            <td><input name="low_type2" class="form-control"></td>
+                            <td><input name="low_oktas2" class="form-control"></td>
+                            <td><input name="low_height2" class="form-control"></td>
+                            <td><input name="low_cl2" class="form-control"></td>
+                        </tr>
+                        <tr><td>Low3</td>
+                            <td><input name="low_type3" class="form-control"></td>
+                            <td><input name="low_oktas3" class="form-control"></td>
+                            <td><input name="low_height3" class="form-control"></td>
+                            <td><input name="low_cl3" class="form-control"></td>
+                        </tr>
+                        <tr><td>Medium1</td>
+                            <td><input name="med_type1" class="form-control"></td>
+                            <td><input name="med_oktas1" class="form-control"></td>
+                            <td><input name="med_height1" class="form-control"></td>
+                            <td><input name="med_cl1" class="form-control"></td>
+                        </tr>
+                        <tr><td>Medium2</td>
+                            <td><input name="med_type2" class="form-control"></td>
+                            <td><input name="med_oktas2" class="form-control"></td>
+                            <td><input name="med_height2" class="form-control"></td>
+                            <td><input name="med_cl2" class="form-control"></td>
+                        </tr>
+                        <tr><td>Medium3</td>
+                            <td><input name="med_type3" class="form-control"></td>
+                            <td><input name="med_oktas3" class="form-control"></td>
+                            <td><input name="med_height3" class="form-control"></td>
+                            <td><input name="med_cl3" class="form-control"></td>
+                        </tr>
+                        <tr><td>High1</td>
+                            <td><input name="high_type1" class="form-control"></td>
+                            <td><input name="high_oktas1" class="form-control"></td>
+                            <td><input name="high_height1" class="form-control"></td>
+                            <td><input name="high_cl1" class="form-control"></td>
+                        </tr>
+                        <tr><td>High2</td>
+                            <td><input name="high_type2" class="form-control"></td>
+                            <td><input name="high_oktas2" class="form-control"></td>
+                            <td><input name="high_height2" class="form-control"></td>
+                            <td><input name="high_cl2" class="form-control"></td>
+                        </tr>
+                        <tr><td>High3</td>
+                            <td><input name="high_type3" class="form-control"></td>
+                            <td><input name="high_oktas3" class="form-control"></td>
+                            <td><input name="high_height3" class="form-control"></td>
+                            <td><input name="high_cl3" class="form-control"></td>
+                        </tr>
                     </tbody>
                 </table>
+            -->
+                <td rowspan="8" colspan="9">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="title">Group8</div>
+                                </td>
+                                <td><input name="n" class="form-control" placeholder="N"></td>
+                                <td>
+                                    <input name="nh" class="form-control" placeholder="8Nh">
+                                </td>
+                                <td>
+                                    <input name="cl" class="form-control" placeholder="CL">
+                                </td>
+                                <td>
+                                    <input name="cm" class="form-control" placeholder="CM">
+                                </td>
+                                <td>
+                                    <input name="ch" class="form-control" placeholder="CH">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <input name="ns1" class="form-control" placeholder="8Ns">
+                                </td>
+                                <td>
+                                    <input name="c1" class="form-control" placeholder="C">
+                                </td>
+                                <td>
+                                    <input name="h1" class="form-control" placeholder="hshs(1)">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <input name="ns2" class="form-control" placeholder="8Ns">
+                                </td>
+                                <td>
+                                    <input name="c2" class="form-control" placeholder="C"></div>
+                                </td>
+                                <td>
+                                    <input name="h2" class="form-control" placeholder="hshs(2)"></div>
+                                </td>
+                            </tr>
+                             <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <input name="ns3" class="form-control" placeholder="8Ns"></div>
+                                </td>
+                                <td>
+                                    <input name="c3" class="form-control" placeholder="C"></div>
+                                </td>
+                                <td>
+                                    <input name="h3" class="form-control" placeholder="hshs(3)"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <input name="ns4" class="form-control" placeholder="8Ns"></div>
+                                </td>
+                                <td>
+                                    <input name="c4" class="form-control" placeholder="C"></div>
+                                </td>
+                                <td>
+                                    <input name="h4" class="form-control" placeholder="hshs(4)"></div>
+                                </td>
+                            </tr>                           
+                        </tbody>
+                    </table>
+                </td>
             </div>
 
             <div class="row mb-3">
@@ -366,9 +520,13 @@
 
             <h5>c) OUTDOOR</h5>
             <div class="row mb-3">
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <label>Present Weather</label>
                     <input name="weather" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <label>Past Weather</label>
+                    <input name="r_wx" class="form-control">
                 </div>
                 <div class="col-md-3">
                     <label>Visibility</label>
@@ -389,14 +547,14 @@
             </div>
 
             <h5>e) ENCLOSURE</h5>
-            <div class="row mb-3">
+            <div class="row mb-2">
                 <div class="col-md-4"><label>Evaporation Pan (+/- Cups)</label><input name="evap_pan" class="form-control"></div>
                 <div class="col-md-4"><label>Anemometer (Wind Run mi)</label><input name="wind_run" class="form-control"></div>
                 <div class="col-md-4"><label>Gunn-Bellani (Reading)</label><input name="gunn_bellani" class="form-control"></div>
             </div>
 
             <div class="text-end">
-                <button type="submit" class="btn btn-primary mt-3">Save Observation</button>
+                <button type="submit" class="btn btn-primary mt-1 mb-2">Save Observation</button>
             </div>
         </form>
     </div>

@@ -319,7 +319,7 @@
     }
     </style>
 </head>
-<body>
+<body onload="populateMetarFromObservation()">
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
@@ -472,7 +472,7 @@
                         <div class="col-md-6 col-lg-3">
                             <div class="form-group">
                                 <label>Header</label>
-                                <input type="text" id="header" value="SAKN75 HKNC 180400" class="form-control">
+                                <input type="text" id="header" value="SAKN75 HKNC " class="form-control">
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-3">
@@ -698,6 +698,42 @@
     </footer>
 
     <script>
+      let dateTimeCode = ''; // declare globally
+      async function populateMetarFromObservation() {
+        try {
+          const response = await fetch('https://wxbackend-production.up.railway.app/api/latest-observation');
+          if (!response.ok) throw new Error("Failed to fetch latest observation");
+          const obs = await response.json();
+
+          // Populate fields
+            const obsDate = obs.date;
+            const obsTime = obs.time;
+            dateTimeCode = formatObservationHeader(obsDate, obsTime);
+          const baseHeader = document.getElementById('header').value.trim();
+          const finalHeader = `${baseHeader} ${dateTimeCode}`;
+          document.getElementById('header').value = finalHeader;
+          document.getElementById('obsTime').value = `${dateTimeCode}`;
+          document.getElementById('wind').value = obs.wind || '';
+          document.getElementById('weather').value = obs.weather || '';
+          document.getElementById('tempDew').value =`${Math.round(obs.dry_bulb)}/${Math.round(obs.dew_point)}`;
+          document.getElementById('qnh').value = obs.qnh || '';
+          document.getElementById('recentweather').value = obs.r_wx || '';
+
+          // Optional: auto-generate after populating
+          // generateActualsReport();
+
+        } catch (err) {
+          console.error("Error loading observation data:", err);
+          alert("Could not load latest observation data.");
+        }
+      }
+      function formatObservationHeader(dateStr, timeStr) {
+        const date = new Date(`${dateStr}T${timeStr}Z`);
+        const day = String(date.getUTCDate()).padStart(2, '0');
+        const hours = String(date.getUTCHours()).padStart(2, '0');
+        const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+        return `${day}${hours}${minutes}`;
+      }
     // Generate METAR Report
     function generateMetarReport() {
         const fields = [
