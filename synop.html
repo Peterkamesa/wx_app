@@ -450,7 +450,7 @@
                         <div class="col-md-6 col-lg-3">
                             <div class="form-group">
                                 <label>Header</label>
-                                <input list="synopTypes" id="typeofsynop" class="form-control" placeholder="Select or type header">
+                                <input list="synopTypes" id="typeofsynop" class="form-control" placeholder="Select or type header" onchange="populateSynopFromObservation()">
                                 <datalist id="synopTypes">
                                     <option value="SMKN75 HKNC ">MAIN</option>
                                     <option value="SIKN75 HKNC ">INTERMEDIATE</option>
@@ -473,7 +473,7 @@
                         <div class="col-md-6 col-lg-3">
                             <div class="form-group">
                                 <label>IIiii</label>
-                                <input type="text" id="stationNumber" placeholder="Enter block and station number"  class="form-control">
+                                <input type="text" id="stationNumber" value = "63739" placeholder="Enter block and station number"  class="form-control">
                             </div>
                         </div>
                     </div>
@@ -682,6 +682,175 @@
     </footer>
 
     <script>
+        let dateTimeCode = ''; // declare globally
+        const Nddff = '';
+        
+      async function populateSynopFromObservation() {
+        try {
+          const response = await fetch('https://wxbackend-production.up.railway.app/api/latest-observation');
+          if (!response.ok) throw new Error("Failed to fetch latest observation");
+          const obs = await response.json();
+
+          // Populate fields
+            const obsDate = obs.date;
+            const obsTime = obs.time;
+            const date2 = new Date(`${obs.date}T${obs.time}Z`);
+            const day2 = String(date2.getUTCDate()).padStart(2, '0');
+            const hours2 = String(date2.getUTCHours()).padStart(2, '0');
+            const obstimeCode = `${day2}${hours2}4`;
+            const N = obs.n ?? '/';
+
+            dateTimeCode = formatObservationHeader(obsDate, obsTime);
+          const baseHeader = document.getElementById('typeofsynop').value;
+          const finalHeader = `${baseHeader} ${dateTimeCode}`;
+          document.getElementById('typeofsynop').value = finalHeader;
+          document.getElementById('obstime').value = obstimeCode;
+          // document.getElementById('N').value = obs.n ?? '/';
+
+        let wind = obs.wind ?? '';
+        wind = wind.toString().trim();
+        let dd = '//';
+        let ff = '//';
+        // Process only if wind is valid
+        if (wind && !isNaN(wind)) {
+        // Direction is first 3 digits, padded to 2 digits
+        dd = wind.slice(0, -3).padStart(2, '0');
+        // Speed is last 2 digits, padded to 2 digits
+        ff = wind.slice(-2).padStart(2, '0');
+        }
+        // Build Nddff group
+        const Nddff = `${N}${dd}${ff}`;
+        document.getElementById('Nddff').value = Nddff;
+        
+        const temp = parseFloat(obs.dry_bulb);
+        let sign = '0'; // default to positive
+        let TTT = '000'; // default placeholder
+        if (typeof temp === 'number' && !isNaN(temp)) {
+        if (temp < 0) sign = '1'; // 1 means negative temperature
+        const absTemp = Math.abs(temp);
+        TTT = Math.round(absTemp * 10).toString().padStart(3, '0'); // convert to tenths and pad
+        }
+        // Build the 1SnTTT group
+        const tempGroup = `1${sign}${TTT}`;
+        document.getElementById('1SnTTT').value = tempGroup;
+        
+        const dew_point = parseFloat(obs.dew_point);
+        let tdtd = '000';
+        if (typeof dew_point === 'number' && !isNaN(dew_point)) {
+            if(dew_point < 0) sign = '1';
+            const absDew = Math.abs(dew_point);
+            tdtd = Math.round(absDew * 10).toString().padStart(3, '0');
+        }
+        const dewGroup = `2${sign}${tdtd}`;
+        document.getElementById('2SnTdTdTd').value = dewGroup;
+
+        let pressure = parseFloat(obs.pr_read);  // converting to number
+        let pressureCode = '';
+        if (!isNaN(pressure)) {
+        const PoPoPoPo = Math.round(pressure * 10);
+        pressureCode = `3${PoPoPoPo}`;
+        }
+        document.getElementById('3PoPoPoPo').value = pressureCode || '';
+
+        let nh = obs.nh;
+        let cl = obs.cl;
+        let cm = obs.cm;
+        let ch = obs.ch;
+        let group8 = '';
+        // Only build the group if *at least one* of the components has a valid value
+        if (nh !== undefined && nh !== null && nh !== '' &&
+            cl !== undefined && cl !== null && cl !== '' &&
+            cm !== undefined && cm !== null && cm !== '' &&
+            ch !== undefined && ch !== null && ch !== '') {
+            
+            group8 = `8${nh}${cl}${cm}${ch}`;
+        }
+        document.getElementById('8NhClCmCh').value = group8;
+
+        const max_temp = parseFloat(obs.max_temp);
+        let maxGroup = '';
+        if (typeof max_temp === 'number' && !isNaN(max_temp)) {
+            let sign = '0';
+            if (max_temp < 0) sign = '1';
+            const absMax = Math.abs(max_temp);
+            const tx = Math.round(absMax * 10).toString().padStart(3, '0');
+            maxGroup = `1${sign}${tx}`;
+        }
+        document.getElementById('1SnTxTxTx').value = maxGroup;
+
+        const min_temp = parseFloat(obs.min_temp);
+        let minGroup = '';
+        if (typeof min_temp === 'number' && !isNaN(min_temp)) {
+            let sign = '0';
+            if (min_temp < 0) sign = '1';
+            const absMin = Math.abs(min_temp);
+            const tn = Math.round(absMin * 10).toString().padStart(3, '0');
+            minGroup = `2${sign}${tn}`;
+        }
+        document.getElementById('2SnTnTnTn').value = minGroup;
+        
+        let tendencyGroup = '';
+        if (obs.pr_read && obs.yesterday_pr) {
+            const todayPr = parseFloat(obs.pr_read);
+            const yestPr = parseFloat(obs.yesterday_pr);
+            if (!isNaN(todayPr) && !isNaN(yestPr)) {
+                const diff = todayPr - yestPr;
+                const Sn = diff >= 0 ? '8' : '9'; // 8 = rising, 9 = falling
+                const PPP = Math.round(Math.abs(diff) * 10).toString().padStart(3, '0');
+                tendencyGroup = `5${Sn}${PPP}`;
+                
+            }
+            }
+            document.getElementById('5SnPPP').value = tendencyGroup;
+
+
+        function codeCloudGroup(ns, c, h) {
+        if (!ns || !c || !h) return ''; // skip if any missing
+
+        let height = parseFloat(h);
+        if (isNaN(height)) return '';
+
+        let hCode;
+        if (height <= 6000) {
+            hCode = Math.round(height / 100);
+        } else {
+            hCode = 50 + Math.round(height / 1000);
+        }
+
+        return `8${ns}${c}${hCode}`;
+        }
+
+        const cloudGroups = [];
+        for (let i = 1; i <= 4; i++) {
+        const ns = obs[`ns${i}`];
+        const c = obs[`c${i}`];
+        const h = obs[`h${i}`];
+        const group = codeCloudGroup(ns, c, h);
+        if (group) cloudGroups.push(group);
+        }
+
+        document.getElementById('8NsChshshs1').value = cloudGroups[0] || '';
+        document.getElementById('8NsChshshs2').value = cloudGroups[1] || '';
+        document.getElementById('8NsChshshs3').value = cloudGroups[2] || '';
+        document.getElementById('8NsChshshs4').value = cloudGroups[3] || '';
+          
+          // Optional: auto-generate after populating
+          // generateActualsReport();
+
+        } catch (err) {
+          console.error("Error loading observation data:", err);
+          alert("Could not load latest observation data.");
+        }
+      }
+
+        function formatObservationHeader(dateStr, timeStr) {
+        const date = new Date(`${dateStr}T${timeStr}Z`);
+        const day = String(date.getUTCDate()).padStart(2, '0');
+        const hours = String(date.getUTCHours()).padStart(2, '0');
+        const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+        return `${day}${hours}${minutes}`;
+      }
+      
         function generateSynopReport() {
             // Get values from input fields
             // const headerSelect = document.getElementById('typeofsynop');
