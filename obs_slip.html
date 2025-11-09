@@ -187,6 +187,24 @@
   table.inner-table td {
     vertical-align: middle;
   }
+  .row label {
+    font-weight: bold;
+    color: black;
+  }
+  ::placeholder {
+     color: #6c757d;
+     font-style: italic;
+     }
+    .form-control {
+    border: 0.05px solid #6fa6f8;
+    border-radius: 8px;
+    transition: 0.3s;
+  }
+  .form-control:focus {
+    border-color: #198754;
+    box-shadow: 0 0 5px rgba(25,135,84,.5);
+  }
+
     </style>
 </head>
 <body>
@@ -492,65 +510,76 @@
             <div class="row mb-3">
                 <div class="col-md-3">
                     <label>Cloud Searchlight Alidade Reading (°)</label>
-                    <input name="alidade" class="form-control">
+                    <input name="alidade" class="form-control" placeholder="Alidade Reading">
                 </div>
                 <div class="col-md-3">
                     <label>Rainfall (mm)</label>
-                    <input name="rainfall" class="form-control">
+                    <input name="rainfall" class="form-control" placeholder="actual rainfall">
                 </div>
                 <div class="col-md-3">
                     <label>W/Rainfall (mm)</label>
-                    <input name="w_rf" class="form-control">
+                    <input name="w_rf" class="form-control" placeholder="weekly rainfall">
                 </div>
                 <div class="col-md-3">
                     <label>R/H(%)</label>
-                    <input name="r_h" class="form-control">
+                    <input name="r_h" class="form-control" placeholder="relative humidity">
                 </div>
             </div>
 
             <h5>b) SCREEN</h5>
             <div class="row mb-3">
-                <div class="col"><label>Dry Bulb</label><input name="dry_bulb" class="form-control"></div>
-                <div class="col"><label>Wet Bulb</label><input name="wet_bulb" class="form-control"></div>
-                <div class="col"><label>Dew Point</label><input name="dew_point" class="form-control"></div>
-                <div class="col"><label>Max Temp</label><input name="max_temp" class="form-control"></div>
-                <div class="col"><label>Min Temp</label><input name="min_temp" class="form-control"></div>
-                <div class="col"><label>G/Min</label><input name="g_min" class="form-control"></div>
+                <div class="col"><label>Dry Bulb</label><input name="dry_bulb" class="form-control" placeholder="DB reading"></div>
+                <div class="col"><label>Wet Bulb</label><input name="wet_bulb" class="form-control" placeholder="WB reading"></div>
+                <div class="col"><label>Dew Point</label><input name="dew_point" class="form-control" placeholder="DW reading"></div>
+                <div class="col"><label>Max Temp</label><input name="max_temp" class="form-control" placeholder="Tx reading"></div>
+                <div class="col"><label>Min Temp</label><input name="min_temp" class="form-control" placeholder="Tn reading"></div>
+                <div class="col"><label>G/Min</label><input name="g_min" class="form-control" placeholder="G/MIN reading"></div>
             </div>
 
             <h5>c) OUTDOOR</h5>
             <div class="row mb-3">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label>Present Weather</label>
-                    <input name="weather" class="form-control">
+                    <input name="weather" class="form-control" placeholder="enter present wx">
                 </div>
-                <div class="col-md-3">
+                    <div class="col-md-1">
+                    <label>wwCode</label>
+                    <input name="ww" class="form-control" placeholder="ww">
+                </div>
+                <div class="col-md-2">
                     <label>Past Weather</label>
-                    <input name="r_wx" class="form-control">
+                    <input name="r_wx" class="form-control" placeholder="enter past wx">
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-1">
+                    <label>W1W2Code</label>
+                    <input name="w1w2" class="form-control" placeholder="W1W2">
+                </div>
+                <div class="col-md-2">
                     <label>Visibility</label>
-                    <input name="visibility" class="form-control">
+                    <input name="visibility" class="form-control" placeholder="visibility(m)">
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label>Wind (kts)</label>
-                    <input name="wind" class="form-control">
+                    <input name="wind" class="form-control" placeholder="dddff(kt)">
                 </div>
             </div>
 
             <h5>d) OFFICE</h5>
             <div class="row mb-3">
-                <div class="col-md-3"><label>Pr. As Read (mb)</label><input name="pr_read" class="form-control"></div>
-                <div class="col-md-3"><label>QFE (mb)</label><input name="qfe" class="form-control"></div>
-                <div class="col-md-3"><label>Correction (mb)</label><input name="correction" class="form-control"></div>
-                <div class="col-md-3"><label>QNH (mb)</label><input name="qnh" class="form-control"></div>
+                <div class="col-md-2"><label>Pr. As Read (mb)</label><input id="pr_read" name="pr_read" type="number" step="0.1" class="form-control" placeholder="enter pressure as read"></div>
+                <div class="col-md-2"><label>Correction (mb)</label><input id="correction" name="correction" type="number" step="0.1" class="form-control" placeholder="enter correction"></div>
+                <div class="col-md-2"><label>QFE (mb)</label><input id="qfe" name="qfe" class="form-control" placeholder="auto calculated" readonly></div>
+                <div class="col-md-2"><label>QNH (mb)</label><input name="qnh" class="form-control" placeholder="enter QNH (mb)"></div>
+                <div class="col-md-2"><label>QNE (gpm)</label><input name="qne" class="form-control" placeholder="geopotential height"></div>
             </div>
 
             <h5>e) ENCLOSURE</h5>
             <div class="row mb-2">
-                <div class="col-md-4"><label>Evaporation Pan (+/- Cups)</label><input name="evap_pan" class="form-control"></div>
-                <div class="col-md-4"><label>Anemometer (Wind Run mi)</label><input name="wind_run" class="form-control"></div>
-                <div class="col-md-4"><label>Gunn-Bellani (Reading)</label><input name="gunn_bellani" class="form-control"></div>
+                <div class="col-md-3"><label>Evaporation Pan (+/- Cups)</label><input name="evap_pan" class="form-control" placeholder="enter No.cup(s)(+/-)"></div>
+                <div class="col-md-2"><label>Evaporation(mm)</label><input name="e_p" class="form-control" placeholder="E"></div>
+                <div class="col-md-3"><label>cupcounter Anemometer(reading)</label><input name="wind_run" class="form-control" placeholder="enter W/R as Read"></div>
+                <div class="col-md-2"><label>Wind Run(km/day)</label><input name="w_run" class="form-control" placeholder="W/R"></div>
+                <div class="col-md-2"><label>Gunn-Bellani (Reading)</label><input name="gunn_bellani" class="form-control" placeholder="enter Gunn-Bellani Reading"></div>
             </div>
 
             <div class="text-end">
@@ -576,8 +605,96 @@ document.getElementById('obsForm').addEventListener('submit', async (e) => {
   alert(result.message || 'Saved!');
 });
 </script>
+<script>
+    // Function to calculate QFE = PR_READ - CORRECTION
+    function calculateQFE() {
+    const prRead = parseFloat(document.getElementById('pr_read').value) || 0;
+    const correction = parseFloat(document.getElementById('correction').value) || 0;
 
-    <Script>
+    // QFE = PR_READ - CORRECTION
+    const qfe = prRead - correction;
+
+    // Display with one decimal place if valid
+    document.getElementById('qfe').value = 
+        (isNaN(qfe) ? '' : qfe.toFixed(1));
+    }
+
+    // Trigger recalculation whenever PR_READ or CORRECTION changes
+    document.getElementById('pr_read').addEventListener('input', calculateQFE);
+    document.getElementById('correction').addEventListener('input', calculateQFE);
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const rainfallInput = document.querySelector('input[name="rainfall"]');
+    const evapPanInput = document.querySelector('input[name="evap_pan"]');
+    const evaporationInput = document.querySelector('input[name="e_p"]');
+
+    evaporationInput.readOnly = true; // E field should not be edited manually
+    
+    function calculateEvaporation() {
+        const evapPanVal = evapPanInput.value.trim();
+
+        // Only calculate if evap_pan field has input data
+        if (evapPanVal === '') {
+        evaporationInput.value = '';
+        return;
+        }
+
+        let rainfallVal = rainfallInput.value.trim();
+        let rainfall = 0.0;
+
+        // Handle empty, TRACE, or T rainfall as 0.0
+        if (rainfallVal === '' || rainfallVal.toUpperCase() === 'TRACE' || rainfallVal.toUpperCase() === 'T') {
+        rainfall = 0.0;
+        } else {
+        rainfall = parseFloat(rainfallVal);
+        if (isNaN(rainfall)) rainfall = 0.0;
+        }
+
+        const cups = parseFloat(evapPanVal);
+        if (isNaN(cups)) {
+        evaporationInput.value = '';
+        return;
+        }
+
+        // Calculate E = R + (0.5 × cups)
+        const evaporation = rainfall + (0.5 * cups);
+
+        // Display with one decimal place
+        evaporationInput.value = evaporation.toFixed(1);
+    }
+
+    // Trigger calculation only when evap_pan input changes
+    evapPanInput.addEventListener('input', calculateEvaporation);
+    });
+
+    document.addEventListener('DOMContentLoaded', async function() {
+    const todayWindRunInput = document.querySelector('input[name="wind_run"]');
+    const wRunInput = document.querySelector('input[name="w_run"]');
+    let yesterdayWindRun = null;
+
+    wRunInput.readOnly = true;
+
+    // Fetch yesterday’s wind_run
+    try {
+        const response = await fetch('https://wxbackend-production.up.railway.app/api/getYesterdayWindRun');
+        const data = await response.json();
+        yesterdayWindRun = parseFloat(data.wind_run) || 0.0;
+    } catch (error) {
+        console.error('Error fetching yesterday wind_run:', error);
+    }
+
+    // Calculate automatically when today's value changes
+    todayWindRunInput.addEventListener('input', function() {
+        const todayVal = parseFloat(todayWindRunInput.value);
+        if (!isNaN(todayVal) && !isNaN(yesterdayWindRun)) {
+        let result = todayVal - yesterdayWindRun;
+        if (result < 0) result += 10000; // handle counter rollover
+        wRunInput.value = result.toFixed(2);
+        } else {
+        wRunInput.value = '';
+        }
+    });
+    });
         document.addEventListener('DOMContentLoaded', function() {
     // Get current page URL
     const currentPage = window.location.pathname.split('/').pop();

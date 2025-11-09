@@ -707,6 +707,78 @@
           document.getElementById('obstime').value = obstimeCode;
           // document.getElementById('N').value = obs.n ?? '/';
 
+        // --- Group iRiXhVV --- //
+        let iR = '';
+        let iX = '';
+        let hCode = '';
+        let VV = '';
+
+        // --- 1️⃣ Determine iR (Rainfall indicator) --- //
+        // const obsTime = obs.time; // e.g., "06:00"
+        const hourUTC = new Date(`1970-01-01T${obsTime}Z`).getUTCHours();
+        const isMainHour = [0, 6, 12, 18].includes(hourUTC);
+
+        // Handle rainfall including "TRACE"
+        let rainfall = obs.rainfall ? obs.rainfall.toString().trim().toUpperCase() : '';
+
+        // Convert numeric rainfall if needed
+        let rainValue = 0;
+        if (rainfall === 'TRACE' || rainfall === 'TR') {
+        rainValue = 0.0; // Still treated as rain present
+        } else if (!isNaN(parseFloat(rainfall))) {
+        rainValue = parseFloat(rainfall);
+        }
+
+        // Determine iR based on hour and rainfall
+        if (isMainHour) {
+        if (rainfall === 'TRACE' || rainValue > 0) iR = '1'; // rainfall present
+        else iR = '3'; // no rainfall
+        } else {
+        iR = '4'; // all non-main hours
+        }
+
+        // --- 2️⃣ Determine iX (Present/Past weather indicator) --- //
+        const wwix = obs.ww ? obs.ww.toString().trim() : '';
+        const w1w2ix = obs.w1w2 ? obs.w1w2.toString().trim() : '';
+        iX = (wwix || w1w2ix) ? '1' : '2';
+
+        // --- 3️⃣ Determine h (Height of lowest cloud base) --- //
+        const h1 = parseFloat(obs.h1 || 0);
+        if (h1 < 150) hCode = '0';
+        else if (h1 < 300) hCode = '1';
+        else if (h1 < 600) hCode = '2';
+        else if (h1 < 1000) hCode = '3';
+        else if (h1 < 2000) hCode = '4';
+        else if (h1 < 3000) hCode = '5';
+        else if (h1 < 5000) hCode = '6';
+        else if (h1 < 6500) hCode = '7';
+        else if (h1 < 8000) hCode = '8';
+        else hCode = '9';
+
+        // --- 4️⃣ Determine VV (Visibility, saved in meters) --- //
+        let vis = parseFloat(obs.visibility || 0); // visibility in meters
+        if (!isNaN(vis)) vis = vis / 1000; // convert meters → km
+
+        if (vis > 0 && vis <= 5) {
+        VV = Math.round(vis * 10).toString().padStart(2, '0');
+        } else if (vis >= 6 && vis <= 30) {
+        VV = (50 + Math.round(vis)).toString();
+        } else if (vis > 30) {
+        const extraSteps = Math.floor((vis - 30) / 5);
+        VV = (80 + extraSteps).toString();
+        } else {
+        VV = '//'; // missing or invalid
+        }
+
+        // --- 5️⃣ Combine the group --- //
+        let iRiXhVV = '';
+        if (iR && iX && hCode && VV !== '//') {
+        iRiXhVV = `${iR}${iX}${hCode}${VV}`;
+        }
+
+        document.getElementById('iRiXhVV').value = iRiXhVV;
+
+
         let wind = obs.wind ?? '';
         wind = wind.toString().trim();
         let dd = '//';
@@ -751,6 +823,35 @@
         pressureCode = `3${PoPoPoPo}`;
         }
         document.getElementById('3PoPoPoPo').value = pressureCode || '';
+
+        // --- Geopotential Height Group (48hhh/PPPP) --- //
+        let geopotential = obs.qne ? obs.qne.toString().trim() : '';
+        let geopotentialGroup = '';
+
+        if (geopotential !== '' && !isNaN(geopotential)) {
+        // Drop the first digit (thousands place)
+        const hhh = geopotential.slice(1);  // e.g., "1456" → "456"
+        
+        // Build group 48hhh
+        geopotentialGroup = `48${hhh}`;
+        }
+
+        document.getElementById('48hhh/PPPP').value = geopotentialGroup;
+
+        // --- Present and Past Weather Group (7wwW1W2) --- //
+        let ww = obs.ww ? obs.ww.toString().trim() : '';
+        let w1w2 = obs.w1w2 ? obs.w1w2.toString().trim() : '';
+        let weatherGroup = '';
+
+        // Only code the group if both ww and w1w2 exist
+        if (ww !== '' && w1w2 !== '') {
+        // Ensure ww and w1w2 are two digits each (pad if necessary)
+        ww = ww.padStart(2, '0');
+        w1w2 = w1w2.padStart(2, '0');
+
+        weatherGroup = `7${ww}${w1w2}`;
+        }
+        document.getElementById('7wwW1W2').value = weatherGroup;
 
         let nh = obs.nh;
         let cl = obs.cl;
@@ -816,8 +917,9 @@
         } else {
             hCode = 50 + Math.round(height / 1000);
         }
+        const hCodeStr = hCode.toString().padStart(2, '0');
 
-        return `8${ns}${c}${hCode}`;
+        return `8${ns}${c}${hCodeStr}`;
         }
 
         const cloudGroups = [];
