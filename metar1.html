@@ -698,85 +698,117 @@
     </footer>
 
     <script>
-      let dateTimeCode = ''; // declare globally
-      function codeCloudHeight(heightFeet) {
-        if (!heightFeet || isNaN(heightFeet)) return '';
-        const heightHundreds = Math.round(heightFeet / 100);
-        return String(heightHundreds).padStart(3, '0');
-      }
-      async function populateMetarFromObservation() {
-        try {
-          const response = await fetch('https://wxbackend-production.up.railway.app/api/latest-observation');
-          if (!response.ok) throw new Error("Failed to fetch latest observation");
-          const obs = await response.json();
+// Global variable to store dateTimeCode
+let dateTimeCode = '';
 
-          // Populate fields
-            const obsDate = obs.date;
-            const obsTime = obs.time;
-            dateTimeCode = formatObservationHeader(obsDate, obsTime);
-          const baseHeader = document.getElementById('header').value.trim();
-          const finalHeader = `${baseHeader} ${dateTimeCode}`;
-          document.getElementById('header').value = finalHeader;
-          document.getElementById('obsTime').value = `${dateTimeCode}`;
-          document.getElementById('wind').value = obs.wind || '';
-          const vis = parseFloat(obs.visibility);
-          document.getElementById('visibility').value =
-            !isNaN(vis) ? (vis >= 10000 ? 9999 : vis) : '';
-          document.getElementById('weather').value = obs.weather || '';
-          document.getElementById('lowCloudHeight').value = codeCloudHeight(obs.h1) || '';
-          document.getElementById('mediumCloudHeight').value = codeCloudHeight(obs.h2) || '';
-          document.getElementById('highCloudHeight').value = codeCloudHeight(obs.h3) || '';
-          document.getElementById('additionalCloudHeight').value = codeCloudHeight(obs.h4) || '';
-          document.getElementById('tempDew').value =`${Math.round(obs.dry_bulb)}/${Math.round(obs.dew_point)}`;
-          document.getElementById('qnh').value = obs.qnh ? Math.floor(obs.qnh) : '';
-          document.getElementById('recentWeather').value = obs.r_wx || '';
-          
-          // Optional: auto-generate after populating
-          // generateActualsReport();
+// Helper: convert height in feet to 100s of feet code (e.g., 1800ft → "018")
+function codeCloudHeight(heightFeet) {
+  if (!heightFeet || isNaN(heightFeet)) return '';
+  const heightHundreds = Math.round(heightFeet / 100);
+  return String(heightHundreds).padStart(3, '0');
+}
 
-        } catch (err) {
-          console.error("Error loading observation data:", err);
-          alert("Could not load latest observation data.");
-        }
-      }
-      function formatObservationHeader(dateStr, timeStr) {
-        const date = new Date(`${dateStr}T${timeStr}Z`);
-        const day = String(date.getUTCDate()).padStart(2, '0');
-        const hours = String(date.getUTCHours()).padStart(2, '0');
-        const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-        return `${day}${hours}${minutes}`;
-      }
-      
-    // Generate METAR Report
-    function generateMetarReport() {
-        const fields = [
-            document.getElementById('typeofmessage').value,
-            document.getElementById('stationIndicator').value,
-            `${document.getElementById('obsTime').value}Z`,
-            `${document.getElementById('wind').value}KT`,
-            document.getElementById('visibility').value,
-            document.getElementById('rvr').value,
-            document.getElementById('weather').value,
-        ];
-    
-        const cloudFields = [
-            document.getElementById('lowCloud').value ? `${document.getElementById('lowCloud').value}${document.getElementById('lowCloudHeight').value}` : "",
-            document.getElementById('mediumCloud').value ? `${document.getElementById('mediumCloud').value}${document.getElementById('mediumCloudHeight').value}` : "",
-            document.getElementById('highCloud').value ? `${document.getElementById('highCloud').value}${document.getElementById('highCloudHeight').value}` : "",
-            document.getElementById('Cloud').value ? `${document.getElementById('Cloud').value}${document.getElementById('additionalCloudHeight').value}` : "",
-        ].filter(value => value.trim() !== "");
-    
-        const fullFields = fields.concat(cloudFields, [
-            document.getElementById('tempDew').value,
-            `Q${document.getElementById('qnh').value}`,
-            document.getElementById('recentWeather').value ? `RE${document.getElementById('recentWeather').value}` : ""
-        ]);
-    
-        const metarReport = fullFields.filter(value => value.trim() !== "").join(" ") + "=";
-        const header = document.getElementById('header').value;
-        document.getElementById('metarOutput').innerText = `${header}\n${metarReport}`;
-    }
-    
+// Helper: map oktas (ns1–ns4) to METAR cloud code
+function getCloudCode(oktas) {
+  if (oktas >= 1 && oktas <= 2) return "FEW";
+  if (oktas >= 3 && oktas <= 4) return "SCT";
+  if (oktas >= 5 && oktas <= 7) return "BKN";
+  if (oktas === 8) return "OVC";
+  return ""; // clear or none
+}
+
+// Helper: fill ns fields and select dropdowns
+function populateCloudsFromObservation(obs) {
+  const cloudPairs = [
+    { ns: "ns1", select: "lowCloud", height: "lowCloudHeight", value: obs.ns1, h: obs.h1 },
+    { ns: "ns2", select: "mediumCloud", height: "mediumCloudHeight", value: obs.ns2, h: obs.h2 },
+    { ns: "ns3", select: "highCloud", height: "highCloudHeight", value: obs.ns3, h: obs.h3 },
+    { ns: "ns4", select: "Cloud", height: "additionalCloudHeight", value: obs.ns4, h: obs.h4 }
+  ];
+
+  cloudPairs.forEach(layer => {
+    const code = getCloudCode(parseInt(layer.value));
+    const select = document.getElementById(layer.select);
+    const heightInput = document.getElementById(layer.height);
+
+    if (select) select.value = code || "";
+    if (heightInput) heightInput.value = codeCloudHeight(layer.h) || "";
+  });
+}
+
+// Fetch latest observation and populate all fields
+async function populateMetarFromObservation() {
+  try {
+    const response = await fetch('https://wxbackend-production.up.railway.app/api/latest-observation');
+    if (!response.ok) throw new Error("Failed to fetch latest observation");
+    const obs = await response.json();
+
+    // Store main date/time info
+    const obsDate = obs.date;
+    const obsTime = obs.time;
+    dateTimeCode = formatObservationHeader(obsDate, obsTime);
+    const baseHeader = document.getElementById('header').value.trim();
+    const finalHeader = `${baseHeader} ${dateTimeCode}`;
+
+    // Basic field population
+    document.getElementById('header').value = finalHeader;
+    document.getElementById('obsTime').value = `${dateTimeCode}`;
+    document.getElementById('wind').value = obs.wind || '';
+    const vis = parseFloat(obs.visibility);
+    document.getElementById('visibility').value = !isNaN(vis) ? (vis >= 10000 ? 9999 : vis) : '';
+    document.getElementById('weather').value = obs.weather || '';
+    document.getElementById('tempDew').value = `${Math.round(obs.dry_bulb)}/${Math.round(obs.dew_point)}`;
+    document.getElementById('qnh').value = obs.qnh ? Math.floor(obs.qnh) : '';
+    document.getElementById('recentWeather').value = obs.r_wx || '';
+
+    // Populate cloud layers (NsNsNshshshs logic)
+    populateCloudsFromObservation(obs);
+
+  } catch (err) {
+    console.error("Error loading observation data:", err);
+    alert("Could not load latest observation data.");
+  }
+}
+
+// Format obs header date/time → e.g. 102330
+function formatObservationHeader(dateStr, timeStr) {
+  const date = new Date(`${dateStr}T${timeStr}Z`);
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const hours = String(date.getUTCHours()).padStart(2, '0');
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+  return `${day}${hours}${minutes}`;
+}
+
+// Generate the METAR Report text
+function generateMetarReport() {
+  const fields = [
+    document.getElementById('typeofmessage').value,
+    document.getElementById('stationIndicator').value,
+    `${document.getElementById('obsTime').value}Z`,
+    `${document.getElementById('wind').value}KT`,
+    document.getElementById('visibility').value,
+    document.getElementById('rvr').value,
+    document.getElementById('weather').value,
+  ];
+
+  const cloudFields = [
+    document.getElementById('lowCloud').value ? `${document.getElementById('lowCloud').value}${document.getElementById('lowCloudHeight').value}` : "",
+    document.getElementById('mediumCloud').value ? `${document.getElementById('mediumCloud').value}${document.getElementById('mediumCloudHeight').value}` : "",
+    document.getElementById('highCloud').value ? `${document.getElementById('highCloud').value}${document.getElementById('highCloudHeight').value}` : "",
+    document.getElementById('Cloud').value ? `${document.getElementById('Cloud').value}${document.getElementById('additionalCloudHeight').value}` : "",
+  ].filter(value => value.trim() !== "");
+
+  const fullFields = fields.concat(cloudFields, [
+    document.getElementById('tempDew').value,
+    `Q${document.getElementById('qnh').value}`,
+    document.getElementById('recentWeather').value ? `RE${document.getElementById('recentWeather').value}` : ""
+  ]);
+
+  const metarReport = fullFields.filter(value => value.trim() !== "").join(" ") + "=";
+  const header = document.getElementById('header').value;
+  document.getElementById('metarOutput').innerText = `${header}\n${metarReport}`;
+}
+
         // Save to MongoDB Database
         async function saveToDatabase() {
     const fullReport = document.getElementById('metarOutput').innerText;

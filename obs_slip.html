@@ -205,6 +205,47 @@
     box-shadow: 0 0 5px rgba(25,135,84,.5);
   }
 
+
+    h2, h4 {
+      font-weight: 700;
+    }
+
+    .form-label {
+      font-weight: 600;
+    }
+
+    input.form-control {
+      font-size: 0.95rem;
+    }
+
+    .custom-btn {
+        width: 180px;
+        height: 45px;
+        font-size: 15px;
+        border-radius: 8px;
+        font-weight: 500;
+}
+
+      /* Smaller screens */
+    @media (max-width: 768px) {
+      h2, h4, h5 {
+        text-align: center;
+        font-size: 1rem;
+      }
+      .form-label {
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .table-responsive {
+        font-size: 0.85rem;
+      }
+      button.btn {
+        width: 100%;
+      }
+    }
+
     </style>
 </head>
 <body>
@@ -342,270 +383,239 @@
             </div>
         </div>
     </nav>
-    <div class="container my-4 bg-light">
-        <h2 class="text-center text-primary mb-3 mt-3">KENYA METEOROLOGICAL DEPARTMENT</h2>
-        <h4 class="text-center mb-3">Observation Slip (Form 393 Rev. 9/2011)</h4>
-        
-        <form id="obsForm" >
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <label class="form-label">Time (GMT)</label>
-                    <input type="time" name="time" class="form-control" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Date</label>
-                    <input type="date" name="date" class="form-control" required>
-                </div>
-            </div>
+  <div class="container my-4 p-4 bg-light rounded shadow-sm">
+    <h2 class="text-center text-primary mb-3">KENYA METEOROLOGICAL DEPARTMENT</h2>
+    <h4 class="text-center mb-4">Observation Slip (Form 393 Rev. 9/2011)</h4>
+    
+    <form id="obsForm">
+      <!-- Header -->
+      <div class="row mb-3 align-items-end">
+        <div class="col-md-4 col-12">
+          <label class="form-label">Time (GMT)</label>
+          <input type="time" id="obsTime" name="time" class="form-control" required>
+        </div>
+        <div class="col-md-4 col-12">
+          <label class="form-label">Date</label>
+          <input type="date" id="obsDate" name="date" class="form-control" required>
+        </div>
+        <div class="col-md-4 col-12 d-flex justify-content-start gap-2 mt-3 mt-md-0 text-white">
+      <button type="button" id="refreshBtn" class="btn btn-success custom-btn">
+          <i class="fas fa-plus"></i> New Observation
+      </button>
+      <button type="button" id="loadPrevBtn" class="btn btn-primary custom-btn">
+          <i class="fas fa-download"></i> Load Previous
+      </button>
+  </div>
+      </div>
 
-            <h5 class="mt-4">a) CLOUDS</h5>
-            <div class="table-responsive">
-                <!--
-                <table class="table table-bordered table-sm">
-                    <thead>
-                        <tr>
-                            <th>Level</th><th>Type</th><th>Oktas</th><th>Height</th><th>CL Code</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Low1</td>
-                            <td><input name="low_type1" class="form-control"></td>
-                            <td><input name="low_oktas1" class="form-control"></td>
-                            <td><input name="low_height1" class="form-control"></td>
-                            <td><input name="low_cl1" class="form-control"></td>
-                        </tr>
-                        <tr><td>Low2</td>
-                            <td><input name="low_type2" class="form-control"></td>
-                            <td><input name="low_oktas2" class="form-control"></td>
-                            <td><input name="low_height2" class="form-control"></td>
-                            <td><input name="low_cl2" class="form-control"></td>
-                        </tr>
-                        <tr><td>Low3</td>
-                            <td><input name="low_type3" class="form-control"></td>
-                            <td><input name="low_oktas3" class="form-control"></td>
-                            <td><input name="low_height3" class="form-control"></td>
-                            <td><input name="low_cl3" class="form-control"></td>
-                        </tr>
-                        <tr><td>Medium1</td>
-                            <td><input name="med_type1" class="form-control"></td>
-                            <td><input name="med_oktas1" class="form-control"></td>
-                            <td><input name="med_height1" class="form-control"></td>
-                            <td><input name="med_cl1" class="form-control"></td>
-                        </tr>
-                        <tr><td>Medium2</td>
-                            <td><input name="med_type2" class="form-control"></td>
-                            <td><input name="med_oktas2" class="form-control"></td>
-                            <td><input name="med_height2" class="form-control"></td>
-                            <td><input name="med_cl2" class="form-control"></td>
-                        </tr>
-                        <tr><td>Medium3</td>
-                            <td><input name="med_type3" class="form-control"></td>
-                            <td><input name="med_oktas3" class="form-control"></td>
-                            <td><input name="med_height3" class="form-control"></td>
-                            <td><input name="med_cl3" class="form-control"></td>
-                        </tr>
-                        <tr><td>High1</td>
-                            <td><input name="high_type1" class="form-control"></td>
-                            <td><input name="high_oktas1" class="form-control"></td>
-                            <td><input name="high_height1" class="form-control"></td>
-                            <td><input name="high_cl1" class="form-control"></td>
-                        </tr>
-                        <tr><td>High2</td>
-                            <td><input name="high_type2" class="form-control"></td>
-                            <td><input name="high_oktas2" class="form-control"></td>
-                            <td><input name="high_height2" class="form-control"></td>
-                            <td><input name="high_cl2" class="form-control"></td>
-                        </tr>
-                        <tr><td>High3</td>
-                            <td><input name="high_type3" class="form-control"></td>
-                            <td><input name="high_oktas3" class="form-control"></td>
-                            <td><input name="high_height3" class="form-control"></td>
-                            <td><input name="high_cl3" class="form-control"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            -->
-                <td rowspan="8" colspan="9">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="title">Group8</div>
-                                </td>
-                                <td><input name="n" class="form-control" placeholder="N"></td>
-                                <td>
-                                    <input name="nh" class="form-control" placeholder="8Nh">
-                                </td>
-                                <td>
-                                    <input name="cl" class="form-control" placeholder="CL">
-                                </td>
-                                <td>
-                                    <input name="cm" class="form-control" placeholder="CM">
-                                </td>
-                                <td>
-                                    <input name="ch" class="form-control" placeholder="CH">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <input name="ns1" class="form-control" placeholder="8Ns">
-                                </td>
-                                <td>
-                                    <input name="c1" class="form-control" placeholder="C">
-                                </td>
-                                <td>
-                                    <input name="h1" class="form-control" placeholder="hshs(1)">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <input name="ns2" class="form-control" placeholder="8Ns">
-                                </td>
-                                <td>
-                                    <input name="c2" class="form-control" placeholder="C"></div>
-                                </td>
-                                <td>
-                                    <input name="h2" class="form-control" placeholder="hshs(2)"></div>
-                                </td>
-                            </tr>
-                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <input name="ns3" class="form-control" placeholder="8Ns"></div>
-                                </td>
-                                <td>
-                                    <input name="c3" class="form-control" placeholder="C"></div>
-                                </td>
-                                <td>
-                                    <input name="h3" class="form-control" placeholder="hshs(3)"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <input name="ns4" class="form-control" placeholder="8Ns"></div>
-                                </td>
-                                <td>
-                                    <input name="c4" class="form-control" placeholder="C"></div>
-                                </td>
-                                <td>
-                                    <input name="h4" class="form-control" placeholder="hshs(4)"></div>
-                                </td>
-                            </tr>                           
-                        </tbody>
-                    </table>
-                </td>
-            </div>
+      <!-- a) CLOUDS -->
+      <div class="card mb-3">
+        <div class="card-header bg-primary text-white" data-bs-toggle="collapse" data-bs-target="#cloudsSection" style="cursor:pointer;">
+          a) CLOUDS
+        </div>
+        <div id="cloudsSection" class="collapse show card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+              <tbody>
+                <tr>
+                  <td><div class="fw-bold">Group8</div></td>
+                  <td><input name="n" class="form-control" placeholder="N"></td>
+                  <td><input name="nh" class="form-control" placeholder="8Nh"></td>
+                  <td><input name="cl" class="form-control" placeholder="CL"></td>
+                  <td><input name="cm" class="form-control" placeholder="CM"></td>
+                  <td><input name="ch" class="form-control" placeholder="CH"></td>
+                </tr>
+                <tr>
+                  <td colspan="3"></td>
+                  <td><input name="ns1" class="form-control" placeholder="8Ns"></td>
+                  <td><input name="c1" class="form-control" placeholder="C"></td>
+                  <td><input name="h1" class="form-control" placeholder="hshs(1)"></td>
+                </tr>
+                <tr>
+                  <td colspan="3"></td>
+                  <td><input name="ns2" class="form-control" placeholder="8Ns"></td>
+                  <td><input name="c2" class="form-control" placeholder="C"></td>
+                  <td><input name="h2" class="form-control" placeholder="hshs(2)"></td>
+                </tr>
+                <tr>
+                  <td colspan="3"></td>
+                  <td><input name="ns3" class="form-control" placeholder="8Ns"></td>
+                  <td><input name="c3" class="form-control" placeholder="C"></td>
+                  <td><input name="h3" class="form-control" placeholder="hshs(3)"></td>
+                </tr>
+                <tr>
+                  <td colspan="3"></td>
+                  <td><input name="ns4" class="form-control" placeholder="8Ns"></td>
+                  <td><input name="c4" class="form-control" placeholder="C"></td>
+                  <td><input name="h4" class="form-control" placeholder="hshs(4)"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-            <div class="row mb-3">
-                <div class="col-md-3">
-                    <label>Cloud Searchlight Alidade Reading (°)</label>
-                    <input name="alidade" class="form-control" placeholder="Alidade Reading">
-                </div>
-                <div class="col-md-3">
-                    <label>Rainfall (mm)</label>
-                    <input name="rainfall" class="form-control" placeholder="actual rainfall">
-                </div>
-                <div class="col-md-3">
-                    <label>W/Rainfall (mm)</label>
-                    <input name="w_rf" class="form-control" placeholder="weekly rainfall">
-                </div>
-                <div class="col-md-3">
-                    <label>R/H(%)</label>
-                    <input name="r_h" class="form-control" placeholder="relative humidity">
-                </div>
+          <div class="row mb-3">
+            <div class="col-md-3 col-12">
+              <label>Cloud Searchlight Alidade Reading (°)</label>
+              <input name="alidade" class="form-control" placeholder="Alidade Reading">
             </div>
+            <div class="col-md-2 col-12">
+              <label>Rainfall (mm)</label>
+              <input name="rainfall" class="form-control" placeholder="actual rainfall">
+            </div>
+            <div class="col-md-2 col-12">
+              <label>W/Rainfall (mm)</label>
+              <input name="w_rf" class="form-control" placeholder="weekly rainfall">
+            </div>
+            <div class="col-md-2 col-12">
+              <label>G/Min</label>
+              <input name="g_min" class="form-control" placeholder="G/MIN reading">
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <h5>b) SCREEN</h5>
-            <div class="row mb-3">
-                <div class="col"><label>Dry Bulb</label><input name="dry_bulb" class="form-control" placeholder="DB reading"></div>
-                <div class="col"><label>Wet Bulb</label><input name="wet_bulb" class="form-control" placeholder="WB reading"></div>
-                <div class="col"><label>Dew Point</label><input name="dew_point" class="form-control" placeholder="DW reading"></div>
-                <div class="col"><label>Max Temp</label><input name="max_temp" class="form-control" placeholder="Tx reading"></div>
-                <div class="col"><label>Min Temp</label><input name="min_temp" class="form-control" placeholder="Tn reading"></div>
-                <div class="col"><label>G/Min</label><input name="g_min" class="form-control" placeholder="G/MIN reading"></div>
+      <!-- b) SCREEN -->
+      <div class="card mb-3">
+        <div class="card-header bg-success text-white" data-bs-toggle="collapse" data-bs-target="#screenSection" style="cursor:pointer;">
+          b) SCREEN
+        </div>
+        <div id="screenSection" class="collapse show card-body">
+          <div class="row mb-3">
+            <div class="col"><label>Dry Bulb</label><input name="dry_bulb" class="form-control" placeholder="DB reading"></div>
+            <div class="col"><label>Wet Bulb</label><input name="wet_bulb" class="form-control" placeholder="WB reading"></div>
+            <div class="col"><label>Dew Point</label><input name="dew_point" class="form-control" placeholder="autocalculated" readonly style="background-color:#f8f9fa; cursor:not-allowed;"></div>
+            <div class="col"><label>R/H(%)</label><input name="r_h" class="form-control" placeholder="autocalculated" readonly style="background-color:#f8f9fa; cursor:not-allowed;"></div>
+            <div class="col"><label>Max Temp</label><input name="max_temp" class="form-control" placeholder="Tx reading"></div>
+            <div class="col"><label>Min Temp</label><input name="min_temp" class="form-control" placeholder="Tn reading"></div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-md-2 col-6">
+              <label>r/h(%)</label>
+              <input id="rh_dw" name="rh_dw" class="form-control" placeholder="enter r/h to calc DW">
             </div>
+            <div class="col-md-2 col-6">
+              <label>dp</label>
+              <input name="dw_wb" class="form-control" placeholder="enter dw">
+            </div>
+            <div class="col-md-2 col-6">
+              <label>calc WB</label>
+              <input name="wet_bulb2" class="form-control" placeholder="wb" readonly style="background-color:#f8f9fa; cursor:not-allowed;">
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <h5>c) OUTDOOR</h5>
-            <div class="row mb-3">
-                <div class="col-md-2">
-                    <label>Present Weather</label>
-                    <input name="weather" class="form-control" placeholder="enter present wx">
-                </div>
-                    <div class="col-md-1">
-                    <label>wwCode</label>
-                    <input name="ww" class="form-control" placeholder="ww">
-                </div>
-                <div class="col-md-2">
-                    <label>Past Weather</label>
-                    <input name="r_wx" class="form-control" placeholder="enter past wx">
-                </div>
-                <div class="col-md-1">
-                    <label>W1W2Code</label>
-                    <input name="w1w2" class="form-control" placeholder="W1W2">
-                </div>
-                <div class="col-md-2">
-                    <label>Visibility</label>
-                    <input name="visibility" class="form-control" placeholder="visibility(m)">
-                </div>
-                <div class="col-md-2">
-                    <label>Wind (kts)</label>
-                    <input name="wind" class="form-control" placeholder="dddff(kt)">
-                </div>
-            </div>
+      <!-- c) OUTDOOR -->
+      <div class="card mb-3">
+        <div class="card-header bg-warning" data-bs-toggle="collapse" data-bs-target="#outdoorSection" style="cursor:pointer;">
+          c) OUTDOOR
+        </div>
+        <div id="outdoorSection" class="collapse show card-body">
+          <div class="row mb-3">
+            <div class="col-md-2 col-6"><label>Visibility</label><input name="visibility" class="form-control" placeholder="visibility(m)"></div>
+            <div class="col-md-2 col-6"><label>Wind (kts)</label><input name="wind" class="form-control" placeholder="dddff(kt)"></div>
+            <div class="col-md-2 col-6"><label>Present Weather</label><input name="weather" class="form-control" placeholder="enter present wx"></div>
+            <div class="col-md-1 col-6"><label>wwCode</label><input name="ww" class="form-control" placeholder="ww"></div>
+            <div class="col-md-2 col-6"><label>Past Weather</label><input name="r_wx" class="form-control" placeholder="enter past wx"></div>
+            <div class="col-md-1 col-6"><label>W1W2Code</label><input name="w1w2" class="form-control" placeholder="W1W2"></div>
 
-            <h5>d) OFFICE</h5>
-            <div class="row mb-3">
-                <div class="col-md-2"><label>Pr. As Read (mb)</label><input id="pr_read" name="pr_read" type="number" step="0.1" class="form-control" placeholder="enter pressure as read"></div>
-                <div class="col-md-2"><label>Correction (mb)</label><input id="correction" name="correction" type="number" step="0.1" class="form-control" placeholder="enter correction"></div>
-                <div class="col-md-2"><label>QFE (mb)</label><input id="qfe" name="qfe" class="form-control" placeholder="auto calculated" readonly></div>
-                <div class="col-md-2"><label>QNH (mb)</label><input name="qnh" class="form-control" placeholder="enter QNH (mb)"></div>
-                <div class="col-md-2"><label>QNE (gpm)</label><input name="qne" class="form-control" placeholder="geopotential height"></div>
-            </div>
+          </div>
+        </div>
+      </div>
 
-            <h5>e) ENCLOSURE</h5>
-            <div class="row mb-2">
-                <div class="col-md-3"><label>Evaporation Pan (+/- Cups)</label><input name="evap_pan" class="form-control" placeholder="enter No.cup(s)(+/-)"></div>
-                <div class="col-md-2"><label>Evaporation(mm)</label><input name="e_p" class="form-control" placeholder="E"></div>
-                <div class="col-md-3"><label>cupcounter Anemometer(reading)</label><input name="wind_run" class="form-control" placeholder="enter W/R as Read"></div>
-                <div class="col-md-2"><label>Wind Run(km/day)</label><input name="w_run" class="form-control" placeholder="W/R"></div>
-                <div class="col-md-2"><label>Gunn-Bellani (Reading)</label><input name="gunn_bellani" class="form-control" placeholder="enter Gunn-Bellani Reading"></div>
-            </div>
+      <!-- d) OFFICE -->
+      <div class="card mb-3">
+        <div class="card-header bg-info text-white" data-bs-toggle="collapse" data-bs-target="#officeSection" style="cursor:pointer;">
+          d) OFFICE
+        </div>
+        <div id="officeSection" class="collapse show card-body">
+          <div class="row mb-3">
+            <div class="col-md-2 col-6"><label>Pr. As Read (mb)</label><input id="pr_read" name="pr_read" type="number" step="0.1" class="form-control" placeholder="enter pressure as read"></div>
+            <div class="col-md-2 col-6"><label>Correction (mb)</label><input id="correction" name="correction" type="number" step="0.1" class="form-control" placeholder="enter correction"></div>
+            <div class="col-md-2 col-6"><label>QFE (mb)</label><input id="qfe" name="qfe" class="form-control" placeholder="auto calculated" readonly style="background-color:#f8f9fa; cursor:not-allowed;"></div>
+            <div class="col-md-2 col-6"><label>QNH (mb)</label><input name="qnh" class="form-control" placeholder="enter QNH (mb)"></div>
+            <div class="col-md-2 col-6"><label>QNE (gpm)</label><input name="qne" class="form-control" placeholder="geopotential height"></div>
+          </div>
+        </div>
+      </div>
 
-            <div class="text-end">
-                <button type="submit" class="btn btn-primary mt-1 mb-2">Save Observation</button>
-            </div>
-        </form>
-    </div>
+      <!-- e) ENCLOSURE -->
+      <div class="card mb-3">
+        <div class="card-header bg-secondary text-white" data-bs-toggle="collapse" data-bs-target="#enclosureSection" style="cursor:pointer;">
+          e) ENCLOSURE
+        </div>
+        <div id="enclosureSection" class="collapse show card-body">
+          <div class="row mb-2">
+            <div class="col-md-3 col-12"><label>Evaporation Pan (+/- Cups)</label><input name="evap_pan" class="form-control" placeholder="enter No.cup(s)(+/-)"></div>
+            <div class="col-md-2 col-12"><label>Evaporation(mm)</label><input name="e_p" class="form-control" placeholder="E" readonly style="background-color:#f8f9fa; cursor:not-allowed;"></div>
+            <div class="col-md-3 col-12"><label>Cup Counter Anemometer(reading)</label><input name="wind_run" class="form-control" placeholder="enter W/R as Read"></div>
+            <div class="col-md-2 col-12"><label>Wind Run(km/day)</label><input name="w_run" class="form-control" placeholder="W/R" readonly style="background-color:#f8f9fa; cursor:not-allowed;"></div>
+            <div class="col-md-2 col-12"><label>Gunn-Bellani (Reading)</label><input name="gunn_bellani" class="form-control" placeholder="enter Gunn-Bellani Reading"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-end">
+        <button type="submit" class="btn btn-primary mt-1 mb-2 px-4">Save Observation</button>
+      </div>
+    </form>
+  </div>
 
     <script>
-document.getElementById('obsForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
+        document.getElementById('obsForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-  const formData = new FormData(e.target);
-  const data = Object.fromEntries(formData.entries());
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
 
-  const response = await fetch('https://wxbackend-production.up.railway.app/save-observation', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
+        const response = await fetch('https://wxbackend-production.up.railway.app/save-observation', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
 
-  const result = await response.json();
-  alert(result.message || 'Saved!');
-});
-</script>
-<script>
+        const result = await response.json();
+        alert(result.message || 'Saved!');
+        });
+        </script>
+        <script>
+        document.getElementById('loadPrevBtn').addEventListener('click', async () => {
+        if (!confirm('Load the most recent saved observation?')) return;
+
+        try {
+            const response = await fetch('https://wxbackend-production.up.railway.app/api/latest-observation');
+            if (!response.ok) throw new Error('No data found');
+            const data = await response.json();
+
+            // Loop through each form field and fill it
+            const form = document.getElementById('obsForm');
+            Object.keys(data).forEach(key => {
+            const field = form.querySelector(`[name="${key}"]`);
+            if (field) field.value = data[key];
+            });
+
+            alert('Previous observation loaded successfully.');
+        } catch (error) {
+            alert('Failed to load data: ' + error.message);
+        }
+        });
+
+        document.getElementById('refreshBtn').addEventListener('click', function() {
+        if (confirm('Start a new observation? This will clear all entered data.')) {
+            const form = document.getElementById('obsForm');
+            form.reset();
+
+            // Reset readonly fields too
+            form.querySelectorAll('input[readonly]').forEach(field => field.value = '');
+
+            // Set current UTC date and time
+            const now = new Date();
+            const hours = String(now.getUTCHours()).padStart(2, '0');
+            const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+            document.getElementById('obsTime').value = `${hours}:${minutes}`;
+            document.getElementById('obsDate').value = now.toISOString().split('T')[0];
+        }
+        });
     // Function to calculate QFE = PR_READ - CORRECTION
     function calculateQFE() {
     const prRead = parseFloat(document.getElementById('pr_read').value) || 0;
@@ -695,6 +705,91 @@ document.getElementById('obsForm').addEventListener('submit', async (e) => {
         }
     });
     });
+
+function computeHumidityFromWetbulb(T, Tw, P) {
+  T = parseFloat(T);
+  Tw = parseFloat(Tw);
+  P = parseFloat(P);
+
+  if ([T, Tw, P].some(x => isNaN(x))) return null;
+
+  const Es = 6.112 * Math.exp((17.67 * T) / (T + 243.5));
+  const Ew = 6.112 * Math.exp((17.67 * Tw) / (Tw + 243.5));
+  const E = Ew - P * (T - Tw) * 0.00066 * (1 + 0.00115 * Tw);
+  const RH = (E / Es) * 100;
+  const Td = (243.5 * Math.log(E / 6.112)) / (17.67 - Math.log(E / 6.112));
+
+  return { RH, Td };
+}
+
+
+
+
+
+function populateSynopFromObservation() {
+  const dryBulb = document.querySelector('input[name="dry_bulb"]').value;
+  const wetBulb = document.querySelector('input[name="wet_bulb"]').value;
+  const pressure = document.querySelector('input[name="pr_read"]').value;
+  const rhField = document.querySelector('input[name="r_h"]');
+  const rhDw = document.querySelector('input[name="rh_dw"]').value;
+  const calcDp = document.querySelector('input[name="dw_wb"]').value;
+  const dewField = document.querySelector('input[name="dew_point"]');
+
+  // If T, Tw, and P are provided → compute RH and Dew Point
+  if (dryBulb && wetBulb && pressure) {
+    const result = computeHumidityFromWetbulb(dryBulb, wetBulb, pressure);
+    if (result) {
+      rhField.value = result.RH.toFixed(0);
+      dewField.value = result.Td.toFixed(1);
+    }
+  }
+  // Else if T, RH, Dew Point, and P are provided → compute Tw
+  else if (dryBulb && rhDw && calcDp && pressure) {
+    const Tw = computeWetbulbFromHumidity(dryBulb, rhDw, pressure, calcDp);
+    if (Tw !== null && !isNaN(Tw)) {
+      document.querySelector('input[name="wet_bulb2"]').value = Tw.toFixed(1);
+    }
+  }
+}
+
+// --- Compute Wet Bulb using Dry Bulb, RH, Dew Point, and Pressure ---
+function computeWetbulbFromHumidity(T, RH, P, Td) {
+  T = parseFloat(T);
+  RH = parseFloat(RH);
+  P = parseFloat(P);
+  Td = parseFloat(Td);
+
+  if ([T, RH, P, Td].some(x => isNaN(x))) return null;
+
+  // Psychrometric constant (kPa/°C)
+  const gamma = 0.000665 * P;
+
+  // Saturation vapor pressure (kPa)
+  const e_s = 0.6108 * Math.exp((17.27 * T) / (T + 237.3));
+
+  // Actual vapor pressure (from dew point)
+  const e_a = 0.6108 * Math.exp((17.27 * Td) / (Td + 237.3));
+
+  // Stull’s empirical wet-bulb approximation (base)
+  const Tw = T * Math.atan(0.151977 * Math.sqrt(RH + 8.313659))
+           + Math.atan(T + RH)
+           - Math.atan(RH - 1.676331)
+           + 0.00391838 * Math.pow(RH, 1.5) * Math.atan(0.023101 * RH)
+           - 4.686035;
+
+  // Correction using vapor pressure difference
+  const Tw_corrected = Tw - (e_s - e_a) / (gamma * 10);
+  return Tw_corrected;
+}
+
+// --- Automatically trigger when inputs change ---
+document.addEventListener('DOMContentLoaded', function() {
+  const fields = ['dry_bulb', 'wet_bulb', 'pr_read', 'rh_dw', 'dw_wb'];
+  fields.forEach(name => {
+    const el = document.querySelector(`input[name="${name}"]`);
+    if (el) el.addEventListener('input', populateSynopFromObservation);
+  });
+});
         document.addEventListener('DOMContentLoaded', function() {
     // Get current page URL
     const currentPage = window.location.pathname.split('/').pop();
