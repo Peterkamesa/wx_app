@@ -838,6 +838,50 @@
 
         document.getElementById('48hhh/PPPP').value = geopotentialGroup;
 
+        function getRainfallGroup(rainfallStr, obsTime) {
+            if (!rainfallStr) return ""; // no rainfall entered
+
+            const rainfallInput = rainfallStr.trim().toUpperCase();
+
+            // Determine tR based on observation time
+            let tR;
+            switch (obsTime) {
+                case "00:00": tR = 1; break;
+                case "06:00": tR = 4; break;
+                case "12:00": tR = 1; break;
+                case "18:00": tR = 2; break;
+                default: tR = ""; // unknown time
+            }
+
+            // Handle trace or nil
+            if (["T", "TRACE"].includes(rainfallInput)) return `6990${tR}`;
+            if (["0", "0.0", "NIL", ""].includes(rainfallInput)) return "";
+
+            // Convert to number for numeric handling
+            const rain = parseFloat(rainfallInput);
+            if (isNaN(rain)) return ""; // invalid rainfall
+
+            // Determine RRR code
+            let RRR = "";
+            if (rain >= 0.1 && rain <= 0.6) {
+                const tenth = Math.round(rain * 10);
+                RRR = "99" + tenth;
+            } else if (rain >= 0.7 && rain <= 55) {
+                RRR = rain.toFixed(0).padStart(3, "0");
+            } else if (rain >= 60 && rain <= 400) {
+                RRR = String(Math.round(rain / 10) + 50).padStart(3, "0");
+            } else if (rain > 400) {
+                RRR = "098";
+            } else {
+                return ""; // ignore any invalid ranges
+            }
+
+            return `6${RRR}${tR}`;
+            }
+
+            const time = obs.time;
+            document.getElementById("6RRRtR").value = getRainfallGroup(rainfall, time);
+
         // --- Present and Past Weather Group (7wwW1W2) --- //
         let ww = obs.ww ? obs.ww.toString().trim() : '';
         let w1w2 = obs.w1w2 ? obs.w1w2.toString().trim() : '';
