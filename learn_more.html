@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SYNOP — Full Land Station Reference</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --nav-width: 260px;
+      --brand: #0f172a;
+      --accent: #2563eb;
+      --muted: #6b7280;
+      --panel: #f8fafc;
+    }
+    body { background: var(--panel); color: #0b1220; }
+    .hero { background: linear-gradient(135deg,var(--brand),var(--accent)); color: #fff; padding: 2rem; border-radius: .5rem; margin-bottom: 1.25rem; }
+    .sidebar { position: sticky; top: 1rem; max-height: calc(100vh - 2rem); overflow:auto; color: #f8fafc; }
+    .section-title { border-bottom: 3px solid rgba(37,99,235,.12); padding-bottom: .25rem; margin-bottom: .75rem; display:inline-block; }
+    pre { background:#eef2ff; padding:.75rem; border-radius:.4rem; white-space: pre-wrap; word-break: break-word; }
+    table th, table td { vertical-align: middle; }
+    .code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace; font-size: .95em; }
+    footer { margin-top: 2rem; color: var(--muted); font-size: .9rem; }
+    @media (min-width: 992px){
+      main { display: grid; grid-template-columns: var(--nav-width) 1fr; gap: 1.5rem; align-items: start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container my-4">
+
+    <header class="hero text-center">
+      <h1 class="mb-1">SYNOP (FM-12) — Full Land-Station Reference</h1>
+      <p class="mb-0">Complete code tables, group-by-group explanations, examples and decoding guidance for SYNOP land reports.</p>
+    </header>
+
+    <main>
+      <!-- Sidebar navigation -->
+      <nav class="sidebar bg-black text-white p-3 rounded shadow-sm">
+        <h6 class="fw-bold">Quick links</h6>
+        <ul class="nav flex-column small">
+          <li class="nav-item"><a class="nav-link" href="#intro">Intro & Purpose</a></li>
+          <li class="nav-item"><a class="nav-link" href="#format">General format</a></li>
+          <li class="nav-item"><a class="nav-link" href="#section1">Section 1 groups</a></li>
+          <li class="nav-item"><a class="nav-link" href="#ww">Present Weather (ww)</a></li>
+          <li class="nav-item"><a class="nav-link" href="#visibility">Visibility (VV)</a></li>
+          <li class="nav-item"><a class="nav-link" href="#cloud-amount">Cloud amount (N) & cloud types</a></li>
+          <li class="nav-item"><a class="nav-link" href="#cloud-base">Cloud base (h)</a></li>
+          <li class="nav-item"><a class="nav-link" href="#pressure">Pressure groups (3,4,5)</a></li>
+          <li class="nav-item"><a class="nav-link" href="#precip">Precipitation (6RRR tR)</a></li>
+          <li class="nav-item"><a class="nav-link" href="#wind">Wind & i_w</a></li>
+          <li class="nav-item"><a class="nav-link" href="#auto-mann">Automatic vs Manned / missing data</a></li>
+          <li class="nav-item"><a class="nav-link" href="#examples">Worked examples</a></li>
+          <li class="nav-item"><a class="nav-link" href="#sources">Sources & further reading</a></li>
+        </ul>
+      </nav>
+
+      <!-- Content -->
+      <section class="bg-white p-4 rounded shadow-sm">
+
+        <!-- Intro -->
+        <article id="intro" class="mb-4">
+          <h2 class="section-title">Introduction — What is SYNOP?</h2>
+          <p>
+            <strong>SYNOP</strong> (FM-12) is the WMO’s standard numeric code for surface synoptic observations produced by land stations (staffed or automatic). It encodes time, station identifier, wind, visibility, present & past weather, cloud, temperature, pressure, precipitation and more in compact five-character groups that are unambiguous worldwide. The formal specification and code tables are maintained by WMO and published in the Manual on Codes. :contentReference[oaicite:0]{index=0}
+          </p>
+          <p class="small text-muted">This reference focuses on the typical <em>Section 1</em> groups used by land stations and includes the practical WMO tables most frequently used when decoding SYNOP messages. For the complete registry of present-weather terms see WMO code table 4678. :contentReference[oaicite:1]{index=1}</p>
+        </article>
+
+        <!-- Format -->
+        <article id="format" class="mb-4">
+          <h3 class="section-title">General format (compact overview)</h3>
+          <p class="mb-2">A SYNOP message is composed of numbered sections (0–5). The typical land station (standard SYNOP) message starts with the identification/time group followed by the main observation groups (Section 1) — each group is either five characters or an indicator plus four characters:</p>
+          <pre class="code">YY GG i_w  IIiii  iR ix  h  VV  N dd ff  1sTTT  2sTdTdTd  3PPPP  4PPPP  5appp  6RRRtR  7wwW1W2  8NhCLCMCH  9GGgg</pre>
+          <p>Below we step through each of these groups, then provide the full, authoritative code tables used to decode them. Use the sidebar to jump to any code table.</p>
+        </article>
+
+        <!-- Section 1 groups -->
+        <article id="section1" class="mb-4">
+          <h3 class="section-title">Section-1: core groups explained (group-by-group)</h3>
+
+          <h5 class="mt-3">YY GG i_w</h5>
+          <p><strong>YY</strong> = day of month (UTC). <strong>GG</strong> = hour of observation (UTC). <strong>i_w</strong> = wind/wind-unit indicator; it tells how wind speed is encoded and whether speed is in m/s or knots (and whether gusts are included for automatic sensors). See the <em>Wind / i_w</em> section for the <code>i_w</code> table. :contentReference[oaicite:2]{index=2}</p>
+
+          <h5 class="mt-3">IIiii</h5>
+          <p>Station identifier (WMO block and station number).</p>
+
+          <h5 class="mt-3">iR, ix</h5>
+          <p>Indicators that control inclusion of precipitation section (iR) and whether the station is staffed / automatic and whether past weather groups are included (ix). Automatic stations can omit some groups (e.g. past weather) — see the Automatic vs Manned section. :contentReference[oaicite:3]{index=3}</p>
+
+          <h5 class="mt-3">h</h5>
+          <p>Cloud base of lowest cloud seen (coded — table provided below). Use code table 1600/modified tables; 0 = 0–50 m, 1 = 50–100 m, 2 = 100–200 m, etc., 9 = >2500 m / unknown. Source: WMO SYNOP documentation. :contentReference[oaicite:4]{index=4}</p>
+
+          <h5 class="mt-3">VV (visibility)</h5>
+          <p>Horizontal visibility in coded form. Common practice: codes for 000-999 representing particular ranges or exact metre values; table below summarises the widely used mapping for land SYNOP. See the WMO tables for full precision. :contentReference[oaicite:5]{index=5}</p>
+
+          <h5 class="mt-3">N (cloud amount)</h5>
+          <p>Amount of sky covered by cloud in oktas (0–8), using WMO code table 2700. The digit corresponds to the number of oktas; when no low cloud is present the amount of medium cloud is used in that position. See the Cloud Amount table below. :contentReference[oaicite:6]{index=6}</p>
+
+          <h5 class="mt-3">dd ff</h5>
+          <p>Wind direction in tens of degrees (dd) and wind speed (ff) using units specified by i_w. "00" for calm direction. See Wind table. :contentReference[oaicite:7]{index=7}</p>
+
+          <h5 class="mt-3">Groups 1 & 2 — temperature and dew point</h5>
+          <p><strong>1sTTT</strong> — air temperature: sign (s) and three digits (TTT) in tenths °C (encode negatives with leading 1 or '9' depending on practice); <strong>2sTdTdTd</strong> — dew point similarly. Table & examples below. :contentReference[oaicite:8]{index=8}</p>
+
+          <h5 class="mt-3">Groups 3 & 4 — station and sea-level pressure</h5>
+          <p><strong>3PPPP</strong> — station pressure in tenths of hPa (encode thousands as required); <strong>4PPPP</strong> — mean sea level pressure. See Pressure section. :contentReference[oaicite:9]{index=9}</p>
+
+          <h5 class="mt-3">Group 5 — pressure tendency (5appp)</h5>
+          <p>Indicator <strong>a</strong> describes the character of pressure change (rising, falling, steady, etc.) and <strong>ppp</strong> gives amount of change in tenths of hPa over the past 3 hours. Table below. :contentReference[oaicite:10]{index=10}</p>
+
+          <h5 class="mt-3">Group 6 — precipitation (6RRRtR)</h5>
+          <p><strong>RRR</strong> is the precipitation amount (mm) over the period indicated by <strong>tR</strong> (e.g. 1=1h, 6=6h). See precipitation table below. :contentReference[oaicite:11]{index=11}</p>
+
+          <h5 class="mt-3">Group 7 — present & past weather (7wwW1W2)</h5>
+          <p><strong>ww</strong> = present weather code (table 4678); <strong>W1</strong> and <strong>W2</strong> = past weather codes. These tables are large and authoritative — the WMO registry is the canonical source (we include a practical subset below and link to WMO full registry). :contentReference[oaicite:12]{index=12}</p>
+
+          <h5 class="mt-3">Group 8 — cloud types & amounts (8NhCLCMCH)</h5>
+          <p>Nh — amount of low cloud (or medium if none). CL/CM/CH give cloud genera/type codes for low/medium/high levels. Table below. :contentReference[oaicite:13]{index=13}</p>
+
+          <h5 class="mt-3">Group 9 — actual minute (9GGgg)</h5>
+          <p>Used when actual observation minute differs more than the allowed threshold from nominal hour (GGgg = hhmm). Optional. :contentReference[oaicite:14]{index=14}</p>
+        </article>
+
+        <!-- Present Weather Table -->
+        <article id="ww" class="mb-4">
+          <h3 class="section-title">Present Weather — WMO code table 4678 (selected & commonly used codes)</h3>
+          <p>
+            The <strong>ww</strong> two-digit group encodes present phenomena (intensity, descriptor, precipitation, obscuration, other). Below is a practical subset of the WMO table for the most common SYNOP values; for the full, authoritative list use the WMO registry. :contentReference[oaicite:15]{index=15}
+          </p>
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead class="table-light"><tr><th>Code (ww)</th><th>Meaning</th></tr></thead>
+              <tbody>
+                <tr><td>00</td><td>Clear (no significant weather)</td></tr>
+                <tr><td>01</td><td>Clouds, no significant precipitation (rarely used)</td></tr>
+                <tr><td>02</td><td>Fog (shallow) or mist (context dependent)</td></tr>
+                <tr><td>03</td><td>Drizzle (DZ)</td></tr>
+                <tr><td>04</td><td>Rain (RA)</td></tr>
+                <tr><td>05</td><td>Snow (SN)</td></tr>
+                <tr><td>06</td><td>Rain and snow mixed (RASN)</td></tr>
+                <tr><td>07</td><td>Hail (GR) or snow pellets (GS) — see full registry</td></tr>
+                <tr><td>10</td><td>Fog (FG) — visibility reduced to <1 km</td></tr>
+                <tr><td>30</td><td>Sandstorm (SS) / Duststorm (DS) — severe</td></tr>
+                <tr><td>40</td><td>Thunderstorm (TS) — without/with precipitation variants</td></tr>
+                <tr><td>45</td><td>Thunderstorm with hail (TSGR)</td></tr>
+                <tr><td>50</td><td>Drifting snow / blowing snow</td></tr>
+                <tr><td>60</td><td>Freezing precipitation (FZRA, FZDZ)</td></tr>
+                <tr><td>90–99</td><td>Special / Sensor-specific codes and aggregated forms (see WMO registry)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="small text-muted">Note: the mapping above is a compact selection. The WMO registry contains many compound terms (e.g. <code>+TSGRRA</code>) formed from descriptor + precipitation + intensity; see the official table for the full list and exact textual descriptions. :contentReference[oaicite:16]{index=16}</p>
+        </article>
+
+        <!-- Visibility -->
+        <article id="visibility" class="mb-4">
+          <h3 class="section-title">Visibility code (VV) — common mapping</h3>
+          <p>
+            The SYNOP <strong>VV</strong> group encodes horizontal visibility. Different national practices exist, but the commonly used ranges are shown below (this is the operational mapping used by many NMHS and contained in WMO guidance). For full regulatory detail consult the WMO tables. :contentReference[oaicite:17]{index=17}
+          </p>
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead class="table-light"><tr><th>VV</th><th>Visibility (metres)</th></tr></thead>
+              <tbody>
+                <tr><td>00</td><td>Less than 50 m</td></tr>
+                <tr><td>01</td><td>50 m to 200 m</td></tr>
+                <tr><td>02</td><td>200 m to 500 m</td></tr>
+                <tr><td>03</td><td>500 m to 1 000 m</td></tr>
+                <tr><td>04</td><td>1 000 m to 2 000 m</td></tr>
+                <tr><td>05</td><td>2 000 m to 4 000 m</td></tr>
+                <tr><td>06</td><td>4 000 m to 10 000 m</td></tr>
+                <tr><td>07</td><td>≥ 10 000 m (or ‘9999’ in METAR style)</td></tr>
+                <tr><td>88</td><td>Less than 1 000 m (regional use)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="small text-muted">Some national implementations use more granular codes — always check local NMHS guidance for specifics.</p>
+        </article>
+
+        <!-- Cloud amount and types -->
+        <article id="cloud-amount" class="mb-4">
+          <h3 class="section-title">Cloud amount (N) & cloud types (CL, CM, CH)</h3>
+          <p>Cloud amount digits (N) follow WMO table for oktas — the digit encodes the fraction of the sky covered by cloud. If no low cloud (CL) exists the <code>Nh</code> reports amount of medium cloud (CM).</p>
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead class="table-light"><tr><th>N (digit)</th><th>Oktas / Fraction</th></tr></thead>
+              <tbody>
+                <tr><td>0</td><td>0 oktas (sky clear)</td></tr>
+                <tr><td>1</td><td>1/8 to 2/8 (very few)</td></tr>
+                <tr><td>2</td><td>2/8</td></tr>
+                <tr><td>3</td><td>3/8</td></tr>
+                <tr><td>4</td><td>4/8 (scattered)</td></tr>
+                <tr><td>5</td><td>5/8</td></tr>
+                <tr><td>6</td><td>6/8</td></tr>
+                <tr><td>7</td><td>7/8</td></tr>
+                <tr><td>8</td><td>8/8 (overcast)</td></tr>
+                <tr><td>9</td><td>Sky obscured / indeterminate</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="mb-1">Cloud genera/type codes (CL/CM/CH): common low/medium/high cloud codes follow WMO tables (examples below):</p>
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead class="table-light"><tr><th>Code</th><th>Cloud type / genus (example)</th></tr></thead>
+              <tbody>
+                <tr><td>0</td><td>No significant low cloud (or none)</td></tr>
+                <tr><td>1</td><td>Cumulus (Cu) — small cumulus fragments</td></tr>
+                <tr><td>2</td><td>Cumulus (Cu) — moderate</td></tr>
+                <tr><td>3</td><td>Cumulus congestus / towering cumulus (TCU)</td></tr>
+                <tr><td>4</td><td>Stratus (St)</td></tr>
+                <tr><td>5</td><td>Stratocumulus (Sc)</td></tr>
+                <tr><td>6</td><td>Altocumulus / Altostratus (medium)</td></tr>
+                <tr><td>7</td><td>Cirrus / Cirrostratus / high clouds</td></tr>
+                <tr><td>8</td><td>Cumulonimbus (Cb) — report as CB/TCU specially</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="small text-muted">Cloud selection rules: report lowest layer of any amount first; then next layer covering ≥3 oktas; then next layer covering ≥5 oktas; and always include any Cb/TCU not already reported. :contentReference[oaicite:18]{index=18}</p>
+        </article>
+
+        <!-- Cloud base h -->
+        <article id="cloud-base" class="mb-4">
+          <h3 class="section-title">Cloud base (h) — coded intervals</h3>
+          <p>The <strong>h</strong> digit codes the height of the base of the lowest cloud (or medium cloud if no low cloud) above ground in metres using ranges:</p>
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead class="table-light"><tr><th>h</th><th>Height above ground</th></tr></thead>
+              <tbody>
+                <tr><td>0</td><td>0 – 50 m</td></tr>
+                <tr><td>1</td><td>50 – 100 m</td></tr>
+                <tr><td>2</td><td>100 – 200 m</td></tr>
+                <tr><td>3</td><td>200 – 300 m</td></tr>
+                <tr><td>4</td><td>300 – 600 m</td></tr>
+                <tr><td>5</td><td>600 – 1 000 m</td></tr>
+                <tr><td>6</td><td>1 000 – 1 500 m</td></tr>
+                <tr><td>7</td><td>1 500 – 2 000 m</td></tr>
+                <tr><td>8</td><td>2 000 – 2 500 m</td></tr>
+                <tr><td>9</td><td>> 2 500 m or unknown</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="small text-muted">This mapping comes from the WMO SYNOP specification and observing handbooks. Some implementations report cloud base in feet — check national guidance. :contentReference[oaicite:19]{index=19}</p>
+        </article>
+
+        <!-- Pressure -->
+        <article id="pressure" class="mb-4">
+          <h3 class="section-title">Pressure groups (3PPP, 4PPPP, 5appp)</h3>
+          <p>
+            <strong>3PPPP</strong> — station pressure in tenths of hPa (encoded so that the last three digits present the pressure value; the thousands digit may be implicit).  
+            <strong>4PPPP</strong> — mean sea level pressure encoded similarly.  
+            <strong>5appp</strong> — pressure tendency: <em>a</em> is the characteristic (coded 0–8), <em>ppp</em> is pressure change in tenths of hPa over prior 3 hours. See the tendency table below.
+          </p>
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead class="table-light"><tr><th>a (tendency code)</th><th>Description (common)</th></tr></thead>
+              <tbody>
+                <tr><td>0</td><td>Increasing, then decreasing (net small change)</td></tr>
+                <tr><td>1</td><td>Increasing steadily</td></tr>
+                <tr><td>2</td><td>Increasing, then steady</td></tr>
+                <tr><td>3</td><td>Increasing, then increasing faster</td></tr>
+                <tr><td>4</td><td>Decreasing, then increasing</td></tr>
+                <tr><td>5</td><td>Decreasing, then steady</td></tr>
+                <tr><td>6</td><td>Decreasing, then decreasing faster</td></tr>
+                <tr><td>7</td><td>Steady</td></tr>
+                <tr><td>8</td><td>Unclassified / variable</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="small text-muted">The exact textual descriptions and mapping are in the WMO Manual on Codes; use those descriptions for operational reporting. :contentReference[oaicite:20]{index=20}</p>
+        </article>
+
+        <!-- Precipitation -->
+        <article id="precip" class="mb-4">
+          <h3 class="section-title">Precipitation — group 6RRR tR</h3>
+          <p><strong>RRR</strong> = precipitation amount in mm (coded); <strong>tR</strong> indicates the period (e.g. 1 = 1 hour, 6 = 6 hours, 24 = 24 hours — coding limited by 1 digit options; consult message examples for local practice). Below are common tR codes.</p>
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead class="table-light"><tr><th>tR</th><th>Period / comment</th></tr></thead>
+              <tbody>
+                <tr><td>0</td><td>1 hour</td></tr>
+                <tr><td>1</td><td>10 minutes (sensor-specific)</td></tr>
+                <tr><td>3</td><td>3 hours</td></tr>
+                <tr><td>6</td><td>6 hours (very common)</td></tr>
+                <tr><td>9</td><td>24 hours</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="small text-muted">Many modern stations and NMHS adopt fixed intervals (6-hour totals etc.). WMO guidance explains exact coding conventions. :contentReference[oaicite:21]{index=21}</p>
+        </article>
+
+        <!-- Wind -->
+        <article id="wind" class="mb-4">
+          <h3 class="section-title">Wind (dd ff) and wind indicator (i_w)</h3>
+          <p><strong>dd</strong> — true wind direction in tens of degrees (00 = calm / variable depending on coding convention). <strong>ff</strong> — wind speed coded per units indicated by <strong>i_w</strong>. <strong>i_w</strong> specifies whether speed is in m/s, knots, or coded differently for automatic sensors; it also indicates if gusts are included as separate groups. See the i_w mapping in official SYNOP tables. :contentReference[oaicite:22]{index=22}</p>
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead class="table-light"><tr><th>i_w</th><th>Meaning (example)</th></tr></thead>
+              <tbody>
+                <tr><td>0</td><td>Wind observed, speed in knots</td></tr>
+                <tr><td>1</td><td>Wind observed, speed in m/s</td></tr>
+                <tr><td>3</td><td>Wind observed, speed in tenth metres/sec (sensor-specific)</td></tr>
+                <tr><td>8</td><td>Calm (no wind)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="small text-muted">Exact i_w codes and their units are in WMO FM-12. If using automatic sensors consult manufacturer mapping to SYNOP codes. :contentReference[oaicite:23]{index=23}</p>
+        </article>
+
+        <!-- Automatic / missing data -->
+        <article id="auto-mann" class="mb-4">
+          <h3 class="section-title">Automatic vs staffed stations & missing data</h3>
+          <p>
+            Automatic observing systems can measure many elements but cannot always determine some human-interpreted items (e.g. present weather types at low intensity, or cloud genus). Such stations will either omit those groups or use special codes (slashes) to indicate not observed. The <strong>ix</strong> indicator helps decoders know whether a station is automatic or manned and whether standard past-weather groups are present. :contentReference[oaicite:24]{index=24}
+          </p>
+
+          <p><strong>Missing data convention:</strong> slashes (e.g. <code>/////</code>) are used for unavailable numeric groups; check the WMO manual for the correct slash placement per group.</p>
+        </article>
+
+        <!-- Examples -->
+        <article id="examples" class="mb-4">
+          <h3 class="section-title">Worked examples (typical decodings)</h3>
+
+          <div class="mb-3">
+            <h6 class="fw-semibold">Example 1 (simple):</h6>
+            <pre class="code">01124 72503 12566 63015 10106 20050 30003 40016 53048 60071 91151</pre>
+            <ul>
+              <li><strong>01 12</strong> — day 01, 12 UTC.</li>
+              <li><strong>4</strong> — wind indicator (<em>see i_w</em>).</li>
+              <li><strong>72503</strong> — station id.</li>
+              <li><strong>63015</strong> — cloud cover 6/8, wind direction ≈300°, wind speed 15 kt.</li>
+              <li><strong>10106</strong> — air T = 10.6 °C.</li>
+              <li><strong>20050</strong> — dew point = 5.0 °C.</li>
+              <li><strong>30003</strong> — station pressure 1000.3 hPa.</li>
+              <li><strong>40016</strong> — MSLP 1001.6 hPa.</li>
+              <li><strong>53048</strong> — pressure tendency coded, net change +4.8 hPa (see 5appp table).</li>
+              <li><strong>60071</strong> — 7.1 mm precipitation in past 6 h.</li>
+              <li><strong>91151</strong> — actual time 11:51 UTC (GGgg).</li>
+            </ul>
+          </div>
+
+          <div class="mb-3">
+            <h6 class="fw-semibold">Example 2 (present weather):</h6>
+            <pre class="code">20183 13012 60015 71004 70020 12345 70103 7 45 102 003</pre>
+            <p class="small text-muted">(This is an illustrative string — ensure your message format follows the FM-12 ordering). Use the <code>ww</code> table above to decode present weather groups such as heavy rain, fog, or thunderstorms.</p>
+          </div>
+
+          <p class="small text-muted">For more worked examples and local practice datasets consult your NMHS training materials or the WMO observing handbooks. :contentReference[oaicite:25]{index=25}</p>
+        </article>
+
+        <!-- Sources -->
+        <article id="sources" class="mb-4">
+          <h3 class="section-title">Sources & further reading</h3>
+          <ul>
+            <li>WMO Code Table 4678 — Significant weather phenomena (official registry). :contentReference[oaicite:26]{index=26}</li>
+            <li>WMO Manual on Codes (FM-12 SYNOP specification) — Manual on Codes (WMO No. 306). :contentReference[oaicite:27]{index=27}</li>
+            <li>Priyom / SYNOP FM-12 summary (handy quick pdf of groups & codes). :contentReference[oaicite:28]{index=28}</li>
+            <li>WMO Code Table 2700 — Cloud amount (N) definitions (NOAA archived table). :contentReference[oaicite:29]{index=29}</li>
+            <li>NOAA Observing Handbook — synoptic code excerpts and cloud height table. :contentReference[oaicite:30]{index=30}</li>
+            <li>WMO FM-12 explanatory material and national manuals (see your NMHS / MANOBS). :contentReference[oaicite:31]{index=31}</li>
+          </ul>
+          <p class="small text-muted">If you want, I can also: (A) produce a printer-friendly PDF version, (B) add an interactive SYNOP decoder (paste message → decoded fields), or (C) expand the present-weather table to include every compound term from WMO table 4678 verbatim. Which would you like next?</p>
+        </article>
+
+        <footer>
+          <p class="mb-0">Prepared from WMO / national manuals — intended as a practical SYNOP decoding handbook for land stations. If you need the full verbatim WMO 4678 table (all 100+ compound codes), I can append it in the page or provide it as a downloadable text file.</p>
+        </footer>
+
+      </section>
+    </main>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
