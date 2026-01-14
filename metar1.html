@@ -737,6 +737,20 @@ function populateCloudsFromObservation(obs) {
   });
 }
 
+function formatTwoDigits(value) {
+  return String(Math.round(value)).padStart(2, '0');
+}
+
+function formatDewPoint(value) {
+  const rounded = Math.round(value);
+
+  if (rounded < 0) {
+    return 'M' + String(Math.abs(rounded)).padStart(2, '0');
+  }
+
+  return String(rounded).padStart(2, '0');
+}
+
 // Fetch latest observation and populate all fields
 async function populateMetarFromObservation() {
   try {
@@ -758,7 +772,7 @@ async function populateMetarFromObservation() {
     const vis = parseFloat(obs.visibility);
     document.getElementById('visibility').value = !isNaN(vis) ? (vis >= 10000 ? 9999 : vis) : '';
     document.getElementById('weather').value = obs.weather || '';
-    document.getElementById('tempDew').value = `${Math.round(obs.dry_bulb)}/${Math.round(obs.dew_point)}`;
+    document.getElementById('tempDew').value =`${formatTwoDigits(obs.dry_bulb)}/${formatDewPoint(obs.dew_point)}`;
     document.getElementById('qnh').value = obs.qnh ? Math.floor(obs.qnh) : '';
     document.getElementById('recentWeather').value = obs.r_wx || '';
 

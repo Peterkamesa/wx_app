@@ -500,12 +500,17 @@
           <div class="row mb-3">
             <div class="col-md-2 col-6"><label>Dry Bulb</label><input name="dry_bulb" class="form-control" placeholder="DB reading"></div>
             <div class="col-md-2 col-6"><label>Wet Bulb</label><input name="wet_bulb" class="form-control" placeholder="WB reading"></div>
+          <div class="col-md-2 col-6">
+            <label>W.B.depresion</label>
+            <input id="wb_dep" name="wb_dep" class="form-control" placeholder="w/b depresion" readonly style="background-color:#f8f9fa; cursor:not-allowed;">
+          </div>            
             <div class="col-md-2 col-6"><label>Dew Point</label><input name="dew_point" class="form-control" placeholder="autocalculated" readonly style="background-color:#f8f9fa; cursor:not-allowed;"></div>
             <div class="col-md-2 col-6"><label>R/H(%)</label><input name="r_h" class="form-control" placeholder="autocalculated" readonly style="background-color:#f8f9fa; cursor:not-allowed;"></div>
-            <div class="col-md-2 col-6"><label>Max Temp</label><input name="max_temp" class="form-control" placeholder="Tx reading"></div>
-            <div class="col-md-2 col-6"><label>Min Temp</label><input name="min_temp" class="form-control" placeholder="Tn reading"></div>
+
           </div>
           <div class="row mb-2">
+            <div class="col-md-2 col-6"><label>Max Temp</label><input name="max_temp" class="form-control" placeholder="Tx reading"></div>
+            <div class="col-md-2 col-6"><label>Min Temp</label><input name="min_temp" class="form-control" placeholder="Tn reading"></div>            
             <div class="col-md-2 col-6">
               <label>r/h(%)</label>
               <input id="rh_dw" name="rh_dw" class="form-control" placeholder="enter r/h to calc DW">
@@ -518,6 +523,7 @@
               <label>calc WB</label>
               <input name="wet_bulb2" class="form-control" placeholder="wb" readonly style="background-color:#f8f9fa; cursor:not-allowed;">
             </div>
+
           </div>
         </div>
       </div>
@@ -550,8 +556,8 @@
             <div class="col-md-2 col-6"><label>Pr. As Read (mb)</label><input id="pr_read" name="pr_read" type="number" step="0.1" class="form-control" placeholder="enter pressure as read"></div>
             <div class="col-md-2 col-6"><label>Correction (mb)</label><input id="correction" name="correction" type="number" step="0.1" class="form-control" placeholder="enter correction"></div>
             <div class="col-md-2 col-6"><label>QFE (mb)</label><input id="qfe" name="qfe" class="form-control" placeholder="auto calculated" readonly style="background-color:#f8f9fa; cursor:not-allowed;"></div>
-            <div class="col-md-2 col-6"><label>QNH (mb)</label><input name="qnh" class="form-control" placeholder="enter QNH (mb)"></div>
-            <div class="col-md-2 col-6"><label>QNE (gpm)</label><input name="qne" class="form-control" placeholder="geopotential height"></div>
+            <div class="col-md-2 col-6"><label>QNH (mb)</label><input id="qnh" name="qnh" class="form-control" placeholder="enter QNH (mb)"></div>
+            <div class="col-md-2 col-6"><label>QNE (gpm)</label><input id="qne" name="qne" class="form-control" placeholder="geopotential height"></div>
           </div>
         </div>
       </div>
@@ -634,21 +640,72 @@
         }
         });
     // Function to calculate QFE = PR_READ - CORRECTION
-    function calculateQFE() {
-    const prRead = parseFloat(document.getElementById('pr_read').value) || 0;
-    const correction = parseFloat(document.getElementById('correction').value) || 0;
+// CONSTANTS
+const g = 9.80665;
+const R = 287.05;
+const T0 = 288.15;
+const alpha = -0.0065;
+const stationElevation = 1632; // meters
 
-    // QFE = PR_READ - CORRECTION
-    const qfe = prRead - correction;
+function calculateQFE(prRead, correction) {
+  if (isNaN(prRead) || isNaN(correction)) return null;
+  return prRead - correction;
+}
 
-    // Display with one decimal place if valid
-    document.getElementById('qfe').value = 
-        (isNaN(qfe) ? '' : qfe.toFixed(1));
-    }
+function calculateQNH(qfe, stationElevation) {
+  if (isNaN(qfe) || isNaN(stationElevation)) return null;
 
-    // Trigger recalculation whenever PR_READ or CORRECTION changes
-    document.getElementById('pr_read').addEventListener('input', calculateQFE);
-    document.getElementById('correction').addEventListener('input', calculateQFE);
+  const exponent =
+    (stationElevation * g) /
+    (R * (T0 + (alpha * stationElevation) / 2));
+
+  return qfe * Math.exp(exponent);
+}
+
+
+function calculateQNE(prRead) {
+  if (isNaN(prRead)) return null;
+
+  // Standard atmosphere conversion
+  return Math.round((44330 * (1 - Math.pow(prRead / 1013.25, 0.1903))));
+}
+
+function updatePressureFields() {
+  const prRead = parseFloat(document.getElementById('pr_read').value);
+  const correction = parseFloat(document.getElementById('correction').value);
+
+  const qfe = calculateQFE(prRead, correction);
+  if (qfe !== null) {
+    document.getElementById('qfe').value = qfe.toFixed(1);
+  } else {
+    document.getElementById('qfe').value = '';
+    return;
+  }
+
+function truncateDecimal(value, decimals) {
+  const factor = 10 ** decimals;
+  return (value < 0)
+    ? Math.ceil(value * factor) / factor
+    : Math.floor(value * factor) / factor;
+}
+
+  const qnh = calculateQNH(qfe, stationElevation);
+  if (qnh !== null) {
+document.getElementById('qnh').value =
+  truncateDecimal(qnh, 0);
+
+  }
+
+  const qne = calculateQNE(prRead);
+  if (qne !== null) {
+    document.getElementById('qne').value = qne;
+  }
+}
+
+['pr_read', 'correction'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updatePressureFields);
+});
+
 
     document.addEventListener('DOMContentLoaded', function() {
     const rainfallInput = document.querySelector('input[name="rainfall"]');
@@ -741,8 +798,6 @@ function computeHumidityFromWetbulb(T, Tw, P) {
 
 
 
-
-
 function populateSynopFromObservation() {
   const dryBulb = document.querySelector('input[name="dry_bulb"]').value;
   const wetBulb = document.querySelector('input[name="wet_bulb"]').value;
@@ -751,6 +806,7 @@ function populateSynopFromObservation() {
   const rhDw = document.querySelector('input[name="rh_dw"]').value;
   const calcDp = document.querySelector('input[name="dw_wb"]').value;
   const dewField = document.querySelector('input[name="dew_point"]');
+  const qfe = document.querySelector('input[name="qfe"]');
 
   // If T, Tw, and P are provided → compute RH and Dew Point
   if (dryBulb && wetBulb && pressure) {
@@ -767,6 +823,16 @@ function populateSynopFromObservation() {
       document.querySelector('input[name="wet_bulb2"]').value = Tw.toFixed(1);
     }
   }
+
+    // WB Depression
+  if (dryBulb && wetBulb) {
+    const wbDep = Number(dryBulb) - Number(wetBulb);
+    document.querySelector('input[name="wb_dep"]').value = wbDep.toFixed(1);
+  } else {
+    document.querySelector('input[name="wb_dep"]').value = '';
+  }
+
+
 }
 
 // --- Compute Wet Bulb using Dry Bulb, RH, Dew Point, and Pressure ---
@@ -799,9 +865,19 @@ function computeWetbulbFromHumidity(T, RH, P, Td) {
   return Tw_corrected;
 }
 
+function computeWetBulbDepression() {
+  const dryBulb = Number(document.querySelector('input[name="dry_bulb"]').value);
+  const wetBulb = Number(document.querySelector('input[name="wet_bulb"]').value);
+
+  return dryBulb - wetBulb;
+}
+
+document.querySelector('input[name ="wb_dep"]').value = computeWetBulbDepression();
+
+
 // --- Automatically trigger when inputs change ---
 document.addEventListener('DOMContentLoaded', function() {
-  const fields = ['dry_bulb', 'wet_bulb', 'pr_read', 'rh_dw', 'dw_wb'];
+  const fields = ['dry_bulb', 'wet_bulb', 'pr_read', 'rh_dw', 'dw_wb', 'qfe'];
   fields.forEach(name => {
     const el = document.querySelector(`input[name="${name}"]`);
     if (el) el.addEventListener('input', populateSynopFromObservation);
