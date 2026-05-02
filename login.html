@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login - Aviation Weather</title>
     <link rel="icon" type="image/x-icon" href="favicon2.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -13,624 +13,92 @@
             --secondary-color: #3a3a8f;
             --accent-color: #06f07b;
             --highlight-color: #ff4ed9;
-            --text-color: #333;
-            --light-text: #f8f9fa;
         }
-        
         body {
-            display: flex;
-            flex-direction: column;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             min-height: 100vh;
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            background: url(cd1.jpg)  center center fixed;
-            /*background-size: cover;*/
-        }
-        
-        /* Navigation - Matched to About Page */
-        .navbar {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            background-color: var(--primary-color) !important;
-        }
-        
-        .navbar-brand img {
-            height: 30px;
-            transition: transform 0.3s ease;
-        }
-        
-        .navbar-brand:hover img {
-            transform: scale(1.05);
-        }
-        
-        .nav-link {
-            position: relative;
-            margin: 0 8px;
-            transition: color 0.3s ease;
-            color: var(--light-text) !important;
-        }
-        
-        .nav-link.active {
-            color: var(--accent-color) !important;
-            font-weight: bold;
-        }
-        
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--highlight-color);
-            border-radius: 3px;
-        }
-        
-        .dropdown-menu {
-            background-color: var(--secondary-color);
-            border: none;
-        }
-        
-        .dropdown-item {
-            color: var(--light-text);
-            transition: all 0.3s ease;
-        }
-        
-        .dropdown-item:hover {
-            background-color: var(--highlight-color);
-            color: white;
-        }
-
-        /* Login Section - New Styling */
-        .auth-container {
-            flex: 1;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 4rem 1rem;
-            background: linear-gradient(135deg, rgba(248, 249, 250, 0.9) 0%, rgba(233, 236, 239, 0.9) 100%);
+            font-family: 'Inter', sans-serif;
+            color: #f8f9fa;
         }
-        
-        .auth-title {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 2rem;
-            text-align: center;
-            font-weight: 700;
-            position: relative;
-            padding-bottom: 15px;
-        }
-        
-        .auth-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background-color: var(--highlight-color);
-        }
-        
-        .auth-form {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        .login-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
             width: 100%;
             max-width: 450px;
-            transition: all 0.3s ease;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
-        
-        .auth-form:hover {
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--primary-color);
-            font-weight: 500;
-        }
-        
-        .form-group input {
-            width: 100%;
+        .form-control, .form-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
             padding: 0.8rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 0.3rem;
-            font-size: 1rem;
-            transition: all 0.3s ease;
         }
-        
-        .form-group input:focus {
-            border-color: var(--highlight-color);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(255, 78, 217, 0.2);
-        }
-        
-        .form-group button {
-            width: 100%;
-            padding: 0.8rem;
-            background-color: var(--highlight-color);
+        .form-control:focus, .form-select:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--accent-color);
             color: white;
-            border: none;
-            border-radius: 0.3rem;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 1rem;
+            box-shadow: none;
         }
-        
-        .form-group button:hover {
-            background-color: var(--accent-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        .auth-footer {
-            text-align: center;
-            margin-top: 1.5rem;
-            color: #666;
-        }
-        
-        .auth-footer a {
-            color: var(--highlight-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .auth-footer a:hover {
-            color: var(--accent-color);
-            text-decoration: underline;
-        }
-
-        /* Footer - Matched to About Page */
-        footer {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 3rem 0 2rem;
-            margin-top: auto;
-        }
-        
-        .footer-logo img {
-            height: 40px;
-            margin-bottom: 1rem;
-            transition: transform 0.3s ease;
-        }
-        
-        .footer-logo:hover img {
-            transform: scale(1.05);
-        }
-        
-        .footer-links {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .footer-links li {
-            display: inline-block;
-            margin: 0 12px;
-        }
-        
-        .footer-links a {
-            color: #adb5bd;
-            text-decoration: none;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-        
-        .footer-links a:hover {
-            color: white;
-        }
-        
-        .footer-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: white;
-            transition: width 0.3s ease;
-        }
-        
-        .footer-links a:hover::after {
-            width: 100%;
-        }
-        
-        .social-media a {
-            color: white;
-            font-size: 1.3rem;
-            margin: 0 12px;
-            transition: transform 0.3s ease, color 0.3s ease;
-        }
-        
-        .social-media a:hover {
-            color: var(--accent-color);
-            transform: translateY(-3px);
-        }
-        
-        .contact-form input {
-            padding: 0.6rem;
-            border-radius: 0.25rem;
-            border: none;
-            margin-right: 0.5rem;
-            transition: box-shadow 0.3s ease;
-        }
-        
-        .contact-form input:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(6, 240, 123, 0.3);
-        }
-        
-        .contact-form button {
-            padding: 0.6rem 1.2rem;
-            background-color: var(--accent-color);
+        .form-control::placeholder { color: rgba(255, 255, 255, 0.5); }
+        .btn-login {
+            background: var(--accent-color);
             color: var(--primary-color);
             border: none;
-            border-radius: 0.25rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            padding: 0.8rem;
+            font-weight: 700;
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+            transition: all 0.2s;
         }
-        
-        .contact-form button:hover {
-            background-color: var(--highlight-color);
+        .btn-login:hover {
+            background: #05d06a;
             transform: translateY(-2px);
         }
-
-        .login-page .navbar {
-            display: none;
+        .logo-box {
+            text-align: center;
+            margin-bottom: 2rem;
         }
-        
-        /* Animation */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .animate {
-            animation: fadeInUp 0.8s ease forwards;
-        }
-        
-        .delay-1 {
-            animation-delay: 0.2s;
-        }
-        
-        .delay-2 {
-            animation-delay: 0.4s;
-        }
-        
-        @media (max-width: 768px) {
-            .auth-container {
-                padding: 2rem 1rem;
-            }
-            
-            .auth-title {
-                font-size: 2rem;
-            }
-            
-            .auth-form {
-                padding: 1.5rem;
-            }
-            
-            .footer-links li {
-                display: block;
-                margin: 0.5rem 0;
-            }
+        .logo-box img {
+            height: 60px;
+            border-radius: 10px;
         }
     </style>
 </head>
-<body class="login-page">
-    <!-- Navigation Menu -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="logo2.jpg" alt="P.Kamesa Logo" class="d-inline-block align-text-top"> Wx App
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav ms-auto">
-
-                    <li class="nav-item">
-                        <a href="index.html" class="nav-link">Home</a>
-                    </li>
-
-                    <!-- Dropdown menu item for notes -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Resources
-                        </a>
-                        <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="learn_metar.html">Metar Notes</a></li>
-                                        <li><a class="dropdown-item" href="learn_synop.html">Synop Notes</a></li>
-                                        <li><a class="dropdown-item" href="ref.html">Ref Tables</a></li>
-                                        <li><a class="dropdown-item" href="learn_taf.html">TAF Notes</a></li>                      
-                        </ul>
-                    </li>
-
-                    <!-- Dropdown menu item for forms -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            WX Forms
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="form626.html">FORM 626</a></li>
-                            <li><a class="dropdown-item" href="c_sheet.html">C/SHEET</a></li>
-                            <li><a class="dropdown-item" href="form446.html">FORM 446</a></li>
-                            <li><a class="dropdown-item" href="wx_summary_may.html">WX SUMMARY</a></li>
-
-                            <!--
-                             Nested dropdown for WX SUMMARY
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="#">WX SUMMARY</a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="wx_summary_jan.html">January</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_feb.html">February</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_mar.html">March</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_apr.html">April</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_may.html">May</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_jun.html">June</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_jul.html">July</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_aug.html">August</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_sep.html">September</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_oct.html">October</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_nov.html">November</a></li>
-                                    <li><a class="dropdown-item" href="wx_summary_dec.html">December</a></li>
-                                </ul>
-                            </li>
-                            -->
-                            <li><a class="dropdown-item" href="agro18_dek.html">AGRO18 DEK</a></li>
-                            <li><a class="dropdown-item" href="rainfallcart.html">FORM496(R/CART)</a></li>                              
-                        </ul>
-                    </li>
-                    <!-- Dropdown menu item -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Forecasts
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="daily_wx.html">Daily WX</a></li>
-                            <li><a class="dropdown-item" href="s_e.html">S.E</a></li>
-                            <li><a class="dropdown-item" href="coast.html">COAST</a></li>
-                            <li><a class="dropdown-item" href="central.html">CENTRAL</a></li>
-                            <li><a class="dropdown-item" href="western.html">WESTERN</a></li>
-                            <li><a class="dropdown-item" href="n_w.html">N.W</a></li>
-                            <li><a class="dropdown-item" href="n_e.html">N.E</a></li>                             
-                        </ul>
-                    </li>
-                    <!-- Dropdown menu item -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="data.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Observations
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="obs_slip.html">Obs Slip</a></li>
-                            <li><a class="dropdown-item" href="metar1.html">METAR/SPECI</a></li>
-                            <li><a class="dropdown-item" href="synop.html">SYNOP</a></li>
-                            <li><a class="dropdown-item" href="actuals.html">ACTUALS</a></li>
-                            <li><a class="dropdown-item" href="taf.html">TAF</a></li>
-                            <li>
-                                <a class="dropdown-item" href="#" onclick="launchFirefox('https://196.202.217.196/nsweb/FlightBriefing/?page=showQuery#showQuery')">FLIGHT FOLDER</a>
-                            </li>
-                            <!-- Nested dropdown for duty rosters -->
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="#">Duty Rosters</a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="dutyroster_jan.html">January</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_feb.html">February</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_mar.html">March</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_apr.html">April</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_may.html">May</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_jun.html">June</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_jul.html">July</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_aug.html">August</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_sep.html">September</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_oct.html">October</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_nov.html">November</a></li>
-                                    <li><a class="dropdown-item" href="dutyroster_dec.html">December</a></li>
-                                </ul>
-                            </li>
-                            
-                        </ul>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a href="about.html" class="nav-link">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="contact.html" class="nav-link">Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="login.html" class="nav-link active" id="login-link">Login</a>
-                    </li>
-                    <!--<li class="nav-item">
-                        <a href="signup.html" class="nav-link">Sign Up</a>
-                    </li>-->
-                    <li class="nav-item" id="logout-item" style="display: none;">
-                        <a href="#" class="nav-link" id="logout-link">Logout</a>
-                    </li>
-                </ul>
-            </div>
+<body>
+    <div class="login-card">
+        <div class="logo-box">
+            <img src="logo2.jpg" alt="Logo">
+            <h2 class="mt-3">Aviation Weather</h2>
+            <p class="text-white-50 small">Access Station or Pilot Dashboard</p>
         </div>
-    </nav>
 
-    <!-- Login Form -->
-    <div class="auth-container">
-        <h1 class="auth-title animate">Login to Your Station</h1>
-        
-        <form class="auth-form animate delay-1" id="loginForm">
-            <div class="form-group">
-                <label for="loginStation">Weather Station</label>
-                <select id="loginStation" class = "form-select" required>
-                    <option value="" selected disabled>Select Your Station</option>
-                    <option value="Mab-Met">Mab-Met</option>
-                    <option value="Dagoretti">Dagoretti</option>
-                    <option value="JKIA">JKIA</option>
-                    <option value="Wilson">Wilson</option>
-                    </select>
+        <form id="loginForm">
+            <div class="mb-4">
+                <label class="form-label small text-uppercase fw-bold text-white-50">Station / Username</label>
+                <input type="text" id="loginStation" class="form-control" placeholder="Enter station name (e.g. JKIA, Admin)" required>
             </div>
             
-            <div class="form-group">
-                <label for="loginPassword">Password</label>
-                <input type="password" id="loginPassword" placeholder="Enter your station password" required>
+            <div class="mb-4">
+                <label class="form-label small text-uppercase fw-bold text-white-50">Password</label>
+                <input type="password" id="loginPassword" class="form-control" placeholder="Enter password" required>
             </div>
-            
-            <div class="form-group">
-                <button type="submit">Login</button>
-            </div>
-            
-            <!--<div class="auth-footer">
-                Don't have an account? <a href="signup.html">Sign up</a>
-            </div>-->
+
+            <button type="submit" class="btn btn-login">SIGN IN</button>
         </form>
+
+        <div class="mt-4 text-center">
+            <a href="index.html" class="text-white-50 text-decoration-none small"><i class="fas fa-arrow-left me-1"></i> Back to Home</a>
+        </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 text-center text-md-start">
-                    <div class="footer-logo">
-                        <img src="logo.jpg" alt="P.K Logo">
-                    </div>
-                    <p>&copy; 2025 P.Kamesa. All rights reserved.</p>
-                </div>
-                <div class="col-md-4 text-center">
-                    <ul class="footer-links">
-                        <li><a href="/privacy-policy">Privacy Policy</a></li>
-                        <li><a href="/terms-of-service">Terms of Service</a></li>
-                        <li><a href="contact.html">Contact Me</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4 text-center text-md-end">
-                    <div class="social-media mb-3">
-                        <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
-                        <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
-                        <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
-                    </div>
-                    <form class="contact-form d-flex justify-content-center justify-content-md-end">
-                        <input type="email" class="form-control me-2" placeholder="Enter your email" required style="max-width: 250px;">
-                        <button type="submit" class="btn" style="background-color: var(--accent-color); color: var(--primary-color);">Subscribe</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-document.getElementById('loginForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const station = document.getElementById('loginStation').value;
-    const password = document.getElementById('loginPassword').value;
-    const submitButton = this.querySelector('button[type="submit"]');
-    
-    // Basic validation
-    if (!station || !password) {
-        alert('Please select your station and enter password');
-        return;
-    }
-
-    try {
-        // Add loading state
-        submitButton.disabled = true;
-        submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging in...';
-
-        const response = await fetch('https://wxbackend-production.up.railway.app/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                station: station,
-                password: password
-            })
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Login failed');
-        }
-
-        const data = await response.json();
-        
-        // Store token
-        localStorage.setItem('weatherAuthToken', data.token);
-        
-        // Redirect (check if authStatus function exists first)
-        if (typeof checkAuthStatus === 'function') {
-            checkAuthStatus();
-        }
-        
-        window.location.href = 'index.html';
-        
-    } catch (error) {
-        console.error('Login error:', error);
-        
-        // More specific error messages
-        if (error.message.includes('Failed to fetch')) {
-            alert('Network error. Please check your connection.');
-        } else {
-            alert(error.message || 'Login failed. Please check your credentials.');
-        }
-    } finally {
-        // Reset button state
-        if (submitButton) {
-            submitButton.disabled = false;
-            submitButton.textContent = 'Login';
-        }
-    }
-});
-
-        // Add animation class to elements when they come into view
-        document.addEventListener('DOMContentLoaded', function() {
-            const animateElements = document.querySelectorAll('.animate');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animated');
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            animateElements.forEach(element => {
-                observer.observe(element);
-            });
-        });
-    </script>
-        <script>
-            function launchFirefox(url) {
-                // Try Firefox protocol (works if Firefox is set as handler)
-                window.location.href = 'firefox://open-url?url=' + encodeURIComponent(url);
-                
-                // Fallback: Open in a new tab (default browser) after a delay
-                setTimeout(function() {
-                    window.open(url, '_blank');
-                }, 500);
-                
-                return false; // Prevent default link behavior
-            }
-            </script>
     <script src="auth.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>          
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

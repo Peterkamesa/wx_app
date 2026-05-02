@@ -1074,12 +1074,14 @@
                 return;
             }
             try {
-                const response = await fetch('https://wxbackend-production.up.railway.app/api/reports', {
+                const user = getUser();
+                const response = await authenticatedFetch(`${API_BASE_URL}/reports`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         content: fullReport,
-                        type: "SYNOP"
+                        type: "SYNOP",
+                        station: user.name,
+                        icaoCode: user.icaoCode
                      }),
                 });
                 if (response.ok) {
@@ -1096,8 +1098,10 @@
         }
         //fecht synop reports from database
         async function fetchDatabaseReports() {
+            const user = getUser();
+            if (!user) return;
             try {
-                const response = await fetch('https://wxbackend-production.up.railway.app/api/reports/SYNOP');
+                const response = await authenticatedFetch(`${API_BASE_URL}/station/${user.name}/reports/SYNOP`);
                 const reports = await response.json();
 
                 const reportsList = document.getElementById('databaseReports');
@@ -1145,7 +1149,7 @@
         async function deleteDatabaseReport(id) {
             if (!confirm("Are you sure you want to delete this synop report?")) return;
                 try {
-                    const response = await fetch(`https://wxbackend-production.up.railway.app/api/reports/clear/SYNOP/${id}`, {
+                    const response = await authenticatedFetch(`${API_BASE_URL}/reports/clear/SYNOP/${id}`, {
                         method: 'DELETE'
                     });
                     if (response.ok) {
@@ -1165,7 +1169,7 @@
         async function clearDatabaseReports() {
             if (!confirm("Are you sure you want to clear all saved synop reports?")) return;
                 try {
-                    const response = await fetch('https://wxbackend-production.up.railway.app/api/reports/clear/SYNOP', {
+                    const response = await authenticatedFetch(`${API_BASE_URL}/reports/clear/SYNOP`, {
                         method: 'DELETE'
                     });
                     if (response.ok) {
@@ -1227,13 +1231,12 @@
                 }
 
                 try {
-                    const response = await fetch('https://wxbackend-production.up.railway.app/api/send-report', {
+                    const response = await authenticatedFetch(`${API_BASE_URL}/send-report`, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 
-                            to: recipients,  // Changed from 'to' to 'recipients' if needed
+                            to: recipients, 
                             subject: 'SYNOP', 
-                            content: reportContent  // Changed from 'text' to 'content' if needed
+                            content: reportContent 
                         }),
                     });
 
@@ -1375,20 +1378,21 @@
 
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
+            const user = getUser();
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Auto-populate station number
+            if (user.stationId) {
+                document.getElementById('stationNumber').value = user.stationId;
+            }
+
             fetchDatabaseReports();
             
             // Set active state for current page in dropdown
-            const currentPage = window.location.pathname.split('/').pop();
-            const dropdownItems = document.querySelectorAll('.dropdown-item');
-            
-            dropdownItems.forEach(item => {
-                const itemPage = item.getAttribute('href').split('/').pop();
-                if (itemPage === currentPage) {
-                    item.classList.add('active');
-                    const dropdownToggle = item.closest('.dropdown-menu').previousElementSibling;
-                    dropdownToggle.classList.add('active');
-                }
-            });
+            // ...
         });
     </script>
         <script src="auth.js"></script>
