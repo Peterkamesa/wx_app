@@ -601,7 +601,8 @@
     // Load latest TAF on page load
     async function loadLatestTAF() {
       try {
-        const res = await fetch(apiUrl + "/latest");
+        const res = await authenticatedFetch(`${API_BASE_URL}/reports/TAF/latest`);
+        if (!res || !res.ok) throw new Error("Failed to fetch latest TAF");
         const data = await res.json();
         const statusDiv = document.getElementById("status");
         
@@ -634,11 +635,8 @@
       }
 
       try {
-        const res = await fetch('https://wxbackend-production.up.railway.app/api/reports', {
+        const res = await authenticatedFetch(`${API_BASE_URL}/reports`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
           body: JSON.stringify({ type: "TAF", content: tafContent }),
         });
 

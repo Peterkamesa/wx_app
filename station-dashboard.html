@@ -95,64 +95,72 @@
         <!-- Stats Row -->
         <div class="row mb-5">
             <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card stat-card h-100 border-start border-primary border-4">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div>
-                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">METARs Today</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="count-metar">0</div>
-                            </div>
-                            <div class="icon-box bg-primary-subtle text-primary">
-                                <i class="fas fa-cloud"></i>
+                <a href="station-metars.html" class="text-decoration-none">
+                    <div class="card stat-card h-100 border-start border-primary border-4">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">METARs Today</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="count-metar">0</div>
+                                </div>
+                                <div class="icon-box bg-primary-subtle text-primary">
+                                    <i class="fas fa-cloud"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card stat-card h-100 border-start border-success border-4">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div>
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">SYNOPs Today</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="count-synop">0</div>
-                            </div>
-                            <div class="icon-box bg-success-subtle text-success">
-                                <i class="fas fa-broadcast-tower"></i>
+                <a href="station-synops.html" class="text-decoration-none">
+                    <div class="card stat-card h-100 border-start border-success border-4">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">SYNOPs Today</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="count-synop">0</div>
+                                </div>
+                                <div class="icon-box bg-success-subtle text-success">
+                                    <i class="fas fa-broadcast-tower"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card stat-card h-100 border-start border-info border-4">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div>
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">ACTUALS Today</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="count-actuals">0</div>
-                            </div>
-                            <div class="icon-box bg-info-subtle text-info">
-                                <i class="fas fa-list-alt"></i>
+                <a href="station-actuals.html" class="text-decoration-none">
+                    <div class="card stat-card h-100 border-start border-info border-4">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">ACTUALS Today</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="count-actuals">0</div>
+                                </div>
+                                <div class="icon-box bg-info-subtle text-info">
+                                    <i class="fas fa-list-alt"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card stat-card h-100 border-start border-warning border-4">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div>
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Obs Slips</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="count-obs">0</div>
-                            </div>
-                            <div class="icon-box bg-warning-subtle text-warning">
-                                <i class="fas fa-pen-nib"></i>
+                <a href="station-obs-slips.html" class="text-decoration-none">
+                    <div class="card stat-card h-100 border-start border-warning border-4">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Obs Slips</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="count-obs">0</div>
+                                </div>
+                                <div class="icon-box bg-warning-subtle text-warning">
+                                    <i class="fas fa-pen-nib"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
 
@@ -180,6 +188,12 @@
                 <a href="station-tafs.html" class="nav-card">
                     <i class="fas fa-wind"></i>
                     <span>View TAFs</span>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="station-obs-slips.html" class="nav-card">
+                    <i class="fas fa-file-invoice"></i>
+                    <span>View Obs Slips</span>
                 </a>
             </div>
             <div class="col-6 col-md-3">
@@ -246,6 +260,11 @@
                     const data = await res.json();
                     document.getElementById(`count-${type.toLowerCase()}`).textContent = data.length;
                 }
+
+                // Fetch Observations count
+                const obsRes = await authenticatedFetch(`${API_BASE_URL}/station/${stationName}/observations`);
+                const obsData = await obsRes.json();
+                document.getElementById('count-obs').textContent = obsData.length;
             } catch (error) {
                 console.error('Error updating counts:', error);
             }
