@@ -9,29 +9,131 @@
     <link rel="icon" type="image/x-icon" href="favicon2.png">
     <style>
         :root {
-            --primary-color: #1b1b53;
-            --secondary-color: #3a3a8f;
-            --accent-color: #06f07b;
-            --highlight-color: #ff4ed9;
-            --light-text: #f8f9fa;
-        }
+      --primary-color: #1b1b53;
+      --secondary-color: #3a3a8f;
+      --accent-color: #06f07b;
+      --highlight-color: #ff4ed9;
+      --light-text: #f8f9fa;
+      --success-color: #28a745;
+      --info-color: #17a2b8;
+      --danger-color: #dc3545;
+    }
     
         body {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            background: url(cd1.jpg) center center fixed;
-            background-size: cover;
+            background-color: #f8f9fa;
+            background: url(cd1.jpg)  center center fixed;
         }
         
         .navbar {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            background-color: var(--primary-color) !important;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      background-color: var(--primary-color) !important;
+    }
+    
+    .navbar-brand img {
+      height: 30px;
+      transition: transform 0.3s ease;
+    }
+    
+    .navbar-brand:hover img {
+      transform: scale(1.05);
+    }
+    
+    .nav-link {
+      position: relative;
+      margin: 0 8px;
+      transition: color 0.3s ease;
+      color: var(--light-text) !important;
+    }
+    
+    .nav-link.active {
+      color: var(--accent-color) !important;
+      font-weight: bold;
+    }
+    
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--highlight-color);
+      border-radius: 3px;
+    }
+    
+    .dropdown-menu {
+      background-color: var(--secondary-color);
+      border: none;
+    }
+    
+    .dropdown-item {
+      color: var(--light-text);
+      transition: all 0.3s ease;
+    }
+    
+    .dropdown-item:hover {
+      background-color: var(--highlight-color);
+      color: white;
+    }
+            footer {
+            background-color: #1b1b53;
+            color: white;
+            padding: 2rem 0;
+            margin-top: auto;
         }
         
-        .navbar-brand img { height: 30px; }
-        .nav-link { color: var(--light-text) !important; }
-        .nav-link.active { color: var(--accent-color) !important; font-weight: bold; }
+        .footer-logo img {
+            height: 40px;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        
+        .footer-links a {
+            color: #adb5bd;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+
+        }
+        
+        .social-media a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 10px;
+        }
+        
+        .contact-form {
+            margin-top: 1rem;
+        }
+        
+        .contact-form input {
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            border: none;
+            margin-right: 0.5rem;
+        }
+        
+        .contact-form button {
+            padding: 0.5rem 1rem;
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+        }
         
         .hero-section {
             background: rgba(255, 255, 255, 0.1);
@@ -51,12 +153,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        footer {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 3rem 0 2rem;
-            margin-top: auto;
-        }
+
     </style>
 </head>
 <body>
@@ -72,54 +169,8 @@
             </button>
             
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a href="index.html" class="nav-link active">Home</a></li>
-                    
-                    <!-- Admin Only -->
-                    <li class="nav-item" data-role="admin" style="display: none;">
-                        <a href="admin-dashboard.html" class="nav-link text-warning fw-bold">Admin Panel</a>
-                    </li>
-                    
-                    <!-- Pilot Only -->
-                    <li class="nav-item" data-role="pilot" style="display: none;">
-                        <a href="pilot-dashboard.html" class="nav-link text-info fw-bold">Pilot Dashboard</a>
-                    </li>
-
-                    <!-- Station Only -->
-                    <li class="nav-item" data-role="station" style="display: none;">
-                        <a href="station-dashboard.html" class="nav-link text-success fw-bold">Station Dashboard</a>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Resources</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="learn_metar.html">Metar Notes</a></li>
-                            <li><a class="dropdown-item" href="learn_synop.html">Synop Notes</a></li>
-                            <li><a class="dropdown-item" href="ref.html">Ref Tables</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Observations</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="obs_slip.html">Obs Slip</a></li>
-                            <li><a class="dropdown-item" href="metar1.html">METAR/SPECI</a></li>
-                            <li><a class="dropdown-item" href="synop.html">SYNOP</a></li>
-                            <li><a class="dropdown-item" href="actuals.html">ACTUALS</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item" id="user-greeting" style="display: none;">
-                        <span class="nav-link text-accent">Hi, <span id="username">User</span></span>
-                    </li>
-
-                    <li class="nav-item" id="login-item">
-                        <a href="login.html" class="nav-link">Login</a>
-                    </li>
-                    
-                    <li class="nav-item" id="logout-item" style="display: none;">
-                        <a href="#" id="logout-link" class="nav-link">Logout</a>
-                    </li>
+                <ul class="navbar-nav ms-auto" id="dynamic-nav">
+                    <!-- Populated dynamically by auth.js -->
                 </ul>
             </div>
         </div>

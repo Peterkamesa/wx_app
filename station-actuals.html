@@ -23,7 +23,9 @@
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--primary-color);">
         <div class="container">
             <a class="navbar-brand" href="index.html"><img src="logo2.jpg" alt="Logo" height="30"></a>
-            <div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a href="station-dashboard.html" class="nav-link">Dashboard</a></li><li class="nav-item"><a href="#" class="nav-link" onclick="logoutUser()">Logout</a></li></ul></div>
+            <div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto" id="dynamic-nav">
+                    <!-- Populated dynamically by auth.js -->
+                </ul></div>
         </div>
     </nav>
 
@@ -65,5 +67,6 @@
             } catch (err) { console.error(err); }
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

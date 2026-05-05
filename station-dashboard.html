@@ -76,16 +76,28 @@
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--primary-color);">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="logo2.jpg" alt="Logo" height="30"> Wx App
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto" id="dynamic-nav">
+                    <!-- Populated dynamically by auth.js -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="station-header">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <h1 id="station-name">Station Dashboard</h1>
                     <p id="station-info" class="lead mb-0">ICAO: ... | Code: ...</p>
-                </div>
-                <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                    <a href="index.html" class="btn btn-outline-light me-2">Home</a>
-                    <button onclick="logoutUser()" class="btn btn-light">Logout</button>
                 </div>
             </div>
         </div>
@@ -226,6 +238,32 @@
         <div class="row" id="forms-container">
             <!-- Google Sheet Forms will go here -->
         </div>
+        </div>
+        
+        <!-- Form Modal for embedding Google Sheets -->
+        <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-fullscreen-lg-down">
+                <div class="modal-content h-100">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title" id="formModalLabel"><i class="fas fa-file-alt me-2"></i>Loading Form...</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-0 position-relative" style="min-height: 70vh;">
+                        <div id="formLoadingSpinner" class="position-absolute top-50 start-50 translate-middle text-primary" style="display: none;">
+                            <div class="spinner-border" role="status" style="width: 3rem; height: 3rem;">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div class="mt-2 fw-bold text-center">Loading...</div>
+                        </div>
+                        <iframe id="formIframe" src="" style="width: 100%; height: 100%; min-height: 70vh; border: none; display: none;" allowfullscreen></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a id="formExternalLink" href="#" target="_blank" class="btn btn-primary"><i class="fas fa-external-link-alt me-2"></i>Open in New Tab</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="auth.js"></script>
@@ -301,26 +339,53 @@
         async function openForm(type) {
             const user = getUser();
             const endpoints = {
-                'FORM626': '/api/sheets/form626',
-                'CSHEET': '/api/sheets/csheet',
-                'FORM446': '/api/sheets/form446',
-                'WX_SUMMARY': '/api/sheets/wxsummary',
-                'AGRO18_DEK': '/api/sheets/agro18_dek',
-                'RCART': '/api/sheets/rainfallcart'
+                'FORM626': '/sheets/form626',
+                'CSHEET': '/sheets/csheet',
+                'FORM446': '/sheets/form446',
+                'WX_SUMMARY': '/sheets/wxsummary',
+                'AGRO18_DEK': '/sheets/agro18_dek',
+                'RCART': '/sheets/rainfallcart'
             };
             
+            // Get modal elements
+            const formModalElement = document.getElementById('formModal');
+            const formModal = new bootstrap.Modal(formModalElement);
+            const formIframe = document.getElementById('formIframe');
+            const formSpinner = document.getElementById('formLoadingSpinner');
+            const modalTitle = document.getElementById('formModalLabel');
+            const externalLinkBtn = document.getElementById('formExternalLink');
+            
+            // Reset modal state and show it
+            modalTitle.innerHTML = `<i class="fas fa-spinner fa-spin me-2"></i>Loading Form...`;
+            formIframe.style.display = 'none';
+            formIframe.src = '';
+            formSpinner.style.display = 'block';
+            formModal.show();
+            
             try {
-                const response = await authenticatedFetch(`${API_BASE_URL}${endpoints[type]}?station=${encodeURIComponent(user.name)}`);
+                const response = await authenticatedFetch(`${API_BASE_URL}${endpoints[type]}?station=${encodeURIComponent(user.name || user.station)}`);
                 const data = await response.json();
+                
                 if (data.success && data.sheetUrl) {
-                    window.open(data.sheetUrl, '_blank');
+                    // Update modal UI
+                    modalTitle.innerHTML = `<i class="fas fa-file-alt me-2"></i>Station Form`;
+                    formSpinner.style.display = 'none';
+                    
+                    // Set iframe source and external link
+                    formIframe.src = data.sheetUrl;
+                    formIframe.style.display = 'block';
+                    externalLinkBtn.href = data.sheetUrl;
                 } else {
+                    formModal.hide();
                     alert('Could not find form for this station.');
                 }
             } catch (error) {
+                formModal.hide();
                 console.error('Error opening form:', error);
+                alert('Error opening form. Check console.');
             }
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
