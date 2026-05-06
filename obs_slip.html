@@ -291,13 +291,17 @@
     <form id="obsForm">
       <!-- Header -->
       <div class="row mb-3 align-items-end">
-        <div class="col-md-4 col-12">
+        <div class="col-md-3 col-lg-2">
           <label class="form-label">Time (GMT)</label>
           <input type="time" id="obsTime" name="time" class="form-control" required>
         </div>
-        <div class="col-md-4 col-12">
+        <div class="col-md-3 col-lg-2">
           <label class="form-label">Date</label>
           <input type="date" id="obsDate" name="date" class="form-control" required>
+        </div>
+        <div class="col-md-3 col-lg-3">  
+          <label class="form-label">Station Indicator</label>
+          <input type="text" id="stationIndicator" name="icaoCode" placeholder="Enter station indicator"  class="form-control" required>
         </div>
         <div class="col-md-4 col-12 d-flex justify-content-start gap-2 mt-3 mt-md-0 text-white">
       <button type="button" id="refreshBtn" class="btn btn-success custom-btn">
@@ -327,25 +331,25 @@
                   <td><input name="ch" class="form-control" placeholder="CH"></td>
                 </tr>
                 <tr>
-                  <td colspan="3"></td>
+                  <td colspan="3">1st Significant cloud</td>
                   <td><input name="ns1" class="form-control" placeholder="8Ns"></td>
                   <td><input name="c1" class="form-control" placeholder="C"></td>
                   <td><input name="h1" class="form-control" placeholder="hshs(1)"></td>
                 </tr>
                 <tr>
-                  <td colspan="3"></td>
+                  <td colspan="3">2nd Significant cloud</td>
                   <td><input name="ns2" class="form-control" placeholder="8Ns"></td>
                   <td><input name="c2" class="form-control" placeholder="C"></td>
                   <td><input name="h2" class="form-control" placeholder="hshs(2)"></td>
                 </tr>
                 <tr>
-                  <td colspan="3"></td>
+                  <td colspan="3">3rd Significant cloud</td>
                   <td><input name="ns3" class="form-control" placeholder="8Ns"></td>
                   <td><input name="c3" class="form-control" placeholder="C"></td>
                   <td><input name="h3" class="form-control" placeholder="hshs(3)"></td>
                 </tr>
                 <tr>
-                  <td colspan="3"></td>
+                  <td colspan="3">4th Significant cloud</td>
                   <td><input name="ns4" class="form-control" placeholder="8Ns"></td>
                   <td><input name="c4" class="form-control" placeholder="C"></td>
                   <td><input name="h4" class="form-control" placeholder="hshs(4)"></td>
