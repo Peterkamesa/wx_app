@@ -370,7 +370,7 @@
                         <div class="col-md-6 col-lg-3">
                             <div class="form-group">
                                 <label>Station Indicator</label>
-                                <input type="text" id="stationIndicator" placeholder="Enter station indicator"  class="form-control">
+                                <input type="text" id="stIcao" placeholder="Enter station indicator"  class="form-control">
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-3">
@@ -651,6 +651,7 @@ async function populateMetarFromObservation() {
     // Basic field population
     document.getElementById('header').value = finalHeader;
     document.getElementById('obsTime').value = `${dateTimeCode}`;
+    document.getElementById('stIcao').value = `${obs.icaoCode}`;
     document.getElementById('wind').value = obs.wind || '';
     const vis = parseFloat(obs.visibility);
     document.getElementById('visibility').value = !isNaN(vis) ? (vis >= 10000 ? 9999 : vis) : '';
@@ -681,7 +682,7 @@ function formatObservationHeader(dateStr, timeStr) {
 function generateMetarReport() {
   const fields = [
     document.getElementById('typeofmessage').value,
-    document.getElementById('stationIndicator').value,
+    document.getElementById('stIcao').value,
     `${document.getElementById('obsTime').value}Z`,
     `${document.getElementById('wind').value}KT`,
     document.getElementById('visibility').value,
