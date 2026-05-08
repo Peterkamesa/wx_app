@@ -539,7 +539,9 @@ const g = 9.80665;
 const R = 287.05;
 const T0 = 288.15;
 const alpha = -0.0065;
-const stationElevation = 1632; // meters
+// Get station elevation from logged-in user's token (falls back to 0 if not set)
+const user = getUser();
+const stationElevation = (user && user.elevation) ? user.elevation : 0;
 
 function calculateQFE(prRead, correction) {
   if (isNaN(prRead) || isNaN(correction)) return null;

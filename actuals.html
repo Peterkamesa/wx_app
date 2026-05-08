@@ -340,7 +340,7 @@
                         <div class="col-md-6 col-lg-4">
                             <div class="form-group">
                                 <label>Station Number</label>
-                                <input type="text" id="stationNumber" value="63739" class="form-control">
+                                <input type="text" id="stationNumber" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -491,6 +491,11 @@
           const baseHeader = document.getElementById('actuals').value.trim();
           const finalHeader = `${baseHeader} ${dateTimeCode}`;
           document.getElementById('actuals').value = finalHeader;
+          // Populate station number from logged-in user's token
+          const user = getUser();
+          if (user && user.stationId) {
+            document.getElementById('stationNumber').value = user.stationId;
+          }
           document.getElementById('MAX').value = obs.max_temp || '';
           document.getElementById('MIN').value = obs.min_temp || '';
           document.getElementById('G/MIN').value = obs.g_min || '';

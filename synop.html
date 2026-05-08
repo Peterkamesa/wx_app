@@ -358,7 +358,7 @@
                         <div class="col-md-6 col-lg-3">
                             <div class="form-group">
                                 <label>IIiii</label>
-                                <input type="text" id="stationNumber" value = "63739" placeholder="Enter block and station number"  class="form-control">
+                                <input type="text" id="stationNumber" placeholder="Enter block and station number"  class="form-control">
                             </div>
                         </div>
                     </div>
@@ -590,6 +590,11 @@
           const finalHeader = `${baseHeader} ${dateTimeCode}`;
           document.getElementById('typeofsynop').value = finalHeader;
           document.getElementById('obstime').value = obstimeCode;
+          // Populate station number from logged-in user's token
+          const user = getUser();
+          if (user && user.stationId) {
+            document.getElementById('stationNumber').value = user.stationId;
+          }
           // document.getElementById('N').value = obs.n ?? '/';
 
         // --- Group iRiXhVV --- //

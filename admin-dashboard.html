@@ -105,6 +105,7 @@
                                 <th>Name</th>
                                 <th>ICAO Code</th>
                                 <th>Station #</th>
+                                <th>Elevation (m)</th>
                                 <th>Role</th>
                                 <th>Status</th>
                                 <th>Actions</th>
@@ -150,6 +151,20 @@
                                 <option value="admin">Administrator</option>
                             </select>
                         </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Latitude</label>
+                                <input type="number" step="any" class="form-control" id="stLat" placeholder="e.g. -1.3192">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Longitude</label>
+                                <input type="number" step="any" class="form-control" id="stLng" placeholder="e.g. 36.9275">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Elevation (m)</label>
+                                <input type="number" step="any" class="form-control" id="stElevation" placeholder="e.g. 1632">
+                            </div>
+                        </div>
                         <div class="mb-3">
                             <label class="form-label">Password</label>
                             <input type="password" class="form-control" id="stPass" placeholder="Enter password (leave blank to keep existing if editing)">
@@ -189,6 +204,7 @@
                         <td class="fw-bold text-white">${s.name}</td>
                         <td><span class="badge bg-secondary">${s.icaoCode}</span></td>
                         <td>${s.number}</td>
+                        <td>${s.elevation || '—'}</td>
                         <td><span class="small text-uppercase">${s.role}</span></td>
                         <td><span class="badge bg-success">Active</span></td>
                         <td>
@@ -212,6 +228,9 @@
                 document.getElementById('stName').value = s.name;
                 document.getElementById('stIcao').value = s.icaoCode;
                 document.getElementById('stNumber').value = s.number;
+                document.getElementById('stLat').value = s.location?.lat || '';
+                document.getElementById('stLng').value = s.location?.lng || '';
+                document.getElementById('stElevation').value = s.elevation || '';
                 document.getElementById('stRole').value = s.role;
                 document.getElementById('stPass').value = '';
                 
@@ -230,7 +249,12 @@
                 name: document.getElementById('stName').value,
                 icaoCode: document.getElementById('stIcao').value,
                 number: document.getElementById('stNumber').value,
-                role: document.getElementById('stRole').value
+                role: document.getElementById('stRole').value,
+                location: {
+                    lat: parseFloat(document.getElementById('stLat').value) || null,
+                    lng: parseFloat(document.getElementById('stLng').value) || null
+                },
+                elevation: parseFloat(document.getElementById('stElevation').value) || null
             };
             
             const pass = document.getElementById('stPass').value;
