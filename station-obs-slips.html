@@ -51,19 +51,57 @@
                 const obs = await res.json();
                 const container = document.getElementById('obsList');
                 if (obs.length === 0) { container.innerHTML = '<div class="alert alert-info">No observation slips found.</div>'; return; }
-                container.innerHTML = obs.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).map(o => `
-                    <div class="obs-card p-3">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h5 class="mb-1">Observation: ${o.date} ${o.time}</h5>
-                                <div class="obs-details text-muted">
-                                    Temp: ${o.dry_bulb}°C | Dew Point: ${o.dew_point}°C | RH: ${o.rh}%
-                                </div>
-                            </div>
-                            <button class="btn btn-sm btn-outline-danger" onclick="deleteObs('${o._id}')"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
+                const tableHeader = `
+<div class="table-responsive bg-white rounded shadow-sm border-left-warning" style="border-left: 5px solid #ffc107;">
+<table class="table table-hover table-striped mb-0 align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Dry Bulb (°C)</th>
+            <th>Wet Bulb (°C)</th>
+            <th>Dew Point (°C)</th>
+            <th>RH (%)</th>
+            <th>Max Temp (°C)</th>
+            <th>Min Temp (°C)</th>
+            <th>Vis (m)</th>
+            <th>Wind (kts)</th>
+            <th>QNH (mb)</th>
+            <th>Rainfall (mm)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+`;
+
+                const tableRows = obs.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).map(o => `
+        <tr>
+            <td>${o.date || '-'}</td>
+            <td>${o.time || '-'}</td>
+            <td>${o.dry_bulb || '-'}</td>
+            <td>${o.wet_bulb || '-'}</td>
+            <td>${o.dew_point || '-'}</td>
+            <td>${o.r_h || o.rh || '-'}</td>
+            <td>${o.max_temp || '-'}</td>
+            <td>${o.min_temp || '-'}</td>
+            <td>${o.visibility || '-'}</td>
+            <td>${o.wind || '-'}</td>
+            <td>${o.qnh || '-'}</td>
+            <td>${o.rainfall || '-'}</td>
+            <td>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteObs('${o._id}')" title="Delete">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>
                 `).join('');
+
+                const tableFooter = `
+    </tbody>
+</table>
+</div>
+`;
+                container.innerHTML = tableHeader + tableRows + tableFooter;
             } catch (error) { document.getElementById('obsList').innerHTML = '<div class="alert alert-danger">Error loading observations.</div>'; }
         });
         async function deleteObs(id) {

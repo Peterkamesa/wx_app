@@ -8,21 +8,189 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary-color: rgb(27, 27, 83);
-            --secondary-color: #4e73df;
-            --accent-color: #06f07b;
-        }
-        
-        body {
-            background-color: #f8f9fc;
-        }
+    :root {
+      --primary-color: #1b1b53;
+      --secondary-color: #3a3a8f;
+      --accent-color: #06f07b;
+      --highlight-color: #ff4ed9;
+      --light-text: #f8f9fa;
+      --success-color: #28a745;
+      --info-color: #17a2b8;
+      --danger-color: #dc3545;
+    }
+    
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      /*background-color: #f8f9fa;*/
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: url(cd1.jpg)  center center fixed;
+    /*background-size: cover;*/
+    }
 
+    .navbar {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      background-color: var(--primary-color) !important;
+    }
+    
+    .navbar-brand img {
+      height: 30px;
+      transition: transform 0.3s ease;
+    }
+    
+    .navbar-brand:hover img {
+      transform: scale(1.05);
+    }
+    
+    .nav-link {
+      position: relative;
+      margin: 0 8px;
+      transition: color 0.3s ease;
+      color: var(--light-text) !important;
+    }
+    
+    .nav-link.active {
+      color: var(--accent-color) !important;
+      font-weight: bold;
+    }
+    
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--highlight-color);
+      border-radius: 3px;
+    }
+    
+    .dropdown-menu {
+      background-color: var(--secondary-color);
+      border: none;
+    }
+    
+    .dropdown-item {
+      color: var(--light-text);
+      transition: all 0.3s ease;
+    }
+    
+    .dropdown-item:hover {
+      background-color: var(--highlight-color);
+      color: white;
+    }
+
+    .btn-custom {
+      width: 100%;
+      padding: 0.8rem;
+      background-color: var(--highlight-color);
+      color: white;
+      border: none;
+      border-radius: 0.3rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+    }
+    
+    .btn-custom:hover {
+      background-color: var(--accent-color);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .auth-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: #666;
+    }
+    
+    .auth-footer a {
+      color: var(--highlight-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .auth-footer a:hover {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+
+    /* Footer - Matched to About Page */
+    footer {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 3rem 0 2rem;
+      margin-top: auto;
+    }
+    
+    .footer-logo img {
+      height: 40px;
+      margin-bottom: 1rem;
+      transition: transform 0.3s ease;
+    }
+    
+    .footer-logo:hover img {
+      transform: scale(1.05);
+    }
+    
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .footer-links li {
+      display: inline-block;
+      margin: 0 12px;
+    }
+    
+    .footer-links a {
+      color: #adb5bd;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+    
+    .footer-links a:hover {
+      color: white;
+    }
+    
+    .footer-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+    
+    .footer-links a:hover::after {
+      width: 100%;
+    }
+    
+    .social-media a {
+      color: white;
+      font-size: 1.3rem;
+      margin: 0 12px;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    
+    .social-media a:hover {
+      color: var(--accent-color);
+      transform: translateY(-3px);
+    }
         .station-header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, #3535a0 100%);
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
             color: white;
             padding: 40px 0;
-            margin-bottom: 30px;
+            margin-bottom: 0px;
+            margin-top: 10px;
         }
         
         .stat-card {
@@ -50,7 +218,7 @@
         .nav-card {
             background: white;
             border-radius: 12px;
-            padding: 20px;
+            padding: 10px;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -103,9 +271,9 @@
         </div>
     </div>
 
-    <div class="container pb-5">
+    <div class="container pb-5" style="background-color: rgba(255, 255, 255, 0.5);">
         <!-- Stats Row -->
-        <div class="row mb-5">
+        <div class="row mb-4 mt-3">
             <div class="col-xl-3 col-md-6 mb-4">
                 <a href="station-metars.html" class="text-decoration-none">
                     <div class="card stat-card h-100 border-start border-primary border-4">
@@ -177,56 +345,56 @@
         </div>
 
         <h3 class="mb-4">Quick Navigation</h3>
-        <div class="row g-4">
-            <div class="col-6 col-md-3">
+        <div class="row row-cols-2 row-cols-md-5 g-4">
+            <div class="col">
                 <a href="station-metars.html" class="nav-card">
                     <i class="fas fa-cloud-sun"></i>
                     <span>View METARs</span>
                 </a>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col">
                 <a href="station-synops.html" class="nav-card">
                     <i class="fas fa-satellite-dish"></i>
                     <span>View SYNOPs</span>
                 </a>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col">
                 <a href="station-actuals.html" class="nav-card">
                     <i class="fas fa-clipboard-check"></i>
                     <span>View ACTUALS</span>
                 </a>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col">
                 <a href="station-tafs.html" class="nav-card">
                     <i class="fas fa-wind"></i>
                     <span>View TAFs</span>
                 </a>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col">
                 <a href="station-obs-slips.html" class="nav-card">
                     <i class="fas fa-file-invoice"></i>
                     <span>View Obs Slips</span>
                 </a>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col">
                 <a href="obs_slip.html" class="nav-card">
                     <i class="fas fa-file-signature"></i>
                     <span>New Obs Slip</span>
                 </a>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col">
                 <a href="metar1.html" class="nav-card">
                     <i class="fas fa-plus-circle"></i>
                     <span>New METAR/SPECI</span>
                 </a>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col">
                 <a href="synop.html" class="nav-card">
                     <i class="fas fa-edit"></i>
                     <span>New SYNOP</span>
                 </a>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col">
                 <a href="actuals.html" class="nav-card">
                     <i class="fas fa-tasks"></i>
                     <span>New ACTUALS</span>
