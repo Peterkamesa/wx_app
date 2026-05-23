@@ -7,6 +7,7 @@
     <link rel="icon" type="image/x-icon" href="favicon2.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
     :root {
       --primary-color: #1b1b53;
@@ -23,13 +24,12 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      /*background-color: #f8f9fa;*/
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      background: url(cd1.jpg)  center center fixed;
-    /*background-size: cover;*/
+      background: url(cd1.jpg) center center fixed;
     }
 
+    /* ===== NAVBAR - UNCHANGED ===== */
     .navbar {
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       background-color: var(--primary-color) !important;
@@ -120,7 +120,7 @@
       text-decoration: underline;
     }
 
-    /* Footer - Matched to About Page */
+    /* ===== FOOTER - UNCHANGED ===== */
     footer {
       background-color: var(--primary-color);
       color: white;
@@ -185,62 +185,375 @@
       color: var(--accent-color);
       transform: translateY(-3px);
     }
-        .station-header {
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
-            color: white;
-            padding: 40px 0;
-            margin-bottom: 0px;
-            margin-top: 10px;
-        }
-        
-        .stat-card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        }
 
-        .icon-box {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
+    /* ===== IMPROVED PAGE STYLES ===== */
 
-        .nav-card {
-            background: white;
-            border-radius: 12px;
-            padding: 10px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            text-decoration: none;
-            color: inherit;
-            border: 1px solid #e3e6f0;
-            transition: all 0.2s;
-        }
+    .station-header {
+      background: linear-gradient(135deg, rgba(27, 27, 83, 0.88) 0%, rgba(58, 58, 143, 0.80) 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      color: white;
+      padding: 48px 0 40px;
+      margin-bottom: 0;
+      margin-top: 10px;
+      position: relative;
+      overflow: hidden;
+    }
 
-        .nav-card:hover {
-            border-color: var(--secondary-color);
-            background: #f1f4ff;
-            color: var(--secondary-color);
-        }
+    .station-header::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: rgba(6, 240, 123, 0.08);
+      pointer-events: none;
+    }
 
-        .nav-card i {
-            font-size: 30px;
-            margin-bottom: 15px;
-            color: var(--primary-color);
-        }
+    .station-header::after {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      left: 10%;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: rgba(255, 78, 217, 0.07);
+      pointer-events: none;
+    }
+
+    .station-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 0.4rem;
+    }
+
+    .station-header .lead {
+      font-size: 0.95rem;
+      opacity: 0.75;
+      font-weight: 400;
+      letter-spacing: 0.4px;
+    }
+
+    .station-header .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(6, 240, 123, 0.18);
+      border: 1px solid rgba(6, 240, 123, 0.35);
+      color: #06f07b;
+      border-radius: 30px;
+      padding: 4px 14px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .header-pulse {
+      width: 8px;
+      height: 8px;
+      background: #06f07b;
+      border-radius: 50%;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    /* ===== MAIN CONTENT WRAPPER ===== */
+    .dashboard-body {
+      background: rgba(245, 247, 255, 0.82);
+      backdrop-filter: blur(6px);
+      flex: 1;
+    }
+
+    /* ===== SECTION LABELS ===== */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--secondary-color);
+      margin-bottom: 0.35rem;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 1.25rem;
+      position: relative;
+      padding-left: 14px;
+    }
+
+    .section-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 70%;
+      background: var(--highlight-color);
+      border-radius: 4px;
+    }
+
+    /* ===== STAT CARDS ===== */
+    .stat-card {
+      border: none;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(27, 27, 83, 0.07);
+      transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+      background: white;
+      overflow: hidden;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 28px rgba(27, 27, 83, 0.14);
+    }
+
+    .stat-card .card-body {
+      padding: 1.4rem 1.5rem;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-card .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1;
+      color: #1a1a2e;
+    }
+
+    .stat-card .stat-sublabel {
+      font-size: 0.72rem;
+      color: #8a8fa8;
+      margin-top: 4px;
+    }
+
+    .icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    /* ===== QUICK NAV CARDS ===== */
+    .nav-card {
+      background: white;
+      border-radius: 14px;
+      padding: 20px 12px 18px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      text-decoration: none;
+      color: #3a3a5c;
+      border: 1.5px solid #e8ebf7;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 1px 6px rgba(27, 27, 83, 0.05);
+      gap: 0;
+    }
+
+    .nav-card:hover {
+      border-color: var(--secondary-color);
+      background: linear-gradient(135deg, #f1f4ff 0%, #e8edff 100%);
+      color: var(--primary-color);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 24px rgba(27, 27, 83, 0.13);
+    }
+
+    .nav-card .nav-icon-wrap {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #eef1ff 0%, #e2e8ff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      transition: all 0.25s ease;
+    }
+
+    .nav-card:hover .nav-icon-wrap {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    }
+
+    .nav-card i {
+      font-size: 22px;
+      color: var(--primary-color);
+      transition: color 0.25s ease;
+    }
+
+    .nav-card:hover i {
+      color: white;
+    }
+
+    .nav-card span {
+      font-size: 0.78rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    /* ===== STATION RESOURCES ===== */
+    .resource-card {
+      border: none;
+      border-radius: 14px;
+      background: white;
+      box-shadow: 0 2px 10px rgba(27, 27, 83, 0.06);
+      transition: all 0.25s ease;
+      overflow: hidden;
+    }
+
+    .resource-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 22px rgba(27, 27, 83, 0.12);
+    }
+
+    .resource-card .card-body {
+      padding: 1.2rem 1.4rem;
+    }
+
+    .resource-card .icon-box {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      color: white;
+    }
+
+    .resource-card h5 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 2px;
+    }
+
+    .resource-card a.text-primary {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--highlight-color) !important;
+      transition: color 0.2s ease;
+    }
+
+    .resource-card a.text-primary:hover {
+      color: var(--accent-color) !important;
+    }
+
+    /* ===== RESOURCE CARD ICON VARIANTS ===== */
+    .resource-card .icon-box.icon-metar {
+      background: linear-gradient(135deg, #1b1b53 0%, #3a3a8f 100%);
+    }
+    .resource-card .icon-box.icon-synop {
+      background: linear-gradient(135deg, #0d6e3e 0%, #28a745 100%);
+    }
+    .resource-card .icon-box.icon-actuals {
+      background: linear-gradient(135deg, #0c6fa0 0%, #17a2b8 100%);
+    }
+    .resource-card .icon-box.icon-obs {
+      background: linear-gradient(135deg, #a0660c 0%, #ffc107 100%);
+    }
+    .resource-card .icon-box.icon-new-obs {
+      background: linear-gradient(135deg, #b8600a 0%, #fd7e14 100%);
+    }
+    .resource-card .icon-box.icon-new-metar {
+      background: linear-gradient(135deg, #6610a0 0%, #9b59b6 100%);
+    }
+    .resource-card .icon-box.icon-new-synop {
+      background: linear-gradient(135deg, #a01045 0%, #e83e8c 100%);
+    }
+    .resource-card .icon-box.icon-new-actuals {
+      background: linear-gradient(135deg, #0a8fb8 0%, #0dcaf0 100%);
+    }
+
+    .resource-card .open-link {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--highlight-color) !important;
+      transition: color 0.2s ease;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .resource-card .open-link:hover {
+      color: var(--accent-color) !important;
+    }
+    .resource-card .badge-new {
+      font-size: 0.6rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== VIEW REPORTS MODAL ===== */
+    #viewReportsModal .modal-body {
+      max-height: 75vh;
+      overflow-y: auto;
+    }
+    .report-entry {
+      background: #f8f9fa;
+      border-radius: 10px;
+      border-left: 4px solid var(--highlight-color);
+      padding: 12px 16px;
+      margin-bottom: 10px;
+      transition: transform 0.15s ease;
+    }
+    .report-entry:hover {
+      transform: translateX(3px);
+    }
+    .report-entry .report-content {
+      font-family: 'Courier New', monospace;
+      background: #eef1ff;
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin-top: 6px;
+      word-break: break-all;
+      white-space: pre-wrap;
+      font-size: 0.85rem;
+    }
+    .obs-table-modal {
+      font-size: 0.82rem;
+    }
+    .obs-table-modal th {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* ===== DIVIDER ===== */
+    .section-divider {
+      border: none;
+      height: 1px;
+      background: linear-gradient(to right, transparent, #d1d5f0, transparent);
+      margin: 2.5rem 0 2rem;
+    }
+
+    /* ===== MODAL ===== */
+    .modal-header.bg-primary {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
+    }
     </style>
 </head>
 <body>
@@ -260,10 +573,15 @@
         </div>
     </nav>
 
+    <!-- Station Header -->
     <div class="station-header">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-8">
+                    <div class="header-badge">
+                        <div class="header-pulse"></div>
+                        Live Station
+                    </div>
                     <h1 id="station-name">Station Dashboard</h1>
                     <p id="station-info" class="lead mb-0">ICAO: ... | Code: ...</p>
                 </div>
@@ -271,164 +589,324 @@
         </div>
     </div>
 
-    <div class="container pb-5" style="background-color: rgba(255, 255, 255, 0.5);">
-        <!-- Stats Row -->
-        <div class="row mb-4 mt-3">
-            <div class="col-xl-3 col-md-6 mb-4">
-                <a href="station-metars.html" class="text-decoration-none">
-                    <div class="card stat-card h-100 border-start border-primary border-4">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">METARs Today</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="count-metar">0</div>
-                                </div>
-                                <div class="icon-box bg-primary-subtle text-primary">
-                                    <i class="fas fa-cloud"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-xl-3 col-md-6 mb-4">
-                <a href="station-synops.html" class="text-decoration-none">
-                    <div class="card stat-card h-100 border-start border-success border-4">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">SYNOPs Today</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="count-synop">0</div>
-                                </div>
-                                <div class="icon-box bg-success-subtle text-success">
-                                    <i class="fas fa-broadcast-tower"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-xl-3 col-md-6 mb-4">
-                <a href="station-actuals.html" class="text-decoration-none">
-                    <div class="card stat-card h-100 border-start border-info border-4">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">ACTUALS Today</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="count-actuals">0</div>
-                                </div>
-                                <div class="icon-box bg-info-subtle text-info">
-                                    <i class="fas fa-list-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-xl-3 col-md-6 mb-4">
-                <a href="station-obs-slips.html" class="text-decoration-none">
-                    <div class="card stat-card h-100 border-start border-warning border-4">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Obs Slips</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="count-obs">0</div>
-                                </div>
-                                <div class="icon-box bg-warning-subtle text-warning">
-                                    <i class="fas fa-pen-nib"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
+    <!-- Dashboard Body -->
+    <div class="dashboard-body">
+        <div class="container py-4">
 
-        <h3 class="mb-4">Quick Navigation</h3>
-        <div class="row row-cols-2 row-cols-md-5 g-4">
-            <div class="col">
-                <a href="station-metars.html" class="nav-card">
-                    <i class="fas fa-cloud-sun"></i>
-                    <span>View METARs</span>
-                </a>
+            <!-- Stats Section -->
+            <div class="mb-1">
+                <p class="section-label">Overview</p>
+                <h2 class="section-title">Today's Activity</h2>
             </div>
-            <div class="col">
-                <a href="station-synops.html" class="nav-card">
-                    <i class="fas fa-satellite-dish"></i>
-                    <span>View SYNOPs</span>
-                </a>
-            </div>
-            <div class="col">
-                <a href="station-actuals.html" class="nav-card">
-                    <i class="fas fa-clipboard-check"></i>
-                    <span>View ACTUALS</span>
-                </a>
-            </div>
-            <div class="col">
-                <a href="station-tafs.html" class="nav-card">
-                    <i class="fas fa-wind"></i>
-                    <span>View TAFs</span>
-                </a>
-            </div>
-            <div class="col">
-                <a href="station-obs-slips.html" class="nav-card">
-                    <i class="fas fa-file-invoice"></i>
-                    <span>View Obs Slips</span>
-                </a>
-            </div>
-            <div class="col">
-                <a href="obs_slip.html" class="nav-card">
-                    <i class="fas fa-file-signature"></i>
-                    <span>New Obs Slip</span>
-                </a>
-            </div>
-            <div class="col">
-                <a href="metar1.html" class="nav-card">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>New METAR/SPECI</span>
-                </a>
-            </div>
-            <div class="col">
-                <a href="synop.html" class="nav-card">
-                    <i class="fas fa-edit"></i>
-                    <span>New SYNOP</span>
-                </a>
-            </div>
-            <div class="col">
-                <a href="actuals.html" class="nav-card">
-                    <i class="fas fa-tasks"></i>
-                    <span>New ACTUALS</span>
-                </a>
-            </div>
-        </div>
 
-        <h3 class="mt-5 mb-4">Station Resources</h3>
-        <div class="row" id="forms-container">
-            <!-- Google Sheet Forms will go here -->
+            <div class="row g-3 mb-2">
+                <div class="col-xl-3 col-md-6">
+                    <a href="#" onclick="openViewModal('METAR')" class="text-decoration-none">
+                        <div class="card stat-card h-100 border-start border-primary border-4">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <div class="stat-label text-primary">METARs Today</div>
+                                        <div class="stat-value" id="count-metar">0</div>
+                                        <div class="stat-sublabel">Reports submitted</div>
+                                    </div>
+                                    <div class="icon-box bg-primary-subtle text-primary">
+                                        <i class="fas fa-cloud"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <a href="#" onclick="openViewModal('SYNOP')" class="text-decoration-none">
+                        <div class="card stat-card h-100 border-start border-success border-4">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <div class="stat-label text-success">SYNOPs Today</div>
+                                        <div class="stat-value" id="count-synop">0</div>
+                                        <div class="stat-sublabel">Reports submitted</div>
+                                    </div>
+                                    <div class="icon-box bg-success-subtle text-success">
+                                        <i class="fas fa-broadcast-tower"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <a href="#" onclick="openViewModal('ACTUALS')" class="text-decoration-none">
+                        <div class="card stat-card h-100 border-start border-info border-4">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <div class="stat-label text-info">ACTUALS Today</div>
+                                        <div class="stat-value" id="count-actuals">0</div>
+                                        <div class="stat-sublabel">Reports submitted</div>
+                                    </div>
+                                    <div class="icon-box bg-info-subtle text-info">
+                                        <i class="fas fa-list-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <a href="#" onclick="openViewModal('OBS')" class="text-decoration-none">
+                        <div class="card stat-card h-100 border-start border-warning border-4">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <div class="stat-label text-warning">Obs Slips</div>
+                                        <div class="stat-value" id="count-obs">0</div>
+                                        <div class="stat-sublabel">Slips logged</div>
+                                    </div>
+                                    <div class="icon-box bg-warning-subtle text-warning">
+                                        <i class="fas fa-pen-nib"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- Station Resources / Forms -->
+            <div class="mb-3">
+                <p class="section-label">Documents & Forms</p>
+                <h2 class="section-title">Station Resources</h2>
+            </div>
+
+            <!-- View & New Report Cards -->
+            <div class="row g-3 mb-3" id="report-actions-container">
+                <!-- View OBS Slips -->
+                <div class="col-md-3 mb-3">
+                    <div class="card resource-card h-100">
+                        <div class="card-body d-flex align-items-center gap-3">
+                            <div class="icon-box icon-obs">
+                                <i class="fas fa-file-invoice"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">View OBS Slips</h5>
+                                <a href="#" onclick="openViewModal('OBS')" class="open-link">
+                                    <i class="fas fa-eye me-1" style="font-size:0.65rem;"></i>Open
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- View METARs -->
+                <div class="col-md-3 mb-3">
+                    <div class="card resource-card h-100">
+                        <div class="card-body d-flex align-items-center gap-3">
+                            <div class="icon-box icon-metar">
+                                <i class="fas fa-cloud-sun"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">View METARs</h5>
+                                <a href="#" onclick="openViewModal('METAR')" class="open-link">
+                                    <i class="fas fa-eye me-1" style="font-size:0.65rem;"></i>Open
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- View SYNOPs -->
+                <div class="col-md-3 mb-3">
+                    <div class="card resource-card h-100">
+                        <div class="card-body d-flex align-items-center gap-3">
+                            <div class="icon-box icon-synop">
+                                <i class="fas fa-satellite-dish"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">View SYNOPs</h5>
+                                <a href="#" onclick="openViewModal('SYNOP')" class="open-link">
+                                    <i class="fas fa-eye me-1" style="font-size:0.65rem;"></i>Open
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- View ACTUALS -->
+                <div class="col-md-3 mb-3">
+                    <div class="card resource-card h-100">
+                        <div class="card-body d-flex align-items-center gap-3">
+                            <div class="icon-box icon-actuals">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">View ACTUALS</h5>
+                                <a href="#" onclick="openViewModal('ACTUALS')" class="open-link">
+                                    <i class="fas fa-eye me-1" style="font-size:0.65rem;"></i>Open
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- New OBS Slip -->
+                <div class="col-md-3 mb-3">
+                    <div class="card resource-card h-100">
+                        <div class="card-body d-flex align-items-center gap-3">
+                            <div class="icon-box icon-new-obs">
+                                <i class="fas fa-file-signature"></i>
+                            </div>
+                            <div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <h5 class="mb-0">New OBS Slip</h5>
+                                    <span class="badge bg-success badge-new">New</span>
+                                </div>
+                                <a href="#" onclick="openPageModal('obs_slip.html', 'New Observation Slip')" class="open-link">
+                                    <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- New METAR/SPECI -->
+                <div class="col-md-3 mb-3">
+                    <div class="card resource-card h-100">
+                        <div class="card-body d-flex align-items-center gap-3">
+                            <div class="icon-box icon-new-metar">
+                                <i class="fas fa-plus-circle"></i>
+                            </div>
+                            <div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <h5 class="mb-0">New METAR/SPECI</h5>
+                                    <span class="badge bg-success badge-new">New</span>
+                                </div>
+                                <a href="#" onclick="openPageModal('metar1.html', 'New METAR/SPECI')" class="open-link">
+                                    <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- New SYNOP -->
+                <div class="col-md-3 mb-3">
+                    <div class="card resource-card h-100">
+                        <div class="card-body d-flex align-items-center gap-3">
+                            <div class="icon-box icon-new-synop">
+                                <i class="fas fa-edit"></i>
+                            </div>
+                            <div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <h5 class="mb-0">New SYNOP</h5>
+                                    <span class="badge bg-success badge-new">New</span>
+                                </div>
+                                <a href="#" onclick="openPageModal('synop.html', 'New SYNOP Report')" class="open-link">
+                                    <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- New ACTUALS -->
+                <div class="col-md-3 mb-3">
+                    <div class="card resource-card h-100">
+                        <div class="card-body d-flex align-items-center gap-3">
+                            <div class="icon-box icon-new-actuals">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <h5 class="mb-0">New ACTUALS</h5>
+                                    <span class="badge bg-success badge-new">New</span>
+                                </div>
+                                <a href="#" onclick="openPageModal('actuals.html', 'New ACTUALS Report')" class="open-link">
+                                    <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- Google Sheet Forms -->
+            <div class="mb-3">
+                <p class="section-label">Spreadsheets</p>
+                <h2 class="section-title">Station Sheets</h2>
+            </div>
+
+            <div class="row g-3" id="forms-container">
+                <!-- Google Sheet Forms will go here -->
+            </div>
+
         </div>
-        </div>
+    </div>
         
-        <!-- Form Modal for embedding Google Sheets -->
-        <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-fullscreen-lg-down">
-                <div class="modal-content h-100">
-                    <div class="modal-header bg-primary text-white">
-                        <h5 class="modal-title" id="formModalLabel"><i class="fas fa-file-alt me-2"></i>Loading Form...</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body p-0 position-relative" style="min-height: 70vh;">
-                        <div id="formLoadingSpinner" class="position-absolute top-50 start-50 translate-middle text-primary" style="display: none;">
-                            <div class="spinner-border" role="status" style="width: 3rem; height: 3rem;">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                            <div class="mt-2 fw-bold text-center">Loading...</div>
+    <!-- Form Modal for embedding Google Sheets -->
+    <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-fullscreen-lg-down">
+            <div class="modal-content h-100">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="formModalLabel"><i class="fas fa-file-alt me-2"></i>Loading Form...</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0 position-relative" style="min-height: 70vh;">
+                    <div id="formLoadingSpinner" class="position-absolute top-50 start-50 translate-middle text-primary" style="display: none;">
+                        <div class="spinner-border" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">Loading...</span>
                         </div>
-                        <iframe id="formIframe" src="" style="width: 100%; height: 100%; min-height: 70vh; border: none; display: none;" allowfullscreen></iframe>
+                        <div class="mt-2 fw-bold text-center">Loading...</div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <a id="formExternalLink" href="#" target="_blank" class="btn btn-primary"><i class="fas fa-external-link-alt me-2"></i>Open in New Tab</a>
+                    <iframe id="formIframe" src="" style="width: 100%; height: 100%; min-height: 70vh; border: none; display: none;" allowfullscreen></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a id="formExternalLink" href="#" target="_blank" class="btn btn-primary"><i class="fas fa-external-link-alt me-2"></i>Open in New Tab</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Reports Modal -->
+    <div class="modal fade" id="viewReportsModal" tabindex="-1" aria-labelledby="viewReportsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-fullscreen-lg-down">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="viewReportsModalLabel"><i class="fas fa-list-alt me-2"></i>Reports</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="viewReportsBody">
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+                        <div class="mt-2 fw-bold">Loading reports...</div>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Modal for embedding New OBS Slip / METAR / SYNOP form pages -->
+    <div class="modal fade" id="pageModal" tabindex="-1" aria-labelledby="pageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-fullscreen-lg-down">
+            <div class="modal-content h-100">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="pageModalLabel"><i class="fas fa-file-signature me-2"></i>Loading...</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0 position-relative" style="min-height: 80vh;">
+                    <div id="pageLoadingSpinner" class="position-absolute top-50 start-50 translate-middle text-primary">
+                        <div class="spinner-border" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="mt-2 fw-bold text-center">Loading form...</div>
+                    </div>
+                    <iframe id="pageIframe" src="" style="width: 100%; height: 100%; min-height: 80vh; border: none; display: none;" allowfullscreen></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a id="pageExternalLink" href="#" target="_blank" class="btn btn-primary"><i class="fas fa-external-link-alt me-2"></i>Open in New Tab</a>
                 </div>
             </div>
         </div>
@@ -459,15 +937,12 @@
 
         async function updateCounts(stationName) {
             try {
-                // Fetch counts from backend (could optimize into one endpoint)
                 const types = ['METAR', 'SYNOP', 'ACTUALS'];
                 for (const type of types) {
                     const res = await authenticatedFetch(`${API_BASE_URL}/station/${stationName}/reports/${type}`);
                     const data = await res.json();
                     document.getElementById(`count-${type.toLowerCase()}`).textContent = data.length;
                 }
-
-                // Fetch Observations count
                 const obsRes = await authenticatedFetch(`${API_BASE_URL}/station/${stationName}/observations`);
                 const obsData = await obsRes.json();
                 document.getElementById('count-obs').textContent = obsData.length;
@@ -476,6 +951,140 @@
             }
         }
 
+        // ===== VIEW REPORTS MODAL =====
+        async function openViewModal(type) {
+            const user = getUser();
+            if (!user) return;
+
+            const modalEl = document.getElementById('viewReportsModal');
+            const modal = new bootstrap.Modal(modalEl);
+            const body = document.getElementById('viewReportsBody');
+            const titleEl = document.getElementById('viewReportsModalLabel');
+
+            const typeLabels = {
+                'OBS': 'Observation Slips',
+                'METAR': 'METAR Reports',
+                'SYNOP': 'SYNOP Reports',
+                'ACTUALS': 'ACTUALS Reports'
+            };
+            const typeIcons = {
+                'OBS': 'fa-file-invoice',
+                'METAR': 'fa-cloud-sun',
+                'SYNOP': 'fa-satellite-dish',
+                'ACTUALS': 'fa-clipboard-check'
+            };
+
+            titleEl.innerHTML = `<i class="fas ${typeIcons[type]} me-2"></i>${typeLabels[type]}`;
+            body.innerHTML = `
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+                    <div class="mt-2 fw-bold">Loading ${typeLabels[type]}...</div>
+                </div>`;
+            modal.show();
+
+            try {
+                if (type === 'OBS') {
+                    const res = await authenticatedFetch(`${API_BASE_URL}/station/${user.name}/observations`);
+                    const obs = await res.json();
+                    if (obs.length === 0) {
+                        body.innerHTML = '<div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>No observation slips found for this station.</div>';
+                        return;
+                    }
+                    const sorted = obs.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    body.innerHTML = `
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped mb-0 obs-table-modal">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th><th>Time</th><th>Dry Bulb</th><th>Wet Bulb</th>
+                                        <th>Dew Pt</th><th>RH%</th><th>Max</th><th>Min</th>
+                                        <th>Vis(m)</th><th>Wind</th><th>QNH</th><th>Rain</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${sorted.map(o => `
+                                        <tr>
+                                            <td>${o.date || '-'}</td>
+                                            <td>${o.time || '-'}</td>
+                                            <td>${o.dry_bulb || '-'}</td>
+                                            <td>${o.wet_bulb || '-'}</td>
+                                            <td>${o.dew_point || '-'}</td>
+                                            <td>${o.r_h || o.rh || '-'}</td>
+                                            <td>${o.max_temp || '-'}</td>
+                                            <td>${o.min_temp || '-'}</td>
+                                            <td>${o.visibility || '-'}</td>
+                                            <td>${o.wind || '-'}</td>
+                                            <td>${o.qnh || '-'}</td>
+                                            <td>${o.rainfall || '-'}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>`;
+                } else {
+                    // METAR, SYNOP, ACTUALS
+                    let allReports = [];
+                    const res = await authenticatedFetch(`${API_BASE_URL}/station/${user.name}/reports/${type}`);
+                    allReports = await res.json();
+
+                    // For METAR, also fetch SPECI
+                    if (type === 'METAR') {
+                        try {
+                            const speciRes = await authenticatedFetch(`${API_BASE_URL}/station/${user.name}/reports/SPECI`);
+                            const specis = await speciRes.json();
+                            allReports = [...allReports, ...specis];
+                        } catch(e) { /* ignore */ }
+                    }
+
+                    allReports.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                    if (allReports.length === 0) {
+                        body.innerHTML = `<div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>No ${typeLabels[type]} found for this station.</div>`;
+                        return;
+                    }
+
+                    body.innerHTML = allReports.map(report => `
+                        <div class="report-entry">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    ${report.type ? `<span class="badge" style="background:var(--primary-color);">${report.type}</span>` : ''}
+                                    <span class="text-muted small ms-2">${new Date(report.createdAt).toLocaleString()}</span>
+                                </div>
+                            </div>
+                            <div class="report-content">${report.content}</div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error loading reports:', error);
+                body.innerHTML = '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>Error loading reports. Please try again.</div>';
+            }
+        }
+
+        // ===== PAGE MODAL (New OBS Slip / METAR / SYNOP) =====
+        function openPageModal(pageUrl, title) {
+            const modalEl = document.getElementById('pageModal');
+            const modal = new bootstrap.Modal(modalEl);
+            const iframe = document.getElementById('pageIframe');
+            const spinner = document.getElementById('pageLoadingSpinner');
+            const titleEl = document.getElementById('pageModalLabel');
+            const extLink = document.getElementById('pageExternalLink');
+
+            titleEl.innerHTML = `<i class="fas fa-file-signature me-2"></i>${title}`;
+            iframe.style.display = 'none';
+            iframe.src = '';
+            spinner.style.display = 'block';
+            extLink.href = pageUrl;
+            modal.show();
+
+            iframe.src = pageUrl;
+            iframe.onload = function() {
+                spinner.style.display = 'none';
+                iframe.style.display = 'block';
+            };
+        }
+
+        // ===== GOOGLE SHEET FORMS =====
         async function loadStationForms(stationName) {
             const forms = [
                 { type: 'FORM626', name: 'FORM 626', icon: 'fa-file-alt' },
@@ -488,15 +1097,17 @@
             
             const formsContainer = document.getElementById('forms-container');
             formsContainer.innerHTML = forms.map(form => `
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body d-flex align-items-center">
-                            <div class="icon-box bg-primary text-white me-3">
+                <div class="col-md-4 mb-3">
+                    <div class="card resource-card h-100">
+                        <div class="card-body d-flex align-items-center gap-3">
+                            <div class="icon-box">
                                 <i class="fas ${form.icon}"></i>
                             </div>
                             <div>
-                                <h5 class="mb-0">${form.name}</h5>
-                                <a href="#" onclick="openForm('${form.type}')" class="text-primary text-decoration-none small">Open Form</a>
+                                <h5 class="mb-1">${form.name}</h5>
+                                <a href="#" onclick="openForm('${form.type}')" class="text-primary text-decoration-none small">
+                                    <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -515,7 +1126,6 @@
                 'RCART': '/sheets/rainfallcart'
             };
             
-            // Get modal elements
             const formModalElement = document.getElementById('formModal');
             const formModal = new bootstrap.Modal(formModalElement);
             const formIframe = document.getElementById('formIframe');
@@ -523,7 +1133,6 @@
             const modalTitle = document.getElementById('formModalLabel');
             const externalLinkBtn = document.getElementById('formExternalLink');
             
-            // Reset modal state and show it
             modalTitle.innerHTML = `<i class="fas fa-spinner fa-spin me-2"></i>Loading Form...`;
             formIframe.style.display = 'none';
             formIframe.src = '';
@@ -535,11 +1144,8 @@
                 const data = await response.json();
                 
                 if (data.success && data.sheetUrl) {
-                    // Update modal UI
                     modalTitle.innerHTML = `<i class="fas fa-file-alt me-2"></i>Station Form`;
                     formSpinner.style.display = 'none';
-                    
-                    // Set iframe source and external link
                     formIframe.src = data.sheetUrl;
                     formIframe.style.display = 'block';
                     externalLinkBtn.href = data.sheetUrl;
