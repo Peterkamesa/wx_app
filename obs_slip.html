@@ -415,6 +415,22 @@
           </div>
         </div>
       </div>
+      
+      <!-- d) OFFICE -->
+      <div class="card mb-3">
+        <div class="card-header bg-info text-white" data-bs-toggle="collapse" data-bs-target="#officeSection" style="cursor:pointer;">
+          d) OFFICE
+        </div>
+        <div id="officeSection" class="collapse show card-body">
+          <div class="row mb-3">
+            <div class="col-md-2 col-6"><label>Pr. As Read (mb)</label><input id="pr_read" name="pr_read" type="number" step="0.1" class="form-control" placeholder="enter pressure as read"></div>
+            <div class="col-md-2 col-6"><label>Correction (mb)</label><input id="correction" name="correction" type="number" step="0.1" class="form-control" placeholder="enter correction"></div>
+            <div class="col-md-2 col-6"><label>QFE (mb)</label><input id="qfe" name="qfe" class="form-control" placeholder="auto calculated" readonly style="background-color:#f8f9fa; cursor:not-allowed;"></div>
+            <div class="col-md-2 col-6"><label>QNH (mb)</label><input id="qnh" name="qnh" class="form-control" placeholder="enter QNH (mb)"></div>
+            <div class="col-md-2 col-6"><label>QNE (gpm)</label><input id="qne" name="qne" class="form-control" placeholder="geopotential height"></div>
+          </div>
+        </div>
+      </div>      
 
       <!-- c) OUTDOOR -->
       <div class="card mb-3">
@@ -434,21 +450,6 @@
         </div>
       </div>
 
-      <!-- d) OFFICE -->
-      <div class="card mb-3">
-        <div class="card-header bg-info text-white" data-bs-toggle="collapse" data-bs-target="#officeSection" style="cursor:pointer;">
-          d) OFFICE
-        </div>
-        <div id="officeSection" class="collapse show card-body">
-          <div class="row mb-3">
-            <div class="col-md-2 col-6"><label>Pr. As Read (mb)</label><input id="pr_read" name="pr_read" type="number" step="0.1" class="form-control" placeholder="enter pressure as read"></div>
-            <div class="col-md-2 col-6"><label>Correction (mb)</label><input id="correction" name="correction" type="number" step="0.1" class="form-control" placeholder="enter correction"></div>
-            <div class="col-md-2 col-6"><label>QFE (mb)</label><input id="qfe" name="qfe" class="form-control" placeholder="auto calculated" readonly style="background-color:#f8f9fa; cursor:not-allowed;"></div>
-            <div class="col-md-2 col-6"><label>QNH (mb)</label><input id="qnh" name="qnh" class="form-control" placeholder="enter QNH (mb)"></div>
-            <div class="col-md-2 col-6"><label>QNE (gpm)</label><input id="qne" name="qne" class="form-control" placeholder="geopotential height"></div>
-          </div>
-        </div>
-      </div>
 
       <!-- e) ENCLOSURE -->
       <div class="card mb-3">

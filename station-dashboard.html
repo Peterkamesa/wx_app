@@ -911,6 +911,39 @@
             </div>
         </div>
     </div>
+     <!-- Footer -->
+    <footer class="py-4">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4 text-center text-md-start">
+              <div class="footer-logo">
+                <img src="logo.jpg" alt="P.K Logo">
+              </div>
+              <p>&copy; 2025 P.Kamesa. All rights reserved.</p>
+            </div>
+            <div class="col-md-4 text-center">
+              <ul class="footer-links">
+                <li><a href="/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/terms-of-service">Terms of Service</a></li>
+                <li><a href="contact.html">Contact Me</a></li>
+              </ul>
+            </div>
+            <div class="col-md-4 text-center text-md-end">
+              <div class="social-media mb-3">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+              </div>
+              <form class="contact-form d-flex justify-content-center justify-content-md-end">
+                <input type="email" class="form-control me-2" placeholder="Enter your email" required style="max-width: 250px;">
+                <button type="submit" class="btn" style="background-color: var(--accent-color); color: var(--primary-color);">Subscribe</button>
+              </form>
+            </div>
+          </div>
+        </div>
+    </footer>
+   
 
     <script src="auth.js"></script>
     <script>
@@ -990,7 +1023,13 @@
                         body.innerHTML = '<div class="alert alert-info"><i class="fas fa-info-circle me-2"></i>No observation slips found for this station.</div>';
                         return;
                     }
-                    const sorted = obs.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    // Sort newest first: use date+time fields, fallback to createdAt
+                    const parseObsDate = o => {
+                        if (o.date && o.time) return new Date(`${o.date}T${o.time}:00Z`);
+                        if (o.createdAt) return new Date(o.createdAt);
+                        return new Date(0);
+                    };
+                    const sorted = obs.sort((a, b) => parseObsDate(b) - parseObsDate(a));
                     body.innerHTML = `
                         <div class="table-responsive">
                             <table class="table table-hover table-striped mb-0 obs-table-modal">
@@ -998,7 +1037,7 @@
                                     <tr>
                                         <th>Date</th><th>Time</th><th>Dry Bulb</th><th>Wet Bulb</th>
                                         <th>Dew Pt</th><th>RH%</th><th>Max</th><th>Min</th>
-                                        <th>Vis(m)</th><th>Wind</th><th>QNH</th><th>Rain</th>
+                                        <th>Vis(m)</th><th>Wind</th><th>Pr/Read</th><th>QNH</th><th>Rain</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1014,6 +1053,7 @@
                                             <td>${o.min_temp || '-'}</td>
                                             <td>${o.visibility || '-'}</td>
                                             <td>${o.wind || '-'}</td>
+                                            <td>${o.pr_read || '-'}</td>
                                             <td>${o.qnh || '-'}</td>
                                             <td>${o.rainfall || '-'}</td>
                                         </tr>

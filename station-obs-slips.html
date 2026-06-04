@@ -66,6 +66,7 @@
             <th>Min Temp (°C)</th>
             <th>Vis (m)</th>
             <th>Wind (kts)</th>
+            <th>p/as read</th>
             <th>QNH (mb)</th>
             <th>Rainfall (mm)</th>
             <th>Actions</th>
@@ -74,7 +75,13 @@
     <tbody>
 `;
 
-                const tableRows = obs.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).map(o => `
+                // Sort newest first: combine date+time fields, fallback to createdAt
+                const parseObsDate = o => {
+                    if (o.date && o.time) return new Date(`${o.date}T${o.time}:00Z`);
+                    if (o.createdAt) return new Date(o.createdAt);
+                    return new Date(0);
+                };
+                const tableRows = obs.sort((a, b) => parseObsDate(b) - parseObsDate(a)).map(o => `
         <tr>
             <td>${o.date || '-'}</td>
             <td>${o.time || '-'}</td>
@@ -86,6 +93,7 @@
             <td>${o.min_temp || '-'}</td>
             <td>${o.visibility || '-'}</td>
             <td>${o.wind || '-'}</td>
+            <td>${o.pr_read || '-'}</td>
             <td>${o.qnh || '-'}</td>
             <td>${o.rainfall || '-'}</td>
             <td>

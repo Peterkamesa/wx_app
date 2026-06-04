@@ -78,43 +78,70 @@
       background-color: var(--highlight-color);
       color: white;
     }
-            footer {
-            background-color: #1b1b53;
-            color: white;
-            padding: 2rem 0;
-            margin-top: auto;
-        }
-        
-        .footer-logo img {
-            height: 40px;
-            margin-bottom: 1rem;
-        }
-        
-        .footer-links {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .footer-links li {
-            display: inline-block;
-            margin: 0 10px;
-        }
-        
-        .footer-links a {
-            color: #adb5bd;
-            text-decoration: none;
-        }
-        
-        .footer-links a:hover {
-            color: white;
-
-        }
-        
-        .social-media a {
-            color: white;
-            font-size: 1.5rem;
-            margin: 0 10px;
-        }
+    footer {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 3rem 0 2rem;
+      margin-top: auto;
+    }
+    
+    .footer-logo img {
+      height: 40px;
+      margin-bottom: 1rem;
+      transition: transform 0.3s ease;
+    }
+    
+    .footer-logo:hover img {
+      transform: scale(1.05);
+    }
+    
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .footer-links li {
+      display: inline-block;
+      margin: 0 12px;
+    }
+    
+    .footer-links a {
+      color: #adb5bd;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+    
+    .footer-links a:hover {
+      color: white;
+    }
+    
+    .footer-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+    
+    .footer-links a:hover::after {
+      width: 100%;
+    }
+    
+    .social-media a {
+      color: white;
+      font-size: 1.3rem;
+      margin: 0 12px;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    
+    .social-media a:hover {
+      color: var(--accent-color);
+      transform: translateY(-3px);
+    }
         
         .contact-form {
             margin-top: 1rem;
@@ -201,17 +228,36 @@
         </div>
     </main>
 
+    <!-- Footer -->
     <footer class="py-4">
-        <div class="container text-center">
-            <div class="mb-3">
-                <img src="logo2.jpg" alt="Logo" height="40" class="rounded">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4 text-center text-md-start">
+              <div class="footer-logo">
+                <img src="logo.jpg" alt="P.K Logo">
+              </div>
+              <p>&copy; 2025 P.Kamesa. All rights reserved.</p>
             </div>
-            <p>&copy; 2025 P.Kamesa. All rights reserved.</p>
-            <div class="social-media">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-github"></i></a>
+            <div class="col-md-4 text-center">
+              <ul class="footer-links">
+                <li><a href="/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/terms-of-service">Terms of Service</a></li>
+                <li><a href="contact.html">Contact Me</a></li>
+              </ul>
             </div>
+            <div class="col-md-4 text-center text-md-end">
+              <div class="social-media mb-3">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+              </div>
+              <form class="contact-form d-flex justify-content-center justify-content-md-end">
+                <input type="email" class="form-control me-2" placeholder="Enter your email" required style="max-width: 250px;">
+                <button type="submit" class="btn" style="background-color: var(--accent-color); color: var(--primary-color);">Subscribe</button>
+              </form>
+            </div>
+          </div>
         </div>
     </footer>
 
