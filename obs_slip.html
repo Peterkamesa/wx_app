@@ -265,7 +265,7 @@
     </style>
 </head>
 <body>
-    <!-- Navigation Menu -->
+    <!-- Navigation Menu
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgb(27, 27, 83);">
         <div class="container">
             <a class="navbar-brand" href="#">
@@ -278,11 +278,13 @@
             
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav ms-auto" id="dynamic-nav">
-                    <!-- Populated dynamically by auth.js -->
+                    // Populated dynamically by auth.js
                 </ul>
             </div>
         </div>
     </nav>
+  -->
+
     <script src="auth.js"></script>
   <div class="container my-4 p-4 bg-light rounded shadow-sm">
     <h2 class="text-center text-primary mb-3">KENYA METEOROLOGICAL DEPARTMENT</h2>
@@ -560,11 +562,18 @@ function calculateQNH(qfe, stationElevation) {
 }
 
 
-function calculateQNE(prRead) {
-  if (isNaN(prRead)) return null;
+function calculateQNE(qfe, stationElevation, dryBulb) {
+  if (isNaN(qfe) || isNaN(stationElevation)) return null;
 
-  // Standard atmosphere conversion
-  return Math.round((44330 * (1 - Math.pow(prRead / 1013.25, 0.1903))));
+  // Temperature in Kelvin. Fallback to ISA standard temperature if dryBulb is not provided.
+  const T = !isNaN(dryBulb) ? (dryBulb + 273.15) : 288.15;
+
+  // Geopotential height of 850 hPa surface
+  // H_850 = H_s + (R_d * T_v / g) * ln(QFE / 850)
+  // R_d / g = 287.05 / 9.80665 = 29.271
+  const h850 = stationElevation + 29.271 * T * Math.log(qfe / 850);
+
+  return Math.round(h850);
 }
 
 function updatePressureFields() {
@@ -593,7 +602,9 @@ document.getElementById('qnh').value =
 
   }
 
-  const qne = calculateQNE(prRead);
+  const dryBulbStr = document.querySelector('input[name="dry_bulb"]').value;
+  const dryBulb = parseFloat(dryBulbStr);
+  const qne = calculateQNE(qfe, stationElevation, dryBulb);
   if (qne !== null) {
     document.getElementById('qne').value = qne;
   }
@@ -602,6 +613,7 @@ document.getElementById('qnh').value =
 ['pr_read', 'correction'].forEach(id => {
   document.getElementById(id).addEventListener('input', updatePressureFields);
 });
+document.querySelector('input[name="dry_bulb"]').addEventListener('input', updatePressureFields);
 
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -651,23 +663,34 @@ document.getElementById('qnh').value =
     document.addEventListener('DOMContentLoaded', async function() {
     const todayWindRunInput = document.querySelector('input[name="wind_run"]');
     const wRunInput = document.querySelector('input[name="w_run"]');
+    const obsDateInput = document.getElementById('obsDate');
     let yesterdayWindRun = null;
 
     wRunInput.readOnly = true;
 
-    // Fetch yesterday’s wind_run
-    try {
-        const response = await authenticatedFetch(`${API_BASE_URL}/getYesterdayWindRun`);
-        const data = await response.json();
-        yesterdayWindRun = parseFloat(data.wind_run) || 0.0;
-    } catch (error) {
-        console.error('Error fetching yesterday wind_run:', error);
+    async function fetchPreviousWindRun() {
+        const dateVal = obsDateInput.value;
+        const url = dateVal 
+            ? `${API_BASE_URL}/getYesterdayWindRun?date=${dateVal}` 
+            : `${API_BASE_URL}/getYesterdayWindRun`;
+            
+        try {
+            const response = await authenticatedFetch(url);
+            if (response && response.ok) {
+                const data = await response.json();
+                yesterdayWindRun = parseFloat(data.wind_run) || 0.0;
+                // Re-trigger calculation if today's reading is already entered
+                todayWindRunInput.dispatchEvent(new Event('input'));
+            }
+        } catch (error) {
+            console.error('Error fetching yesterday wind_run:', error);
+        }
     }
 
     // Calculate automatically when today's value changes
     todayWindRunInput.addEventListener('input', function() {
         const todayVal = parseFloat(todayWindRunInput.value);
-        if (!isNaN(todayVal) && !isNaN(yesterdayWindRun)) {
+        if (!isNaN(todayVal) && yesterdayWindRun !== null && !isNaN(yesterdayWindRun)) {
         let result = todayVal - yesterdayWindRun;
         if (result < 0) result += 10000; // handle counter rollover
         wRunInput.value = result.toFixed(2);
@@ -675,6 +698,12 @@ document.getElementById('qnh').value =
         wRunInput.value = '';
         }
     });
+
+    // Fetch when the date changes
+    obsDateInput.addEventListener('change', fetchPreviousWindRun);
+    
+    // Initial fetch
+    fetchPreviousWindRun();
     });
 
 function computeHumidityFromWetbulb(T, Tw, P) {
