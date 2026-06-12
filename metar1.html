@@ -512,7 +512,7 @@
                 <!-- Generated Report Section -->
                 <div class="mt-3">
                     <h4 class="mb-1">Generated METAR</h4>
-                    <pre id="metarOutput" class="p-3 bg-light rounded">No METAR generated yet. Click "Generate METAR" to create one.</pre>
+                    <pre id="metarOutput" class="p-3 bg-light rounded fs-5 fw-bold" style="font-family: sans-serif;">No METAR generated yet. Click "Generate METAR" to create one.</pre>
                 </div>
                 
                 <!-- Email Section -->
@@ -756,7 +756,8 @@ function generateMetarReport() {
 
                 reports.forEach((report, index) => {
         const listItem = document.createElement('li');
-        listItem.className = 'list-group-item';
+        listItem.className = "list-group-item fs-5 fw-bold";
+        listItem.style.fontFamily = "sans-serif";
         
         const reportContent = document.createElement('div');
         reportContent.className = 'd-flex justify-content-between align-items-center mb-2';

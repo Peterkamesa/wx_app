@@ -528,8 +528,18 @@
             // Reset readonly fields too
             form.querySelectorAll('input[readonly]').forEach(field => field.value = '');
 
-            // Set current UTC date and time
+            // Set current UTC date and time rounded to nearest hour with 10 min grace period
             const now = new Date();
+            if (now.getUTCMinutes() > 10) {
+                now.setUTCHours(now.getUTCHours() + 1);
+                now.setUTCMinutes(0);
+                now.setUTCSeconds(0);
+                now.setUTCMilliseconds(0);
+            } else {
+                now.setUTCMinutes(0);
+                now.setUTCSeconds(0);
+                now.setUTCMilliseconds(0);
+            }
             const hours = String(now.getUTCHours()).padStart(2, '0');
             const minutes = String(now.getUTCMinutes()).padStart(2, '0');
             document.getElementById('obsTime').value = `${hours}:${minutes}`;
