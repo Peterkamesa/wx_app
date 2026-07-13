@@ -671,7 +671,7 @@
             if (!confirm("Are you sure you want to delete this ACTUAL report?")) return;
 
             try {
-                const response = await fetch(`https://wxbackend-production.up.railway.app/api/reports/clear/ACTUALS/${reportId}`, {
+                const response = await fetch(`https://wx-backend-cf4d.onrender.com/api/reports/clear/ACTUALS/${reportId}`, {
                     method: 'DELETE'
                 });
 

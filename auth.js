@@ -1,6 +1,6 @@
 // Constants
 const AUTH_KEY = 'weatherAuthToken';
-const API_BASE_URL = 'https://wxbackend-production.up.railway.app/api';
+const API_BASE_URL = 'https://wx-backend-cf4d.onrender.com/api';
 
 // Simple JWT decoder (handles the payload part)
 function parseJwt(token) {

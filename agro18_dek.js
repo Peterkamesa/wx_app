@@ -71,7 +71,7 @@ async function loadStationSheet(station) {
   try {
     console.log('Loading sheet for:', station);
     
-    const response = await fetch(`https://wxbackend-production.up.railway.app/api/sheets/agro18_dek?station=${station}`);
+    const response = await fetch(`https://wx-backend-cf4d.onrender.com/api/sheets/agro18_dek?station=${station}`);
     
     console.log('Response status:', response.status);
     
@@ -127,7 +127,7 @@ async function saveSheetChanges() {
     const sheetId = sheetUrl.match(/\/d\/([^\/]+)/)[1];
     
     // Send save request to backend
-    const response = await fetch('https://wxbackend-production.up.railway.app/api/sheets/save', {
+    const response = await fetch('https://wx-backend-cf4d.onrender.com/api/sheets/save', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
