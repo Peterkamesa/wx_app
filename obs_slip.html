@@ -482,6 +482,28 @@
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
 
+        // --- Validation Logic ---
+        const obsTime = data.time || '';
+        if (obsTime.startsWith('06')) {
+            const missing06 = [];
+            if (!data.rainfall) missing06.push('Rainfall');
+            if (!data.min_temp) missing06.push('Min Temp');
+            if (!data.g_min) missing06.push('Grass Min (g_min)');
+            if (!data.wind_run) missing06.push('Wind Run');
+            if (!data.evap_pan) missing06.push('Evaporation Pan');
+            
+            if (missing06.length > 0) {
+                alert('Warning: The following fields are required for 0600Z observations:\n\n- ' + missing06.join('\n- '));
+                return;
+            }
+        } else if (obsTime.startsWith('18')) {
+            if (!data.max_temp) {
+                alert('Warning: Max Temp is required for 1800Z observations!');
+                return;
+            }
+        }
+        // ------------------------
+
         try {
             const response = await authenticatedFetch(`${API_BASE_URL}/save-observation`, {
                 method: 'POST',
