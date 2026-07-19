@@ -120,8 +120,8 @@ function renderTableRows(year, month, daysInMonth, obsData) {
 
         const tr = document.createElement('tr');
         
-        const press06 = obs06.pr_read ? (parseFloat(obs06.pr_read) - 1).toFixed(1) : '';
-        const press12 = obs12.pr_read ? (parseFloat(obs12.pr_read) - 1).toFixed(1) : '';
+        const press06 = obs06.pr_read ? (parseFloat(obs06.pr_read) - 0.1).toFixed(1) : '';
+        const press12 = obs12.pr_read ? (parseFloat(obs12.pr_read) - 0.1).toFixed(1) : '';
 
         addStat('max', obs18.max_temp);   // MAX from 1800Z
         addStat('min', obs06.min_temp);
