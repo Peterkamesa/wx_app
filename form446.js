@@ -119,8 +119,8 @@ function renderRows(year, month, daysInMonth, allObs) {
         totalRain += rain;
 
         // ── Column 3: Cups  (negative = taken out, positive = added)
-        //    Field assumed: obs06.cups  (store as-is from DB)
-        const cupsRaw     = getNum(obs06.cups);
+        //    Field in DB: obs06.evap_pan
+        const cupsRaw      = getNum(obs06.evap_pan);
         const cupsTakenOut = (cupsRaw !== null && cupsRaw < 0) ? Math.abs(cupsRaw) : 0;
         const cupsAdded    = (cupsRaw !== null && cupsRaw > 0) ? cupsRaw : 0;
 
