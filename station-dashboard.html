@@ -550,7 +550,7 @@
       border: none;
       height: 1px;
       background: linear-gradient(to right, transparent, #d1d5f0, transparent);
-      margin: 2.5rem 0 2rem;
+      margin: 1.0rem 0 1.0rem;
     }
 
     /* ===== MODAL ===== */
@@ -850,15 +850,123 @@
 
             <hr class="section-divider">
 
-            <!-- Google Sheet Forms -->
+            <!-- Climate Returns -->
             <div class="mb-3">
+                <p class="section-label">Climate Returns</p>
+                <h2 class="section-title">Monthly Returns</h2>
+            </div>
+            
+            <div class="row g-3 mb-3" id="climate-returns-container">
+                <!-- Form 626 -->
+                <div class="col-md-3 mb-3">
+                    <div class="card resource-card h-100">
+                        <div class="card-body d-flex align-items-center gap-3">
+                            <div class="icon-box" style="background: linear-gradient(135deg, #0d6e3e 0%, #0dcaf0 100%);">
+                                <i class="fas fa-file-excel text-white"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">Form 626</h5>
+                                <a href="#" onclick="openPageModal('form626.html', 'Form 626')" class="open-link">
+                                    <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- C/SHEET -->
+                <div class="col-md-3 mb-3">
+                    <div class="card resource-card h-100">
+                        <div class="card-body d-flex align-items-center gap-3">
+                            <div class="icon-box" style="background: linear-gradient(135deg, #6610a0 0%, #ff4ed9 100%);">
+                                <i class="fas fa-table text-white"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">C/SHEET</h5>
+                                <a href="#" onclick="openPageModal('c_sheet.html', 'Computation Sheet')" class="open-link">
+                                    <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- AGRO 18 DEK -->
+                <div class="col-md-3 mb-3">
+                    <div class="card resource-card h-100">
+                        <div class="card-body d-flex align-items-center gap-3">
+                            <div class="icon-box" style="background: linear-gradient(135deg, #ff9900 0%, #ff5500 100%);">
+                                <i class="fas fa-seedling text-white"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">AGRO 18</h5>
+                                <a href="#" onclick="openPageModal('agro18.html', 'AGRO 18 DEKAD')" class="open-link">
+                                    <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- WX SUMMARY -->
+                <div class="col-md-3 mb-3">
+                    <div class="card resource-card h-100">
+                        <div class="card-body d-flex align-items-center gap-3">
+                            <div class="icon-box" style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);">
+                                <i class="fas fa-file-alt text-white"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">WX SUMMARY</h5>
+                                <a href="#" onclick="openPageModal('wx_summary.html', 'Monthly Weather Summary')" class="open-link">
+                                    <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- FORM 446 -->
+                <div class="col-md-3 mb-3">
+                    <div class="card resource-card h-100">
+                        <div class="card-body d-flex align-items-center gap-3">
+                            <div class="icon-box" style="background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);">
+                                <i class="fas fa-tint text-white"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">FORM 446</h5>
+                                <a href="#" onclick="openPageModal('form446.html', 'Form 446 - Evaporation Pan')" class="open-link">
+                                    <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- FORM 496 -->
+                <div class="col-md-3 mb-3">
+                    <div class="card resource-card h-100">
+                        <div class="card-body d-flex align-items-center gap-3">
+                            <div class="icon-box" style="background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);">
+                                <i class="fas fa-cloud-rain text-white"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">FORM 496</h5>
+                                <a href="#" onclick="openPageModal('form496.html', 'Form 496 - Monthly Rainfall Report')" class="open-link">
+                                    <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- OTHER FORMS TO COME LATER -->
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- Google Sheet Forms -->
+            <!--<div class="mb-3">
                 <p class="section-label">Spreadsheets</p>
                 <h2 class="section-title">Station Sheets</h2>
             </div>
 
-            <div class="row g-3" id="forms-container">
+            <div class="row g-3" id="forms-container"> -->
                 <!-- Google Sheet Forms will go here -->
-            </div>
+            <!--</div> -->
 
         </div>
     </div>
@@ -1149,11 +1257,7 @@
         // ===== GOOGLE SHEET FORMS =====
         async function loadStationForms(stationName) {
             const forms = [
-                { type: 'FORM626', name: 'FORM 626', icon: 'fa-file-alt' },
-                { type: 'CSHEET', name: 'C/SHEET', icon: 'fa-table' },
                 { type: 'FORM446', name: 'FORM 446', icon: 'fa-clipboard-list' },
-                { type: 'WX_SUMMARY', name: 'WX SUMMARY', icon: 'fa-cloud-sun' },
-                { type: 'AGRO18_DEK', name: 'AGRO18 DEK', icon: 'fa-seedling' },
                 { type: 'RCART', name: 'RAINFALL CART', icon: 'fa-cloud-rain' }
             ];
             

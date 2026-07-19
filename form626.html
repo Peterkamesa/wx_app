@@ -3,281 +3,293 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FORM 626 - Climate Returns</title>
     <link rel="icon" type="image/x-icon" href="favicon2.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>FORM626</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Export Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+    
     <style>
-                    /* Custom styles */
         :root {
-      --primary-color: #1b1b53;
-      --secondary-color: #3a3a8f;
-      --accent-color: #06f07b;
-      --highlight-color: #ff4ed9;
-      --light-text: #f8f9fa;
-      --success-color: #28a745;
-      --info-color: #17a2b8;
-      --danger-color: #dc3545;
-    }
-    
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            background-color: #f8f9fa;
-            background: url(cd1.jpg)  center center fixed;
+            --primary-color: #1b1b53;
+            --secondary-color: #3a3a8f;
+            --accent-color: #06f07b;
+            --table-border-color: #000;
         }
-        
-        .navbar {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      background-color: var(--primary-color) !important;
-    }
-    
-    .navbar-brand img {
-      height: 30px;
-      transition: transform 0.3s ease;
-    }
-    
-    .navbar-brand:hover img {
-      transform: scale(1.05);
-    }
-    
-    .nav-link {
-      position: relative;
-      margin: 0 8px;
-      transition: color 0.3s ease;
-      color: var(--light-text) !important;
-    }
-    
-    .nav-link.active {
-      color: var(--accent-color) !important;
-      font-weight: bold;
-    }
-    
-    .nav-link.active::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: var(--highlight-color);
-      border-radius: 3px;
-    }
-    
-    .dropdown-menu {
-      background-color: var(--secondary-color);
-      border: none;
-    }
-    
-    .dropdown-item {
-      color: var(--light-text);
-      transition: all 0.3s ease;
-    }
-    
-    .dropdown-item:hover {
-      background-color: var(--highlight-color);
-      color: white;
-    }
-            footer {
-            background-color: #1b1b53;
-            color: white;
-            padding: 2rem 0;
-            margin-top: auto;
-        }
-        
-        .footer-logo img {
-            height: 40px;
-            margin-bottom: 1rem;
-        }
-        
-        .footer-links {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .footer-links li {
-            display: inline-block;
-            margin: 0 10px;
-        }
-        
-        .footer-links a {
-            color: #adb5bd;
-            text-decoration: none;
-        }
-        
-        .footer-links a:hover {
-            color: white;
 
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            font-size: 11px;
         }
-        
-        .social-media a {
-            color: white;
-            font-size: 1.5rem;
-            margin: 0 10px;
+
+        /* Controls Section (hidden when printing) */
+        .controls-section {
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        
-        .contact-form {
-            margin-top: 1rem;
+
+        @media print {
+            .controls-section, .no-print {
+                display: none !important;
+            }
+            body {
+                background: white;
+                margin: 0;
+                padding: 0;
+                font-size: 9px;
+            }
+            @page {
+                size: A4 landscape;
+                margin: 5mm;
+            }
+            .form-container {
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
+            .table-responsive {
+                overflow: visible !important;
+            }
         }
-        
-        .contact-form input {
-            padding: 0.5rem;
-            border-radius: 0.25rem;
-            border: none;
-            margin-right: 0.5rem;
+
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            overflow-x: auto;
         }
-        
-        .contact-form button {
-            padding: 0.5rem 1rem;
-            background-color: #0d6efd;
-            color: white;
-            border: none;
-            border-radius: 0.25rem;
-        }
-        .iframe-container {
+
+        /* Form Header Styling */
+        .form-header-container {
             position: relative;
-            width: 100%;
-            height: 100vh;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 14px;
         }
-        iframe {
+
+        .header-top-left {
             position: absolute;
-            top: 0;
             left: 0;
+            top: 0;
+            font-size: 11px;
+            font-weight: normal;
+        }
+
+        .header-center-right {
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .header-info-row {
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        /* Table Styling */
+        .form-table {
+            border-collapse: collapse;
             width: 100%;
-            height: 100%;
-            border: none;
+            min-width: 2000px; /* Minimum width to prevent squishing */
+        }
+
+        .form-table th, .form-table td {
+            border: 1px solid var(--table-border-color) !important;
+            padding: 2px 4px !important;
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        
+        .form-table th {
+            font-weight: bold;
+            font-size: 10px;
+            background-color: #fff;
+        }
+
+        .vertical-text {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            white-space: nowrap;
+            height: 60px;
+            display: inline-block;
+        }
+
+        .text-red { color: #cc0000; font-weight: bold; }
+        .text-blue { color: #0000cc; font-weight: bold; }
+        
+        /* Table row hover highlight for web view */
+        @media screen {
+            .form-table tbody tr:hover {
+                background-color: #f1f4ff;
+            }
+        }
+        
+        /* Loading Overlay */
+        #loading-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            flex-direction: column;
+            display: none;
         }
     </style>
 </head>
-
 <body>
-    <!-- Navigation Menu -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgb(27, 27, 83);">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="logo2.jpg" alt="P.Kamesa Logo" class="d-inline-block align-text-top"> Wx App
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav ms-auto" id="dynamic-nav">
-                    <!-- Populated dynamically by auth.js -->
-                </ul>
-
-            </div>
-        </div>
-    </nav>
-
-<!-- Add this right before the iframe container -->
-<div class="container mt-3">
-  <div class="card">
-    <div class="card-header bg-primary text-white">
-      <h4 class="mb-0">Station Control Panel</h4>
+    
+    <div id="loading-overlay">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+        <div class="mt-2 fw-bold" id="loading-text">Generating Form...</div>
     </div>
-    <div class="card-body">
-      <div class="row align-items-center">
-        <div class="col-md-6">
-          <div class="mb-3">
-            <label for="stationSelect" class="form-label">Select Station:</label>
-            <select id="stationSelect" class="form-select">
-              <option value="Mab-Met">Mab-Met (63739)</option>
-              <option value="Dagoretti">Dagoretti (63741)</option>
-              <option value="JKIA">JKIA (63740)</option>
-              <option value="Wilson">Wilson (63742)</option>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-6 d-flex justify-content-center justify-content-md-end">
-          <button id="loadSheetBtn" class="btn btn-success">
-            <i class="fas fa-sync-alt me-1"></i>Load Form626
-          </button>
-          <button id="saveSheetBtn" class="btn btn-primary ms-2" disabled>
-            <i class="fas fa-save me-1"></i>Save Changes
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- Modify your iframe container like this -->
-<div class="iframe-container mt-3">
-  <iframe id="sheetFrame" src="about:blank"></iframe>
-</div>
-
-    <!-- Footer -->
-    <footer class="py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 text-center text-md-start">
-                    <div class="footer-logo">
-                        <img src="logo.jpg" alt="P.K Logo">
-                    </div>
-                    <p>&copy; 2025 P.Kamesa. All rights reserved.</p>
+    <div class="container-fluid py-3">
+        
+        <!-- Controls Section -->
+        <div class="controls-section no-print">
+            <div class="row align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold"><i class="fas fa-calendar-alt me-2"></i>Select Month & Year</label>
+                    <input type="month" id="monthPicker" class="form-control">
                 </div>
-                <div class="col-md-4 text-center">
-                    <ul class="footer-links">
-                        <li><a href="/privacy-policy">Privacy Policy</a></li>
-                        <li><a href="/terms-of-service">Terms of Service</a></li>
-                        <li><a href="contact.html">Contact Me</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4 text-center text-md-end">
-                    <div class="social-media mb-3">
-                        <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
-                        <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
-                        <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-                    </div>
-                    <form class="contact-form d-flex justify-content-center justify-content-md-end">
-                        <input type="email" class="form-control me-2" placeholder="Enter your email" required style="max-width: 250px;">
-                        <button type="submit" class="btn btn-primary">Subscribe</button>
-                    </form>
+                <div class="col-md-9 d-flex gap-2 justify-content-end flex-wrap mt-3 mt-md-0">
+                    <button id="btnGenerate" class="btn btn-primary">
+                        <i class="fas fa-sync-alt me-1"></i> Generate Form
+                    </button>
+                    <button id="btnPrint" class="btn btn-secondary">
+                        <i class="fas fa-print me-1"></i> Print
+                    </button>
+                    <button id="btnPdf" class="btn btn-danger">
+                        <i class="fas fa-file-pdf me-1"></i> Export PDF
+                    </button>
+                    <button id="btnExcel" class="btn btn-success">
+                        <i class="fas fa-file-excel me-1"></i> Export Excel
+                    </button>
+                    <button id="btnCsv" class="btn btn-info text-white">
+                        <i class="fas fa-file-csv me-1"></i> Download CSV
+                    </button>
                 </div>
             </div>
         </div>
-    </footer>
-    <script>
-            // Initialize on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        displaySavedReports();
-        
-        // Redirect if not logged in
-        if (!localStorage.getItem('weatherAuthToken')) {
-            window.location.href = 'login.html';
-        }
-    });
 
-        document.addEventListener('DOMContentLoaded', function() {
-    // Get current page URL
-    const currentPage = window.location.pathname.split('/').pop();
-    
-    // Find all dropdown items
-    const dropdownItems = document.querySelectorAll('.dropdown-item');
-    
-    // Loop through each dropdown item
-    dropdownItems.forEach(item => {
-        // Get the href attribute and extract the filename
-        const itemPage = item.getAttribute('href').split('/').pop();
-        
-        // Check if it matches current page
-        if (itemPage === currentPage) {
-            // Add active class to this item
-            item.classList.add('active');
+        <!-- Printable Form Container -->
+        <div class="form-container" id="printable-area">
             
-            // Also add active class to parent dropdown toggle
-            const dropdownToggle = item.closest('.dropdown-menu').previousElementSibling;
-            dropdownToggle.classList.add('active');
-        }
-    });
-});
-</script>
+            <div class="form-header-container">
+                <div class="header-top-left">
+                    FORM No. 626 (Rev. 3/82)
+                </div>
+                <div class="header-center-right">
+                    <div>KENYA METEOROLOGICAL DEPARTMENT</div>
+                    <div>MONTHLY RETURNS OF DAILY CLIMATOLOGICAL OBSERVATIONS</div>
+                </div>
+            </div>
+            
+            <div class="header-info-row mb-2">
+                STATION Name: <span id="lblStationName" class="text-decoration-underline me-3">...</span>
+                Registered: <span id="lblStationId" class="text-decoration-underline me-3">...</span>
+                MONTH: <span id="lblMonthYear" class="text-decoration-underline">...</span>
+            </div>
 
-        <script src="auth.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <div class="table-responsive">
+                <table class="table form-table" id="formTable">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" class="text-blue">STATION<br>NUMBER</th>
+                            <th rowspan="2"><span class="vertical-text text-blue">YEAR</span></th>
+                            <th rowspan="2"><span class="vertical-text text-blue">MONTH</span></th>
+                            <th rowspan="2"><span class="vertical-text text-blue">DAY</span></th>
+                            <th rowspan="2"><span class="vertical-text text-blue">HOURS<br>(GMT)</span></th>
+                            <th colspan="4" class="text-red">TEMPERATURE &deg;C 0600Z</th>
+                            <th colspan="3" class="text-red">TEMPERATURE &deg;C</th>
+                            <th colspan="6" class="text-red">SOIL TEMPERATURES &deg;C AT 0500 GMT</th>
+                            <th colspan="3" class="text-red">SOIL TEMPARATURES &deg;C AT 0900 GMT</th>
+                            <th colspan="2" class="text-red">ANEMOMETER</th>
+                            <th colspan="2" class="text-red">RAINFALL</th>
+                            <th rowspan="2"><span class="vertical-text text-blue">SUNSHINE<br>HOURS</span></th>
+                            <th colspan="3" class="text-red">RADIOMETER</th>
+                            <th colspan="3" class="text-red">EVAPO. PANS</th>
+                            <th rowspan="2"><span class="vertical-text text-blue">HOURS<br>(GMT) p.m.</span></th>
+                            <th colspan="4" class="text-red">TEMPERATURE &deg;C 1200Z</th>
+                            <th colspan="3" class="text-red">SOIL TEMPARETURES AT 1300G</th>
+                            <th rowspan="2"><span class="vertical-text text-blue">MAX.<br>RESET<br>&deg;C</span></th>
+                            <th rowspan="2"><span class="vertical-text text-blue">MIN.<br>RESET<br>&deg;C</span></th>
+                            <th colspan="2" class="text-red">SOIL MOISTURE</th>
+                        </tr>
+                        <tr>
+                            <!-- TEMP 0600Z -->
+                            <th class="text-blue">DRY BULB</th>
+                            <th class="text-blue">WET BULB</th>
+                            <th class="text-blue">DEW POINT</th>
+                            <th class="text-blue"><span class="vertical-text">RELATIVE<br>HUMIDITY %</span></th>
+                            <!-- TEMP C -->
+                            <th class="text-blue">MAX</th>
+                            <th class="text-blue">MIN</th>
+                            <th class="text-blue">GRASS MIN</th>
+                            <!-- SOIL 0500GMT -->
+                            <th class="text-blue">5 cm</th>
+                            <th class="text-blue">10 cm</th>
+                            <th class="text-blue">20 cm</th>
+                            <th class="text-blue">30 cm</th>
+                            <th class="text-blue">50 cm</th>
+                            <th class="text-blue">100 cm</th>
+                            <!-- SOIL 0900GMT -->
+                            <th class="text-blue">5 cm</th>
+                            <th class="text-blue">10 cm</th>
+                            <th class="text-blue">20 cm</th>
+                            <!-- ANEMOMETER -->
+                            <th class="text-blue"><span class="vertical-text">HEIGHT</span></th>
+                            <th class="text-blue">WINDRUN<br>IN Km/Day</th>
+                            <!-- RAINFALL -->
+                            <th class="text-blue">AMOUNT<br>mm</th>
+                            <th class="text-blue">DURATION<br>(Hrs)</th>
+                            <!-- RADIOMETER -->
+                            <th class="text-blue"><span class="vertical-text">TYPE</span></th>
+                            <th class="text-blue">RADIATION<br>MJm-2</th>
+                            <th class="text-blue"><span class="vertical-text">TYPE</span></th>
+                            <!-- EVAPO PANS -->
+                            <th class="text-blue">EVAP. mm</th>
+                            <th class="text-blue"><span class="vertical-text">TYPE</span></th>
+                            <th class="text-blue">EVAP. mm</th>
+                            <!-- TEMP 1200Z -->
+                            <th class="text-blue">DRY BULB</th>
+                            <th class="text-blue">WET BULB</th>
+                            <th class="text-blue">DEW POINT</th>
+                            <th class="text-blue"><span class="vertical-text">RELATIVE<br>HUMIDITY %</span></th>
+                            <!-- SOIL 1300G -->
+                            <th class="text-blue">5 cm</th>
+                            <th class="text-blue">10 cm</th>
+                            <th class="text-blue">20 cm</th>
+                            <!-- SOIL MOISTURE -->
+                            <th class="text-blue">5 cm</th>
+                            <th class="text-blue">100 cm</th>
+                        </tr>
+                    </thead>
+                    <tbody id="form626Body">
+                        <!-- Rows populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Auth Script -->
+    <script src="auth.js"></script>
     <script src="form626.js"></script>
 </body>
 </html>

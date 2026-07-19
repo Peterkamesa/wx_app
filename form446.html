@@ -3,279 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FORM 446 - Evaporation from Standard Evaporation Pan</title>
     <link rel="icon" type="image/x-icon" href="favicon2.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>FORM446</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+
     <style>
-                    /* Custom styles */
-        :root {
-      --primary-color: #1b1b53;
-      --secondary-color: #3a3a8f;
-      --accent-color: #06f07b;
-      --highlight-color: #ff4ed9;
-      --light-text: #f8f9fa;
-      --success-color: #28a745;
-      --info-color: #17a2b8;
-      --danger-color: #dc3545;
-    }
-    
         body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .controls-section {
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        @media print {
+            .controls-section, .no-print { display: none !important; }
+            body { background: white; margin: 0; padding: 0; }
+            @page { size: A4 portrait; margin: 10mm; }
+            .form-container { box-shadow: none; margin: 0; padding: 0; }
+        }
+
+        .form-container {
+            background: white;
+            padding: 20px 25px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 900px;
+            margin: 0 auto;
+            overflow-x: auto;
+        }
+
+        /* ── Header ─────────────────────────── */
+        .form-no-line {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .form-dept-title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 4px 0 2px;
+        }
+
+        .form-sub-title {
+            text-align: center;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .form-pan-label {
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .form-station-row {
             display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 6px;
+        }
+
+        /* ── Table ───────────────────────────── */
+        .form-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .form-table th,
+        .form-table td {
+            border: 1px solid #000 !important;
+            padding: 4px 6px !important;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .form-table thead th {
+            font-weight: bold;
+            background-color: #fff;
+            font-size: 11px;
+            line-height: 1.3;
+        }
+
+        /* column-number row */
+        .col-num th {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        @media screen {
+            .form-table tbody tr:hover { background-color: #f0f8ff; }
+        }
+
+        /* totals / summary footer */
+        .form-table tfoot tr td {
+            font-weight: bold;
             background-color: #f8f9fa;
         }
-        
-        .navbar {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      background-color: var(--primary-color) !important;
-    }
-    
-    .navbar-brand img {
-      height: 30px;
-      transition: transform 0.3s ease;
-    }
-    
-    .navbar-brand:hover img {
-      transform: scale(1.05);
-    }
-    
-    .nav-link {
-      position: relative;
-      margin: 0 8px;
-      transition: color 0.3s ease;
-      color: var(--light-text) !important;
-    }
-    
-    .nav-link.active {
-      color: var(--accent-color) !important;
-      font-weight: bold;
-    }
-    
-    .nav-link.active::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: var(--highlight-color);
-      border-radius: 3px;
-    }
-    
-    .dropdown-menu {
-      background-color: var(--secondary-color);
-      border: none;
-    }
-    
-    .dropdown-item {
-      color: var(--light-text);
-      transition: all 0.3s ease;
-    }
-    
-    .dropdown-item:hover {
-      background-color: var(--highlight-color);
-      color: white;
-    }
-            footer {
-            background-color: #1b1b53;
-            color: white;
-            padding: 2rem 0;
-            margin-top: auto;
-        }
-        
-        .footer-logo img {
-            height: 40px;
-            margin-bottom: 1rem;
-        }
-        
-        .footer-links {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .footer-links li {
-            display: inline-block;
-            margin: 0 10px;
-        }
-        
-        .footer-links a {
-            color: #adb5bd;
-            text-decoration: none;
-        }
-        
-        .footer-links a:hover {
-            color: white;
 
-        }
-        
-        .social-media a {
-            color: white;
-            font-size: 1.5rem;
-            margin: 0 10px;
-        }
-        
-        .contact-form {
-            margin-top: 1rem;
-        }
-        
-        .contact-form input {
-            padding: 0.5rem;
-            border-radius: 0.25rem;
-            border: none;
-            margin-right: 0.5rem;
-        }
-        
-        .contact-form button {
-            padding: 0.5rem 1rem;
-            background-color: #0d6efd;
-            color: white;
-            border: none;
-            border-radius: 0.25rem;
-        }
-        .iframe-container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-        }
-        iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
+        /* ── Loading overlay ─────────────────── */
+        #loading-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            flex-direction: column;
         }
     </style>
 </head>
-
 <body>
-    <!-- Navigation Menu -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgb(27, 27, 83);">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="logo2.jpg" alt="P.Kamesa Logo" class="d-inline-block align-text-top"> Wx App
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav ms-auto" id="dynamic-nav">
-                    <!-- Populated dynamically by auth.js -->
-                </ul>
 
-            </div>
-        </div>
-    </nav>
-
-    <!-- Add this right before the iframe container -->
-<div class="container mt-3">
-  <div class="card">
-    <div class="card-header bg-primary text-white">
-      <h4 class="mb-0">Station Control Panel</h4>
-    </div>
-    <div class="card-body">
-      <div class="row align-items-center">
-        <div class="col-md-6">
-          <div class="mb-3">
-            <label for="stationSelect" class="form-label">Select Station:</label>
-            <select id="stationSelect" class="form-select">
-              <option value="Mab-Met">Mab-Met (63739)</option>
-              <option value="Dagoretti">Dagoretti (63741)</option>
-              <option value="JKIA">JKIA (63740)</option>
-              <option value="Wilson">Wilson (63742)</option>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-6 d-flex justify-content-center justify-content-md-end">
-          <button id="loadSheetBtn" class="btn btn-success">
-            <i class="fas fa-sync-alt me-1"></i>Load Form446
-          </button>
-          <button id="saveSheetBtn" class="btn btn-primary ms-2" disabled>
-            <i class="fas fa-save me-1"></i>Save Changes
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+<div id="loading-overlay">
+    <div class="spinner-border text-success" role="status" style="width:3rem;height:3rem;"></div>
+    <div class="mt-2 fw-bold">Generating Form…</div>
 </div>
 
-<!-- Modify your iframe container like this -->
-<div class="iframe-container mt-3">
-  <iframe id="sheetFrame" src="about:blank"></iframe>
-</div>
-    <!-- Footer -->
-    <footer class="py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 text-center text-md-start">
-                    <div class="footer-logo">
-                        <img src="logo.jpg" alt="P.K Logo">
-                    </div>
-                    <p>&copy; 2025 P.Kamesa. All rights reserved.</p>
-                </div>
-                <div class="col-md-4 text-center">
-                    <ul class="footer-links">
-                        <li><a href="/privacy-policy">Privacy Policy</a></li>
-                        <li><a href="/terms-of-service">Terms of Service</a></li>
-                        <li><a href="contact.html">Contact Me</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4 text-center text-md-end">
-                    <div class="social-media mb-3">
-                        <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
-                        <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
-                        <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-                    </div>
-                    <form class="contact-form d-flex justify-content-center justify-content-md-end">
-                        <input type="email" class="form-control me-2" placeholder="Enter your email" required style="max-width: 250px;">
-                        <button type="submit" class="btn btn-primary">Subscribe</button>
-                    </form>
-                </div>
+<div class="container-fluid py-3">
+
+    <!-- Controls -->
+    <div class="controls-section no-print">
+        <div class="row align-items-end g-2">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Month &amp; Year</label>
+                <input type="month" id="monthPicker" class="form-control">
+            </div>
+            <div class="col-md-9 d-flex gap-2 justify-content-end flex-wrap mt-3 mt-md-0">
+                <button id="btnGenerate" class="btn btn-primary">
+                    <i class="fas fa-sync-alt me-1"></i> Generate
+                </button>
+                <button id="btnPrint" class="btn btn-secondary">
+                    <i class="fas fa-print me-1"></i> Print
+                </button>
+                <button id="btnPdf" class="btn btn-danger">
+                    <i class="fas fa-file-pdf me-1"></i> Export PDF
+                </button>
+                <button id="btnExcel" class="btn btn-success">
+                    <i class="fas fa-file-excel me-1"></i> Export Excel
+                </button>
+                <button id="btnCsv" class="btn btn-info text-white">
+                    <i class="fas fa-file-csv me-1"></i> Download CSV
+                </button>
             </div>
         </div>
-    </footer>
-    <script>
-            // Initialize on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        displaySavedReports();
-        
-        // Redirect if not logged in
-        if (!localStorage.getItem('weatherAuthToken')) {
-            window.location.href = 'login.html';
-        }
-    });
+    </div>
 
-        document.addEventListener('DOMContentLoaded', function() {
-    // Get current page URL
-    const currentPage = window.location.pathname.split('/').pop();
-    
-    // Find all dropdown items
-    const dropdownItems = document.querySelectorAll('.dropdown-item');
-    
-    // Loop through each dropdown item
-    dropdownItems.forEach(item => {
-        // Get the href attribute and extract the filename
-        const itemPage = item.getAttribute('href').split('/').pop();
-        
-        // Check if it matches current page
-        if (itemPage === currentPage) {
-            // Add active class to this item
-            item.classList.add('active');
-            
-            // Also add active class to parent dropdown toggle
-            const dropdownToggle = item.closest('.dropdown-menu').previousElementSibling;
-            dropdownToggle.classList.add('active');
-        }
-    });
-});
-</script>
+    <!-- Printable Area -->
+    <div class="form-container" id="printable-area">
 
-        <script src="auth.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="form446.js"></script>
+        <!-- Header -->
+        <div class="form-no-line">FORM NO. 446</div>
+
+        <div class="form-dept-title">KENYA METEOROLOGICAL DEPARTMENT</div>
+        <div class="form-sub-title">EVAPORATION FROM STANDARD EVAPORATION PAN</div>
+        <div class="form-pan-label">PAN 'A'</div>
+
+        <div class="form-station-row">
+            <div><span id="lblStation">...</span></div>
+            <div>MONTH : <span id="lblMonth">...</span></div>
+            <div>YEAR &nbsp;<span id="lblYear">...</span></div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+            <table class="table form-table" id="form446Table">
+                <thead>
+                    <!-- Row 1: group headers -->
+                    <tr>
+                        <th rowspan="3" style="min-width:55px;">Day of the month</th>
+                        <th rowspan="3" style="min-width:80px;">Rainfall<br><small>(Millimetres)</small></th>
+                        <th colspan="2">No. of Full Cups of water</th>
+                        <th rowspan="3" style="min-width:100px;">Evaporation in mms.<br>Col.(2)&minus;Col.(3)*0.5<br>OR Col.(2)+Col.(4)*0.5</th>
+                        <th rowspan="3" style="min-width:100px;">Cup counter<br>Anemometer<br>Readings</th>
+                        <th rowspan="3" style="min-width:90px;">REMARKS<br><br>WINDRUN IN<br>KM/DAY</th>
+                    </tr>
+                    <!-- Row 2: cup sub-headers -->
+                    <tr>
+                        <th>Taken out of pan</th>
+                        <th>Added to pan</th>
+                    </tr>
+                    <!-- Row 3: column numbers -->
+                </thead>
+                <tbody id="form446Body">
+                    <!-- Rows rendered by JS -->
+                </tbody>
+                <tfoot id="form446Foot">
+                    <!-- Totals rendered by JS -->
+                </tfoot>
+            </table>
+        </div>
+
+    </div><!-- /printable-area -->
+</div>
+
+<script src="auth.js"></script>
+<script src="form446.js"></script>
 </body>
 </html>

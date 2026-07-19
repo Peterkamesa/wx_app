@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form No. 496 - Monthly Rainfall Report</title>
+    <link rel="icon" type="image/x-icon" href="favicon2.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+
+    <style>
+        /* ─── Global: match the golden-yellow paper form ─── */
+        :root {
+            --form-yellow: #FFD700;
+            --border-color: #000;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: #e8e8e8;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 13px;
+            color: #000;
+        }
+
+        /* ─── Control bar (hidden on print) ─── */
+        .controls-section {
+            background: white;
+            padding: 12px 16px;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+        }
+
+        @media print {
+            .controls-section, .no-print { display: none !important; }
+            body { background: var(--form-yellow); margin: 0; padding: 0; }
+            @page { size: A4 portrait; margin: 8mm; }
+            .form-wrapper { box-shadow: none; margin: 0; padding: 10px; }
+        }
+
+        /* ─── Form wrapper – yellow background ─── */
+        .form-wrapper {
+            background-color: var(--form-yellow);
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 22px 26px 30px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.25);
+        }
+
+        /* ─── Header text ─── */
+        .form-ref {
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 14px;
+        }
+
+        .form-dept {
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .form-subtitle {
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 14px;
+        }
+
+        .form-station-line {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .form-number-line {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+
+        .form-enter-label {
+            font-size: 13px;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        /* ─── Main rainfall grid ─── */
+        .rain-table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: var(--form-yellow);
+            margin-bottom: 0;
+        }
+
+        .rain-table td {
+            border: 2px solid var(--border-color);
+            padding: 4px 6px;
+            text-align: center;
+            font-size: 13px;
+            min-width: 55px;
+        }
+
+        .rain-table td.day-header {
+            font-weight: bold;
+            font-size: 13px;
+            background-color: var(--form-yellow);
+        }
+
+        .rain-table td.value-cell {
+            background-color: var(--form-yellow);
+            min-height: 24px;
+            height: 24px;
+        }
+
+        .rain-table td.inactive {
+            background-color: var(--form-yellow);
+            color: #999;
+        }
+
+        /* ─── Footer rows (1st of next month / TOTAL / DAYS) ─── */
+        .rain-table td.footer-label {
+            font-weight: bold;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        /* ─── Observer line ─── */
+        .observer-line {
+            margin-top: 22px;
+            margin-bottom: 22px;
+            font-size: 13px;
+            border-bottom: 1px dotted #555;
+            padding-bottom: 2px;
+            text-align: right;
+        }
+
+        /* ─── Meteorological dept section ─── */
+        .met-dept-label {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .met-table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: var(--form-yellow);
+        }
+
+        .met-table td {
+            border: 2px solid var(--border-color);
+            padding: 4px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: left;
+            min-width: 100px;
+            height: 28px;
+        }
+
+        .met-table td.met-header {
+            background-color: var(--form-yellow);
+        }
+
+        .met-table td.met-value {
+            background-color: var(--form-yellow);
+            font-weight: normal;
+            height: 30px;
+        }
+
+        /* ─── Loading overlay ─── */
+        #loading-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 215, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+
+<div id="loading-overlay">
+    <div class="spinner-border text-dark" role="status" style="width:3rem; height:3rem;"></div>
+    <div class="mt-2 fw-bold">Loading Rainfall Data…</div>
+</div>
+
+<div class="container-fluid py-3">
+
+    <!-- Controls (hidden on print) -->
+    <div class="controls-section no-print">
+        <div class="row align-items-end g-2">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Month &amp; Year</label>
+                <input type="month" id="monthPicker" class="form-control">
+            </div>
+            <div class="col-md-9 d-flex gap-2 justify-content-end flex-wrap mt-3 mt-md-0">
+                <button id="btnGenerate" class="btn btn-warning fw-bold">
+                    <i class="fas fa-sync-alt me-1"></i> Generate
+                </button>
+                <button id="btnPrint" class="btn btn-secondary">
+                    <i class="fas fa-print me-1"></i> Print
+                </button>
+                <button id="btnPdf" class="btn btn-danger">
+                    <i class="fas fa-file-pdf me-1"></i> Export PDF
+                </button>
+                <button id="btnExcel" class="btn btn-success">
+                    <i class="fas fa-file-excel me-1"></i> Export Excel
+                </button>
+                <button id="btnCsv" class="btn btn-info text-white">
+                    <i class="fas fa-file-csv me-1"></i> CSV
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ Printable / exportable area ═══ -->
+    <div class="form-wrapper" id="printable-area">
+
+        <!-- Form reference -->
+        <div class="form-ref">Form No. 496 (Rev. 7/70)</div>
+
+        <!-- Titles -->
+        <div class="form-dept">KENYA METEOROLOGICAL DEPARTMENT</div>
+        <div class="form-subtitle">MONTHLY-RAINFALL REPORT</div>
+
+        <!-- Station and number line -->
+        <div class="form-station-line">Station Name: &nbsp;<span id="lblStation">...</span></div>
+        <div class="form-number-line">
+            Number: &nbsp;.......<span id="lblStationId">...</span><sub style="font-size:9px;">0000</sub>
+            &nbsp;&nbsp; Month ...<span id="lblMonth">...</span>... <span id="lblYear">...</span>
+        </div>
+
+        <div class="form-enter-label">Enter daily totals under date measured</div>
+
+        <!-- ─── Rainfall grid table ─── -->
+        <table class="rain-table" id="rainTable">
+            <tbody id="rainBody">
+                <!-- Built dynamically by JS -->
+            </tbody>
+        </table>
+
+        <!-- Observer line -->
+        <div class="observer-line">Observer</div>
+
+        <!-- Meteorological dept section -->
+        <div class="met-dept-label">To be completed in the Meteorological Department</div>
+        <table class="met-table" id="metTable">
+            <tbody>
+                <tr>
+                    <td class="met-header">AVERAGE</td>
+                    <td class="met-header">YEARS</td>
+                    <td class="met-header">MAX. FALL</td>
+                    <td class="met-header">DATE(S)</td>
+                </tr>
+                <tr>
+                    <td class="met-value"></td>
+                    <td class="met-value"></td>
+                    <td class="met-value"></td>
+                    <td class="met-value"></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div><!-- /printable-area -->
+</div>
+
+<script src="auth.js"></script>
+<script src="form496.js"></script>
+</body>
+</html>
