@@ -59,14 +59,27 @@ function getObsForDate(obsData, dateStr, timePrefix) {
     ) || {};
 }
 
-/** Format a rainfall value:
- *  null / undefined  → ''
- *  0                 → '0.0'
- *  0 < v < 0.1      → 'TR'
- *  >= 0.1            → '1 dp string'
+/** Resolve raw rainfall DB value to a number or null.
+ *  Treats: null / undefined / '' / 'NIL' / 'nil' → 0   (no rain recorded)
+ *  Numeric 0 → 0
+ *  Other strings that can't parse  → null (no observation at all)
  */
-function fmtRain(val) {
-    const n = getNum(val);
+function resolveRainfall(val) {
+    if (val === null || val === undefined || val === '') return null; // no obs
+    const str = String(val).trim().toUpperCase();
+    if (str === 'NIL') return 0;
+    if (str === 'TRACE' || str === 'TR') return 0.001;  // trace → renders as TR
+    const n = parseFloat(str);
+    return isNaN(n) ? null : n;
+}
+
+/** Format a resolved rainfall number:
+ *  null  → '' (no observation)
+ *  0     → '0.0'
+ *  < 0.1 → 'TR'
+ *  >= 0.1→ one decimal place
+ */
+function fmtRain(n) {
     if (n === null) return '';
     if (n === 0)    return '0.0';
     if (n < 0.1)    return 'TR';
@@ -137,24 +150,30 @@ function buildGrid(year, month, yearStr, monthStr, daysInMonth,
         }
         const dateStr = buildDateStr(yearStr, monthStr, day);
         const obs06   = getObsForDate(allObs, dateStr, '06');
-        const raw     = getNum(obs06.rainfall);
+        const raw     = resolveRainfall(obs06.rainfall);
 
-        if (raw !== null) {
-            if (raw >= 1.0) { total += raw; rainyDays++; }
-            else if (raw > 0) { total += raw; }  // count amount but not as rainy day
-            rainValues[day] = fmtRain(raw);
+        // obs06 exists if the date key is present (even with empty fields)
+        // We fill 0.0 if: the observation record exists OR if raw===0 (NIL/0 was stored)
+        if (obs06 && Object.keys(obs06).length > 0) {
+            const display = fmtRain(raw);
+            rainValues[day] = display !== '' ? display : '0.0'; // obs exists but no rainfall = 0.0
+            if (raw !== null && raw >= 1.0)   { total += raw; rainyDays++; }
+            else if (raw !== null && raw > 0) { total += raw; }
         } else {
-            rainValues[day] = '';
+            rainValues[day] = '';  // no observation recorded at all for this day
         }
     }
 
     /* "1st of following month" = 0600Z on 1st of next month */
     const firstNextStr  = buildDateStr(nextYear, nextMonth, 1);
     const firstNextObs  = getObsForDate(allObs, firstNextStr, '06');
-    const firstNextRaw  = getNum(firstNextObs.rainfall);
-    const firstNextFmt  = firstNextRaw !== null ? fmtRain(firstNextRaw) : '';
-    if (firstNextRaw !== null && firstNextRaw >= 1.0) { total += firstNextRaw; rainyDays++; }
-    else if (firstNextRaw !== null && firstNextRaw > 0) { total += firstNextRaw; }
+    const firstNextRaw  = resolveRainfall(firstNextObs.rainfall);
+    let firstNextFmt = '';
+    if (firstNextObs && Object.keys(firstNextObs).length > 0) {
+        firstNextFmt = fmtRain(firstNextRaw) !== '' ? fmtRain(firstNextRaw) : '0.0';
+        if (firstNextRaw !== null && firstNextRaw >= 1.0) { total += firstNextRaw; rainyDays++; }
+        else if (firstNextRaw !== null && firstNextRaw > 0) { total += firstNextRaw; }
+    }
 
     /* ── Three data rows (days 2-11, 12-21, 22-31) ── */
     const groups = [
