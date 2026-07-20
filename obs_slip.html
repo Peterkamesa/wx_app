@@ -505,8 +505,33 @@
         // ------------------------
 
         try {
-            const response = await authenticatedFetch(`${API_BASE_URL}/save-observation`, {
-                method: 'POST',
+            // ── Check if an observation already exists for this date + time ──
+            const checkRes = await authenticatedFetch(
+                `${API_BASE_URL}/check-observation?date=${encodeURIComponent(data.date)}&time=${encodeURIComponent(data.time)}`
+            );
+
+            let existingFound = false;
+            if (checkRes && checkRes.ok) {
+                const checkData = await checkRes.json();
+                existingFound = checkData.exists === true;
+            }
+
+            let method = 'POST';
+            let endpoint = `${API_BASE_URL}/save-observation`;
+
+            if (existingFound) {
+                const doUpdate = confirm(
+                    `⚠️ An observation for ${data.date} at ${data.time} already exists.\n\n` +
+                    `Click OK to UPDATE the existing record with your corrections,\n` +
+                    `or Cancel to go back without saving.`
+                );
+                if (!doUpdate) return;
+                method = 'PUT';
+                endpoint = `${API_BASE_URL}/update-observation`;
+            }
+
+            const response = await authenticatedFetch(endpoint, {
+                method,
                 body: JSON.stringify(data)
             });
 
