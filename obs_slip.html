@@ -685,8 +685,13 @@ document.querySelector('input[name="dry_bulb"]').addEventListener('input', updat
 
         // Only calculate if evap_pan field has input data
         if (evapPanVal === '') {
-        evaporationInput.value = '';
-        return;
+            evaporationInput.value = '';
+            return;
+        }
+
+        if (/^\/+$/.test(evapPanVal)) {
+            evaporationInput.value = '///';
+            return;
         }
 
         let rainfallVal = rainfallInput.value.trim();
@@ -702,8 +707,8 @@ document.querySelector('input[name="dry_bulb"]').addEventListener('input', updat
 
         const cups = parseFloat(evapPanVal);
         if (isNaN(cups)) {
-        evaporationInput.value = '';
-        return;
+            evaporationInput.value = '///';
+            return;
         }
 
         // Calculate E = R + (0.5 × cups)
@@ -735,7 +740,14 @@ document.querySelector('input[name="dry_bulb"]').addEventListener('input', updat
             const response = await authenticatedFetch(url);
             if (response && response.ok) {
                 const data = await response.json();
-                yesterdayWindRun = parseFloat(data.wind_run) || 0.0;
+                const wrStr = String(data.wind_run).trim();
+                
+                if (wrStr === '' || /^\/+$/.test(wrStr)) {
+                    yesterdayWindRun = NaN; // Missing or ////
+                } else {
+                    yesterdayWindRun = parseFloat(data.wind_run);
+                    if (isNaN(yesterdayWindRun)) yesterdayWindRun = 0.0;
+                }
                 // Re-trigger calculation if today's reading is already entered
                 todayWindRunInput.dispatchEvent(new Event('input'));
             }
@@ -746,13 +758,24 @@ document.querySelector('input[name="dry_bulb"]').addEventListener('input', updat
 
     // Calculate automatically when today's value changes
     todayWindRunInput.addEventListener('input', function() {
-        const todayVal = parseFloat(todayWindRunInput.value);
+        const todayStr = todayWindRunInput.value.trim();
+        if (todayStr === '') {
+            wRunInput.value = '';
+            return;
+        }
+
+        if (/^\/+$/.test(todayStr) || isNaN(yesterdayWindRun)) {
+            wRunInput.value = '////';
+            return;
+        }
+
+        const todayVal = parseFloat(todayStr);
         if (!isNaN(todayVal) && yesterdayWindRun !== null && !isNaN(yesterdayWindRun)) {
-        let result = todayVal - yesterdayWindRun;
-        if (result < 0) result += 10000; // handle counter rollover
-        wRunInput.value = result.toFixed(2);
+            let result = todayVal - yesterdayWindRun;
+            if (result < 0) result += 10000; // handle counter rollover
+            wRunInput.value = result.toFixed(2);
         } else {
-        wRunInput.value = '';
+            wRunInput.value = '';
         }
     });
 

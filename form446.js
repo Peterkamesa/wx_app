@@ -45,6 +45,18 @@ function getNum(val) {
     return isNaN(n) ? null : n;
 }
 
+/** Returns true if the stored value is a missing-data code like /// or //// */
+function isMissing(val) {
+    if (val === null || val === undefined) return false;
+    return /^\/+$/.test(String(val).trim());
+}
+
+/** Display helper: pass /// or //// through as-is; otherwise return val or '' */
+function fmtVal(val) {
+    if (isMissing(val)) return String(val).trim();
+    return (val !== null && val !== undefined && val !== '') ? val : '';
+}
+
 function fmt(val, decimals = 2) {
     const n = getNum(val);
     return n !== null ? n.toFixed(decimals) : '';
@@ -129,18 +141,26 @@ function renderRows(year, month, daysInMonth, allObs) {
         totalEvap += evap;
 
         // ── Column 6: Cup-counter Anemometer Reading (windrun AS READ at 0600Z)
-        const windrunRead = getNum(obs06.wind_run);
+        // Show //// if stored as //// or missing
+        const windRunRaw = obs06.wind_run;
+        const windrunRead = isMissing(windRunRaw) ? null : getNum(windRunRaw);
+        const windrunReadDisplay = isMissing(windRunRaw)
+            ? String(windRunRaw).trim()
+            : (windrunRead !== null ? windrunRead.toFixed(2) : '');
 
         // ── Column 7: Windrun KM/DAY = NEXT day's reading – today's reading
-        // (result is recorded on TODAY's row, not tomorrow's)
+        // Show //// if today or next day wind_run is missing or stored as ////
         const nextDate = (() => {
             const d = new Date(year, month - 1, day + 1);
             return buildDateStr(d.getFullYear(), d.getMonth() + 1, d.getDate());
         })();
-        const nextObs06       = getObsForDate(allObs, nextDate, '06');
-        const nextWindrunRead  = getNum(nextObs06.wind_run);
+        const nextObs06      = getObsForDate(allObs, nextDate, '06');
+        const nextWindRunRaw = nextObs06.wind_run;
+        const nextWindrunRead = isMissing(nextWindRunRaw) ? null : getNum(nextWindRunRaw);
         let windrunKm = '';
-        if (windrunRead !== null && nextWindrunRead !== null) {
+        if (isMissing(windRunRaw) || isMissing(nextWindRunRaw)) {
+            windrunKm = '////';  // can't calculate if either reading is ////
+        } else if (windrunRead !== null && nextWindrunRead !== null) {
             windrunKm = (nextWindrunRead - windrunRead).toFixed(2);
         }
 
@@ -151,7 +171,7 @@ function renderRows(year, month, daysInMonth, allObs) {
             <td>${cupsTakenOut > 0 ? cupsTakenOut : ''}</td>
             <td>${cupsAdded    > 0 ? cupsAdded   : ''}</td>
             <td>${evap.toFixed(1)}</td>
-            <td>${windrunRead !== null ? windrunRead.toFixed(2) : ''}</td>
+            <td>${windrunReadDisplay}</td>
             <td>${windrunKm}</td>
         `;
         tbody.appendChild(tr);

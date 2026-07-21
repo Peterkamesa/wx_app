@@ -116,6 +116,18 @@ function computeAverage(val1, val2) {
     return ((n1 + n2) / 2).toFixed(1);
 }
 
+/** Returns true if the stored value is a missing-data code like /// or //// */
+function isMissing(val) {
+    if (val === null || val === undefined) return false;
+    return /^\/+$/.test(String(val).trim());
+}
+
+/** Display helper: pass /// or //// through as-is; otherwise return fallback */
+function fmtVal(val, fallback) {
+    if (isMissing(val)) return String(val).trim();
+    return (val !== null && val !== undefined && val !== '') ? val : (fallback !== undefined ? fallback : '');
+}
+
 function renderTableRows(year, month, startDay, endDay, allObs) {
     const tbody = document.getElementById('agroBody');
     tbody.innerHTML = '';
@@ -134,32 +146,51 @@ function renderTableRows(year, month, startDay, endDay, allObs) {
         
         // Evaporation, Windrun, Rainfall are next day's 0600Z
         const nextObs06 = getObsForDateAndTime(allObs, nextDateStr, '06');
+        const nextObsExists = Object.keys(nextObs06).length > 0;
         
-        const evap = nextObs06.e_p || nextObs06.evap_1 || '';
-        const windrun = nextObs06.w_run || '';
-        
-        const rawRain = parseFloat(nextObs06.rainfall);
-        let rain = nextObs06.rainfall || '';
-        if (rain.toUpperCase() === 'NIL' || rawRain === 0) {
-            rain = '0.0';
-        } else if (!isNaN(rawRain)) {
-            rain = rawRain.toFixed(1);
+        // Evaporation: pass through /// or //// if stored that way. If record exists but missing, use ///
+        const evapRaw = nextObs06.e_p || nextObs06.evap_1;
+        const evap = fmtVal(evapRaw, nextObsExists ? '///' : '');
+
+        // Windrun (w_run = calculated difference).
+        // If w_run or next day's wind_run (as read) is missing/slashes, show //// (if record exists)
+        const nextWindRunRaw = nextObs06.wind_run;
+        const wRunRaw = nextObs06.w_run;
+        let windrun = '';
+        if (nextObsExists && (isMissing(wRunRaw) || isMissing(nextWindRunRaw) || String(wRunRaw).trim() === '')) {
+            windrun = '////';
+        } else {
+            windrun = fmtVal(wRunRaw);
+        }
+
+        // Rainfall: pass through /// or //// if stored that way, otherwise format normally
+        let rain = '';
+        if (isMissing(nextObs06.rainfall)) {
+            rain = String(nextObs06.rainfall).trim();
+        } else {
+            const rawRain = parseFloat(nextObs06.rainfall);
+            rain = nextObs06.rainfall || '';
+            if (String(rain).toUpperCase() === 'NIL' || rawRain === 0) {
+                rain = '0.0';
+            } else if (!isNaN(rawRain)) {
+                rain = rawRain.toFixed(1);
+            }
         }
 
         const tr = document.createElement('tr');
         
         let html = `
             <td>${day}</td>
-            <td>${obs18.max_temp || ''}</td>
-            <td>${obs06.min_temp || ''}</td>
-            <td>${obs09.soil_5 || ''}</td>
-            <td>${obs09.soil_10 || ''}</td>
-            <td>${obs09.soil_20 || ''}</td>
+            <td>${fmtVal(obs18.max_temp)}</td>
+            <td>${fmtVal(obs06.min_temp)}</td>
+            <td>${fmtVal(obs09.soil_5)}</td>
+            <td>${fmtVal(obs09.soil_10)}</td>
+            <td>${fmtVal(obs09.soil_20)}</td>
             <td>${computeAverage(obs06.dew_point, obs12.dew_point)}</td>
             <td>${computeAverage(obs06.dry_bulb, obs12.dry_bulb)}</td>
             <td>${computeAverage(obs06.wet_bulb, obs12.wet_bulb)}</td>
-            <td>${obs12.sunshine || obs06.sunshine || ''}</td>
-            <td>${obs12.radiation || obs06.radiation || ''}</td>
+            <td>${fmtVal(obs12.sunshine || obs06.sunshine)}</td>
+            <td>${fmtVal(obs12.radiation || obs06.radiation)}</td>
             <td>${evap}</td>
             <td>${rain}</td>
             <td>${windrun}</td>

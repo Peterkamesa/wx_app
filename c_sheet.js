@@ -77,6 +77,18 @@ function getNum(val) {
     return isNaN(n) ? null : n;
 }
 
+/** Returns true if the stored value is a missing-data code like /// or //// */
+function isMissing(val) {
+    if (val === null || val === undefined) return false;
+    return /^\/+$/.test(String(val).trim());
+}
+
+/** Display helper: pass /// or //// through as-is; otherwise return val or fallback */
+function fmtVal(val, fallback = '') {
+    if (isMissing(val)) return String(val).trim();
+    return (val !== null && val !== undefined && val !== '') ? val : fallback;
+}
+
 function renderTableRows(year, month, daysInMonth, obsData) {
     const tbody = document.getElementById('cSheetBody');
     const tfoot = document.getElementById('cSheetFoot');
@@ -136,16 +148,23 @@ function renderTableRows(year, month, daysInMonth, obsData) {
         
         addStat('sunshine', obs12.sunshine || obs06.sunshine);
         addStat('radiation', obs12.radiation || obs06.radiation);
+        const nextObsExists = Object.keys(nextObs06).length > 0;
         
-        const evap = nextObs06.e_p || nextObs06.evap_1 || '';
+        const evap = fmtVal(nextObs06.e_p || nextObs06.evap_1, nextObsExists ? '///' : '');
         addStat('evap', evap);
         
-        const rawRain = parseFloat(nextObs06.rainfall);
-        let rain = nextObs06.rainfall || '';
-        if (rain.toUpperCase() === 'NIL' || rawRain === 0) {
-            rain = '0.0';
-        } else if (!isNaN(rawRain)) {
-            rain = rawRain.toFixed(1);
+        // Rainfall: pass through /// or //// if stored that way
+        let rain = '';
+        if (isMissing(nextObs06.rainfall)) {
+            rain = String(nextObs06.rainfall).trim();
+        } else {
+            const rawRain = parseFloat(nextObs06.rainfall);
+            rain = nextObs06.rainfall || '';
+            if (String(rain).toUpperCase() === 'NIL' || rawRain === 0) {
+                rain = '0.0';
+            } else if (!isNaN(rawRain)) {
+                rain = rawRain.toFixed(1);
+            }
         }
         const dailyRain = getNum(rain);
         if (dailyRain !== null) {
@@ -156,27 +175,35 @@ function renderTableRows(year, month, daysInMonth, obsData) {
         addStat('thunder', obs06.thunder || obs12.thunder);
         addStat('hail', obs06.hail || obs12.hail);
         
-        const windrun = nextObs06.w_run || '';
+        // Windrun: show //// if w_run is //// or missing (and record exists)
+        const nextWindRunRaw = nextObs06.wind_run;
+        const wRunRaw = nextObs06.w_run;
+        let windrun = '';
+        if (nextObsExists && (isMissing(wRunRaw) || isMissing(nextWindRunRaw) || String(wRunRaw).trim() === '')) {
+            windrun = '////';
+        } else {
+            windrun = fmtVal(wRunRaw);
+        }
         addStat('windrun', windrun);
 
         let html = `
             <td>${i}</td>
-            <td>${obs18.max_temp || ''}</td>  <!-- MAX from 1800Z -->
-            <td>${obs06.min_temp || ''}</td>
+            <td>${fmtVal(obs18.max_temp)}</td>  <!-- MAX from 1800Z -->
+            <td>${fmtVal(obs06.min_temp)}</td>
             <td></td>
-            <td>${obs06.g_min || ''}</td>
-            <td>${obs06.dew_point || ''}</td>
-            <td>${obs09.dew_point || ''}</td>
-            <td>${obs12.dew_point || ''}</td>
-            <td>${obs06.r_h || obs06.rh || ''}</td>
-            <td>${obs12.r_h || obs12.rh || ''}</td>
-            <td>${obs12.sunshine || obs06.sunshine || ''}</td>
-            <td>${obs12.radiation || obs06.radiation || ''}</td>
+            <td>${fmtVal(obs06.g_min)}</td>
+            <td>${fmtVal(obs06.dew_point)}</td>
+            <td>${fmtVal(obs09.dew_point)}</td>
+            <td>${fmtVal(obs12.dew_point)}</td>
+            <td>${fmtVal(obs06.r_h || obs06.rh)}</td>
+            <td>${fmtVal(obs12.r_h || obs12.rh)}</td>
+            <td>${fmtVal(obs12.sunshine || obs06.sunshine)}</td>
+            <td>${fmtVal(obs12.radiation || obs06.radiation)}</td>
             <td>${evap}</td>
             <td>${rain}</td>
             <td>${(dailyRain !== null && dailyRain >= 5.0) ? '1' : ''}</td>
-            <td>${obs06.thunder || obs12.thunder || ''}</td>
-            <td>${obs06.hail || obs12.hail || ''}</td>
+            <td>${fmtVal(obs06.thunder || obs12.thunder)}</td>
+            <td>${fmtVal(obs06.hail || obs12.hail)}</td>
             <td>${windrun}</td>
             <td>${press06}</td>
             <td>${press12}</td>

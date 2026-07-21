@@ -80,6 +80,18 @@ function getObsForDateAndTime(obsData, dateStr, timePrefix) {
     }) || {};
 }
 
+/** Returns true if the stored value is a missing-data code like /// or //// */
+function isMissing(val) {
+    if (val === null || val === undefined) return false;
+    return /^\/+$/.test(String(val).trim());
+}
+
+/** Display helper: pass /// or //// through as-is; otherwise return val or fallback */
+function fmtVal(val, fallback = '') {
+    if (isMissing(val)) return String(val).trim();
+    return (val !== null && val !== undefined && val !== '') ? val : fallback;
+}
+
 function renderTableRows(year, month, daysInMonth, obsData, stnNumber) {
     const tbody = document.getElementById('form626Body');
     tbody.innerHTML = '';
@@ -100,15 +112,34 @@ function renderTableRows(year, month, daysInMonth, obsData, stnNumber) {
         const obs18 = getObsForDateAndTime(obsData, dateStr, '18');
         const nextObs06 = getObsForDateAndTime(obsData, nextDate, '06');
 
+        const nextObsExists = Object.keys(nextObs06).length > 0;
+
         // Fetch Next Day 0600Z for Evaporation, Windrun, Rainfall
-        const evap = nextObs06.e_p || nextObs06.evap_1 || '';
-        const windrun = nextObs06.w_run || '';
-        const rawRain = parseFloat(nextObs06.rainfall);
-        let rain = nextObs06.rainfall || '';
-        if (rain.toUpperCase() === 'NIL' || rawRain === 0) {
-            rain = '0.0';
-        } else if (!isNaN(rawRain)) {
-            rain = rawRain.toFixed(1);
+        // Evaporation: pass through /// or //// if stored that way. If record exists but missing, use ///
+        const evap = fmtVal(nextObs06.e_p || nextObs06.evap_1, nextObsExists ? '///' : '');
+
+        // Windrun: show //// if w_run is //// or missing (and record exists)
+        const nextWindRunRaw = nextObs06.wind_run;
+        const wRunRaw = nextObs06.w_run;
+        let windrun = '';
+        if (nextObsExists && (isMissing(wRunRaw) || isMissing(nextWindRunRaw) || String(wRunRaw).trim() === '')) {
+            windrun = '////';
+        } else {
+            windrun = fmtVal(wRunRaw);
+        }
+
+        // Rainfall: pass through /// or //// if stored that way
+        let rain = '';
+        if (isMissing(nextObs06.rainfall)) {
+            rain = String(nextObs06.rainfall).trim();
+        } else {
+            const rawRain = parseFloat(nextObs06.rainfall);
+            rain = nextObs06.rainfall || '';
+            if (String(rain).toUpperCase() === 'NIL' || rawRain === 0) {
+                rain = '0.0';
+            } else if (!isNaN(rawRain)) {
+                rain = rawRain.toFixed(1);
+            }
         }
 
         const tr = document.createElement('tr');
@@ -121,49 +152,49 @@ function renderTableRows(year, month, daysInMonth, obsData, stnNumber) {
             <td class="text-primary">06</td>
             
             <!-- TEMP 0600Z -->
-            <td>${obs06.dry_bulb || ''}</td>
-            <td>${obs06.wet_bulb || ''}</td>
-            <td>${obs06.dew_point || ''}</td>
-            <td>${obs06.r_h || obs06.rh || ''}</td>
+            <td>${fmtVal(obs06.dry_bulb)}</td>
+            <td>${fmtVal(obs06.wet_bulb)}</td>
+            <td>${fmtVal(obs06.dew_point)}</td>
+            <td>${fmtVal(obs06.r_h || obs06.rh)}</td>
             
             <!-- TEMP C (Max from 1800Z, Min, Grass from 0600Z) -->
-            <td>${obs18.max_temp || ''}</td>
-            <td>${obs06.min_temp || ''}</td>
-            <td>${obs06.g_min || ''}</td>
+            <td>${fmtVal(obs18.max_temp)}</td>
+            <td>${fmtVal(obs06.min_temp)}</td>
+            <td>${fmtVal(obs06.g_min)}</td>
             
             <!-- SOIL 0500GMT (5, 10, 20, 30, 50, 100) -->
-            <td>${obs06.soil_5 || ''}</td>
-            <td>${obs06.soil_10 || ''}</td>
-            <td>${obs06.soil_20 || ''}</td>
-            <td>${obs06.soil_30 || ''}</td>
-            <td>${obs06.soil_50 || ''}</td>
-            <td>${obs06.soil_100 || ''}</td>
+            <td>${fmtVal(obs06.soil_5)}</td>
+            <td>${fmtVal(obs06.soil_10)}</td>
+            <td>${fmtVal(obs06.soil_20)}</td>
+            <td>${fmtVal(obs06.soil_30)}</td>
+            <td>${fmtVal(obs06.soil_50)}</td>
+            <td>${fmtVal(obs06.soil_100)}</td>
             
             <!-- SOIL 0900GMT (5, 10, 20) -->
-            <td>${obs06.soil_0900_5 || ''}</td>
-            <td>${obs06.soil_0900_10 || ''}</td>
-            <td>${obs06.soil_0900_20 || ''}</td>
+            <td>${fmtVal(obs06.soil_0900_5)}</td>
+            <td>${fmtVal(obs06.soil_0900_10)}</td>
+            <td>${fmtVal(obs06.soil_0900_20)}</td>
             
             <!-- ANEMOMETER (Height, Windrun) -->
-            <td>${obs06.anemometer_height || ''}</td>
+            <td>${fmtVal(obs06.anemometer_height)}</td>
             <td>${windrun}</td>
             
             <!-- RAINFALL -->
             <td>${rain}</td>
-            <td>${nextObs06.rainfall_duration || ''}</td>
+            <td>${fmtVal(nextObs06.rainfall_duration)}</td>
             
             <!-- SUNSHINE -->
-            <td>${obs06.sunshine || ''}</td>
+            <td>${fmtVal(obs06.sunshine)}</td>
             
             <!-- RADIOMETER -->
-            <td>${obs06.rad_type1 || ''}</td>
-            <td>${obs06.radiation || ''}</td>
-            <td>${obs06.rad_type2 || ''}</td>
+            <td>${fmtVal(obs06.rad_type1)}</td>
+            <td>${fmtVal(obs06.radiation)}</td>
+            <td>${fmtVal(obs06.rad_type2)}</td>
             
             <!-- EVAPO PANS -->
             <td>${evap}</td>
-            <td>${nextObs06.evap_type || ''}</td>
-            <td>${nextObs06.evap_2 || ''}</td>
+            <td>${fmtVal(nextObs06.evap_type)}</td>
+            <td>${fmtVal(nextObs06.evap_2)}</td>
             
             <!-- HOURS p.m. -->
             <td class="text-primary">12</td>
