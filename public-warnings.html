@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Early Warning System - ICPAC Hackathon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0f172a;
+            --secondary-bg: #1e293b;
+            --accent-color: #ef4444; 
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(239, 68, 68, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.15), transparent 25%);
+            background-attachment: fixed;
+        }
+
+        .navbar {
+            background: var(--glass-bg) !important;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-badge {
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .warning-text {
+            font-size: 1.5rem;
+            font-weight: 400;
+            line-height: 1.6;
+            margin: 1.5rem 0;
+            color: #f8fafc;
+        }
+
+        .raw-data-toggle {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        .raw-data-toggle:hover {
+            color: var(--text-main);
+        }
+
+        .raw-data-container {
+            display: none;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-family: monospace;
+            font-size: 0.875rem;
+            color: #a7f3d0;
+            word-break: break-all;
+            text-align: left;
+        }
+
+        .loader {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #ef4444;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .station-badge {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="fas fa-arrow-left me-2"></i> Back to Wx App
+            </a>
+            <div class="d-flex align-items-center">
+                <span class="station-badge">
+                    <div class="pulse-dot"></div>
+                    Live AI Monitoring
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container flex-grow-1 d-flex flex-column justify-content-center">
+        <div class="hero pt-4 pb-2">
+            <div class="ai-badge"><i class="fas fa-robot me-1"></i> Powered by Gemini AI</div>
+            <h1>Public Early Warnings</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 600px;">
+                Real-time meteorological data translated into actionable alerts for communities across East Africa.
+            </p>
+        </div>
+
+        <div class="row justify-content-center pb-5">
+            <div class="col-lg-8">
+                <div class="glass-card text-center" id="warning-card">
+                    <div id="loading-state" class="py-5">
+                        <div class="loader mb-4"></div>
+                        <h4 class="text-muted fw-light">Analyzing latest station reports...</h4>
+                    </div>
+
+                    <div id="result-state" style="display: none;">
+                        <h3 class="fw-bold text-danger mb-2">
+                            <i class="fas fa-exclamation-triangle me-2"></i> Alert Level: Active
+                        </h3>
+                        <p class="text-muted mb-4" id="station-name-display">Data Source: Unknown Station</p>
+                        
+                        <div class="warning-text" id="ai-warning-output">
+                            <!-- AI text goes here -->
+                        </div>
+
+                        <hr style="border-color: rgba(255,255,255,0.1); margin: 2rem 0;">
+                        
+                        <div class="text-start">
+                            <span class="raw-data-toggle" onclick="toggleRawData()">
+                                <i class="fas fa-code me-1"></i> View Raw Meteorological Data
+                            </span>
+                            <div class="raw-data-container" id="raw-data-display">
+                                <!-- Raw METAR/SYNOP goes here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="error-state" style="display: none;" class="py-4">
+                        <i class="fas fa-times-circle text-danger mb-3" style="font-size: 3rem;"></i>
+                        <h4>Unable to fetch insights</h4>
+                        <p class="text-muted" id="error-message-display">Please check the server connection.</p>
+                        <button class="btn btn-outline-light mt-3" onclick="fetchAndAnalyze()">Try Again</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import auth.js so we can use API_BASE_URL and getAuthToken() -->
+    <script src="auth.js"></script>
+    <script>
+        function toggleRawData() {
+            const container = document.getElementById('raw-data-display');
+            container.style.display = container.style.display === 'block' ? 'none' : 'block';
+        }
+
+        async function fetchAndAnalyze() {
+            document.getElementById('loading-state').style.display = 'block';
+            document.getElementById('result-state').style.display = 'none';
+            document.getElementById('error-state').style.display = 'none';
+
+            try {
+                // Get token from auth.js if available to prevent 401 errors
+                const token = typeof getAuthToken === 'function' ? getAuthToken() : localStorage.getItem('weatherAuthToken');
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+
+                // 1. Fetch the latest METAR report from your backend
+                const reportResponse = await fetch(`${API_BASE_URL}/reports/METAR`, { headers });
+                if (!reportResponse.ok) {
+                    if (reportResponse.status === 401) {
+                        throw new Error('Unauthorized: Please log into the Wx App first to view public alerts.');
+                    }
+                    throw new Error('Failed to fetch weather reports from server.');
+                }
+                const reports = await reportResponse.json();
+
+                if (!reports || reports.length === 0) {
+                    throw new Error('No recent weather reports found in the database.');
+                }
+
+                const latestReport = reports[0];
+                const rawData = latestReport.content;
+                const stationName = latestReport.station || 'Unknown Station';
+
+                document.getElementById('raw-data-display').innerText = rawData;
+                document.getElementById('station-name-display').innerText = `Data Source: ${stationName} (METAR)`;
+
+                // 2. Call backend to generate AI insights
+                const aiResponse = await fetch(`${API_BASE_URL}/ai-insights/generate`, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify({ reportData: rawData })
+                });
+
+                const aiData = await aiResponse.json();
+                
+                if (!aiResponse.ok || !aiData.success) {
+                    throw new Error(aiData.message || 'AI generation failed. Ensure your server is updated and GEMINI_API_KEY is configured.');
+                }
+
+                // 3. Display the result
+                document.getElementById('ai-warning-output').innerText = aiData.warning;
+                document.getElementById('loading-state').style.display = 'none';
+                document.getElementById('result-state').style.display = 'block';
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById('error-message-display').innerText = error.message;
+                document.getElementById('loading-state').style.display = 'none';
+                document.getElementById('error-state').style.display = 'block';
+            }
+        }
+
+        // Auto-run on load
+        document.addEventListener('DOMContentLoaded', fetchAndAnalyze);
+    </script>
+</body>
+</html>
