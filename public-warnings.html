@@ -168,7 +168,7 @@
         <div class="hero pt-4 pb-2">
             <div class="ai-badge"><i class="fas fa-robot me-1"></i> Powered by Gemini AI</div>
             <h1>Public Early Warnings</h1>
-            <p class="lead text-muted mx-auto" style="max-width: 600px;">
+            <p class="lead mx-auto" style="max-width: 600px; color: #cbd5e1;">
                 Real-time meteorological data translated into actionable alerts for communities across East Africa.
             </p>
         </div>
@@ -266,7 +266,8 @@
                 const aiData = await aiResponse.json();
                 
                 if (!aiResponse.ok || !aiData.success) {
-                    throw new Error(aiData.message || 'AI generation failed. Ensure your server is updated and GEMINI_API_KEY is configured.');
+                    const detailedError = aiData.error ? ` (Details: ${aiData.error})` : '';
+                    throw new Error((aiData.message || 'AI generation failed.') + detailedError);
                 }
 
                 // 3. Display the result
