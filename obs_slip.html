@@ -287,7 +287,7 @@
 
     <script src="auth.js"></script>
   <div class="container my-4 p-4 bg-light rounded shadow-sm">
-    <h2 class="text-center text-primary mb-3">KENYA METEOROLOGICAL DEPARTMENT</h2>
+    <h2 class="text-center text-primary mb-3">KENYA SMART WEATHER</h2>
     <h4 class="text-center mb-4">Observation Slip (Form 393 Rev. 9/2011)</h4>
     
     <form id="obsForm">
@@ -655,7 +655,7 @@ function truncateDecimal(value, decimals) {
   const qnh = calculateQNH(qfe, stationElevation);
   if (qnh !== null) {
 document.getElementById('qnh').value =
-  truncateDecimal(qnh, 0);
+  truncateDecimal(qnh, 1);
 
   }
 
