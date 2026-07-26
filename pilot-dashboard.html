@@ -252,6 +252,94 @@
             50% { opacity: 1; transform: scale(1.2); }
             100% { opacity: 0.5; transform: scale(1); }
         }
+
+        /* â”€â”€ Decoded Report Panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        .decoded-report {
+            font-family: 'Segoe UI', 'Inter', sans-serif;
+            font-size: 0.82rem;
+            color: #1a1a2e;
+            line-height: 1.7;
+            padding: 4px 2px;
+        }
+        .dr-title {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #1b1b53;
+            text-align: center;
+            padding-bottom: 4px;
+        }
+        .dr-divider {
+            border-top: 1px solid #c8d3e8;
+            margin: 6px 0;
+        }
+        .dr-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding: 1px 0;
+        }
+        .dr-label {
+            font-weight: 700;
+            color: #1b1b53;
+            min-width: 155px;
+            flex-shrink: 0;
+        }
+        .dr-val {
+            color: #2d3748;
+            flex: 1;
+        }
+        .dr-cloud-block {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding: 1px 0;
+        }
+        .dr-cloud-list {
+            flex: 1;
+            padding-left: 4px;
+        }
+        .dr-cloud-item {
+            padding: 1px 0;
+            color: #2d3748;
+        }
+        .dr-cloud-type {
+            padding-left: 14px;
+            font-style: italic;
+            color: #6b46c1;
+            font-size: 0.8rem;
+        }
+        .dr-end {
+            text-align: center;
+            font-style: italic;
+            font-size: 0.78rem;
+            color: #64748b;
+            padding-top: 2px;
+        }
+        /* collapse panel card override for light background */
+        .collapse .card.card-body {
+            border: 1px solid rgba(0,0,0,0.08) !important;
+            border-radius: 8px !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        /* ── TAF Group Sections ───────────────────────────────── */
+        .taf-group {
+            border-left: 3px solid #c8d3e8;
+            padding-left: 8px;
+            margin-bottom: 8px;
+        }
+        .taf-group-header {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #1b1b53;
+            background: #eef2fb;
+            border-radius: 4px;
+            padding: 2px 6px;
+            margin-bottom: 4px;
+        }
     </style>
 </head>
 <body>
@@ -357,7 +445,7 @@
                     return;
                 }
 
-                grid.innerHTML = data.map(item => {
+                grid.innerHTML = data.map((item, index) => {
                     const report = item.latestReport;
                     const taf = item.latestTaf;
                     if (!report && !taf) return '';
@@ -367,9 +455,17 @@
 
                     const metarHtml = report ? `
                                 <div class="metar-content">${report.content}</div>
-                                <div class="mt-3 d-flex justify-content-between align-items-center">
+                                <div class="mt-3 d-flex justify-content-between align-items-center mb-2">
                                     <span class="timestamp"><i class="far fa-clock me-1"></i>${timeAgo}</span>
                                     <span class="badge ${report.type === 'SPECI' ? 'bg-danger' : 'bg-primary'} small">${report.type}</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-info w-100 mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMetar${index}" aria-expanded="false" aria-controls="collapseMetar${index}">
+                                    <i class="fas fa-magic me-1"></i> Decode ${report.type}
+                                </button>
+                                <div class="collapse mt-2" id="collapseMetar${index}">
+                                    <div class="card card-body text-dark" style="background-color: rgba(255,255,255,0.9); font-size: 0.9rem;">
+                                        ${decodeWeatherReport(report.content)}
+                                    </div>
                                 </div>
                     ` : '<div class="text-muted mt-2 small">No METAR available</div>';
 
@@ -380,6 +476,14 @@
                                     <span class="timestamp"><i class="far fa-clock me-1"></i>${getTimeAgo(taf.createdAt)}</span>
                                 </div>
                                 <div class="metar-content">${taf.content}</div>
+                                <button class="btn btn-sm btn-outline-info w-100 mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTaf${index}" aria-expanded="false" aria-controls="collapseTaf${index}">
+                                    <i class="fas fa-magic me-1"></i> Decode TAF
+                                </button>
+                                <div class="collapse mt-2" id="collapseTaf${index}">
+                                    <div class="card card-body text-dark" style="background-color: rgba(255,255,255,0.9); font-size: 0.9rem;">
+                                        ${decodeWeatherReport(taf.content)}
+                                    </div>
+                                </div>
                     ` : '<hr style="border-color: rgba(255,255,255,0.1);"><div class="text-muted small">No TAF available</div>';
 
                     return `
@@ -419,6 +523,362 @@
             const hours = Math.floor(minutes / 60);
             return `${hours}h ago`;
         }
+
+        function decodeWeatherReport(rawStr) {
+            if (!rawStr) return '<em>No data available</em>';
+
+            // â”€â”€ shared lookups â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+            const ICAO_NAMES = {
+                HKNW:'Wilson Airport', HKJK:'JKIA (Jomo Kenyatta Intl)',
+                HKNA:'Nairobi West Airport', HKRE:'Moi Airbase Eastleigh Airport',
+                HKMO:'Mombasa Moi International Airport', HKKI:'Kisumu Airport',
+                HKEL:'Eldoret International Airport', HKNY:'Nanyuki Airfield',
+                HKWJ:'Wajir Airport', HKGA:'Garissa Airport',
+                HKML:'Malindi Airport', HKLK:'Lokichoggio Airport',
+                FHSH:'St Helena Airport', FAJS:'OR Tambo International'
+            };
+            const WX_TABLE = {
+                RA:'Rain', DZ:'Drizzle', SN:'Snow', GR:'Hail', GS:'Small Hail/Snow Pellets',
+                TS:'Thunderstorm', FG:'Fog', BR:'Mist', HZ:'Haze', DU:'Dust',
+                SA:'Sand', VA:'Volcanic Ash', SQ:'Squall', FC:'Funnel Cloud/Tornado',
+                PO:'Dust/Sand Whirls', SS:'Sandstorm', DS:'Duststorm',
+                IC:'Ice Crystals', PL:'Ice Pellets', UP:'Unknown Precipitation',
+                RASN:'Rain and Snow', TSRA:'Thunderstorm with Rain',
+                TSGR:'Thunderstorm with Hail', SHRA:'Rain Showers',
+                SHSN:'Shower of Snow', SHGR:'Shower of Hail',
+                FZRA:'Freezing Rain', FZDZ:'Freezing Drizzle', FZFG:'Freezing Fog'
+            };
+            const OKTAS = {
+                FEW:'Few (1-2 oktas)', SCT:'Scattered (3-4 oktas)',
+                BKN:'Broken (5-7 oktas)', OVC:'Overcast (8 oktas)',
+                VV:'Vertical Visibility'
+            };
+
+            function ordinal(n) {
+                const s = ['th','st','nd','rd'], v = n % 100;
+                return n + (s[(v-20)%10] || s[v] || s[0]);
+            }
+            function decodeWx(tok) {
+                let t = tok, prefix = '';
+                if (t.startsWith('-')) { prefix = 'Light '; t = t.slice(1); }
+                else if (t.startsWith('+')) { prefix = 'Heavy '; t = t.slice(1); }
+                else if (t.startsWith('VC')) { prefix = 'In the Vicinity - '; t = t.slice(2); }
+                return WX_TABLE[t] ? prefix + WX_TABLE[t] : null;
+            }
+            // convert knots to m/s string e.g. "05 KT (2.6 m/s)"
+            function windStr(dir, spd, gust, unit) {
+                if (!dir) return 'Not reported';
+                if (dir === '000' && spd === 0) return 'Calm';
+                const dirLabel = dir === 'VRB' ? 'Variable' : dir + '&deg;';
+                let ms = '';
+                if (unit === 'KT') ms = ` (${(spd * 0.5144).toFixed(1)} m/s)`;
+                let s = `Direction: ${dirLabel} | Speed: ${spd} ${unit}${ms}`;
+                if (gust) {
+                    let gms = unit === 'KT' ? ` (${(gust * 0.5144).toFixed(1)} m/s)` : '';
+                    s += ` | Gusts: ${gust} ${unit}${gms}`;
+                }
+                return s;
+            }
+            // convert visibility token to readable string
+            function visStr(tok, isCavok) {
+                if (isCavok) return '10 km or more (CAVOK)';
+                if (!tok) return '';
+                const vm = parseInt(tok);
+                if (vm === 9999) return '10 km or more';
+                if (vm >= 5000) return (vm/1000).toFixed(1) + ' km';
+                return vm + ' metres';
+            }
+            // build cloud lines HTML
+            function cloudHtml(clouds, cavok, numbered) {
+                if (cavok) return `<div class="dr-row"><span class="dr-label">Visibility &amp; Sky:</span><span class="dr-val">10 km or more, no CB/TCU below 1,500 m (CAVOK)</span></div>`;
+                if (!clouds || clouds.length === 0) return '';
+                return clouds.map((cl, n) => {
+                    if (!cl.hgt && cl.amt) return `<div class="dr-cloud-item">${numbered ? (n+1)+'. ' : ''}Sky Clear / No Significant Cloud (${cl.amt})</div>`;
+                    const ft = cl.hgt;
+                    const m = Math.round(ft * 0.3048 / 10) * 10;
+                    const okLabel = OKTAS[cl.amt] || cl.amt;
+                    let typeStr = '';
+                    if (cl.type === 'CB') typeStr = '<div class="dr-cloud-type">[CB] Type: Cumulonimbus</div>';
+                    else if (cl.type === 'TCU') typeStr = '<div class="dr-cloud-type">[TCU] Type: Towering Cumulus</div>';
+                    return `<div class="dr-cloud-item">${numbered ? (n+1)+'. ' : ''}${okLabel} at ${ft.toLocaleString()} ft (${m.toLocaleString()} m)${typeStr}</div>`;
+                }).join('');
+            }
+            // parse a cloud token
+            const cloudRe = /^(FEW|SCT|BKN|OVC|VV)(\d{3})(CB|TCU)?$/;
+            function parseClouds(tokens, start) {
+                const result = [];
+                let j = start;
+                while (j < tokens.length && (cloudRe.test(tokens[j]) || /^(SKC|NSC|NCD)$/.test(tokens[j]))) {
+                    if (/^(SKC|NSC|NCD)$/.test(tokens[j])) {
+                        result.push({ amt: tokens[j], hgt: null, type: null }); j++;
+                    } else {
+                        const cm = tokens[j].match(cloudRe);
+                        result.push({ amt: cm[1], hgt: parseInt(cm[2])*100, type: cm[3]||null }); j++;
+                    }
+                }
+                return { clouds: result, next: j };
+            }
+            // parse a group of forecast tokens (wind, vis, wx, clouds)
+            const windRe = /^(VRB|\d{3})(\d{2,3})(G(\d{2,3}))?(KT|MPS|KMH)$/;
+            function parseGroup(tokens) {
+                let j = 0, wDir='', wSpd=null, wGust=null, wUnit='', visTok='', cavok=false, wxA=[], cloudsA=[];
+                // wind
+                if (j < tokens.length && windRe.test(tokens[j])) {
+                    const wm = tokens[j].match(windRe);
+                    wDir = wm[1]; wSpd = parseInt(wm[2]);
+                    wGust = wm[4] ? parseInt(wm[4]) : null;
+                    wUnit = wm[5]; j++;
+                }
+                // vis
+                if (j < tokens.length && tokens[j] === 'CAVOK') { cavok = true; j++; }
+                else if (j < tokens.length && /^\d{4}$/.test(tokens[j])) { visTok = tokens[j++]; }
+                else if (j < tokens.length && /^\d+(\.\d+)?SM$/.test(tokens[j])) { visTok = tokens[j++]+'SM'; }
+                // RVR skip
+                while (j < tokens.length && /^R\d{2}[LRC]?\//.test(tokens[j])) j++;
+                // wx
+                while (j < tokens.length) { const w = decodeWx(tokens[j]); if(w){wxA.push(w);j++;}else break; }
+                // clouds
+                const cr = parseClouds(tokens, j); cloudsA = cr.clouds; j = cr.next;
+                return { wDir, wSpd, wGust, wUnit, visTok, cavok, wxA, cloudsA };
+            }
+            // format a DDHHmm validity token pair like "2518/2624"
+            function fmtValidity(tok) {
+                if (!tok) return '';
+                const m = tok.match(/^(\d{2})(\d{2})\/(\d{2})(\d{2})$/);
+                if (!m) return tok;
+                return `Day ${m[1]} ${m[2]}:00 UTC to Day ${m[3]} ${m[4]}:00 UTC`;
+            }
+            // format a change-group time window like "BECMG 2520/2523"
+            function fmtWindow(type, tok) {
+                if (!tok) return type;
+                const m = tok.match(/^(\d{2})(\d{2})\/(\d{2})(\d{2})$/);
+                if (!m) return `${type} ${tok}`;
+                return `${type} [Day ${m[1]} ${m[2]}:00 UTC to Day ${m[3]} ${m[4]}:00 UTC]`;
+            }
+
+            // tokenise & skip WMO header
+            const parts = rawStr.replace(/=$/,'').replace(/\n/g,' ').trim().split(/\s+/);
+            let i = 0;
+            while (i < parts.length && !['METAR','SPECI','TAF'].includes(parts[i])) i++;
+
+            // detect report type
+            let reportType = 'METAR', isTaf = false;
+            if (i < parts.length) {
+                reportType = parts[i++];
+                if (reportType === 'TAF') isTaf = true;
+            }
+            if (['COR','AMD','NIL'].includes(parts[i])) i++;
+
+            let station = '', stationName = '';
+            if (/^[A-Z]{4}$/.test(parts[i])) {
+                station = parts[i++];
+                stationName = ICAO_NAMES[station] || station;
+            }
+
+            // TAF BRANCH
+            if (isTaf) {
+                // issue time
+                let issueDay=null, issueHH='', issueMM='';
+                if (i < parts.length && /^\d{6}Z$/.test(parts[i])) {
+                    issueDay = parseInt(parts[i].slice(0,2));
+                    issueHH = parts[i].slice(2,4); issueMM = parts[i].slice(4,6); i++;
+                }
+                // validity period
+                let validityTok = '';
+                if (i < parts.length && /^\d{4}\/\d{4}$/.test(parts[i])) { validityTok = parts[i++]; }
+                // also handle DDHHmm/DDHHmm format (6/4 digits)
+                else if (i < parts.length && /^\d{6}\/\d{4}$/.test(parts[i])) { validityTok = parts[i++]; }
+
+                // collect all remaining tokens and split into change groups
+                const remaining = parts.slice(i);
+                const CHANGE_KEYS = ['BECMG','TEMPO','FM','PROB30','PROB40','PROB30 TEMPO','PROB40 TEMPO'];
+                // split remaining into segments: [mainSegment, ...changeSegments]
+                const segments = [];
+                let buf = [];
+                for (let t of remaining) {
+                    if (['BECMG','TEMPO','FM','PROB30','PROB40'].includes(t)) {
+                        segments.push(buf); buf = [t];
+                    } else { buf.push(t); }
+                }
+                segments.push(buf);
+
+                // parse each segment
+                function parseSegment(tokens) {
+                    let j = 0;
+                    let changeType = '', changeWindow = '';
+                    if (['BECMG','TEMPO','FM'].includes(tokens[j])) { changeType = tokens[j++]; }
+                    else if (['PROB30','PROB40'].includes(tokens[j])) {
+                        changeType = tokens[j++];
+                        if (j < tokens.length && tokens[j] === 'TEMPO') changeType += ' TEMPO', j++;
+                    }
+                    if (j < tokens.length && /^\d{4}\/\d{4}$/.test(tokens[j])) { changeWindow = tokens[j++]; }
+                    else if (j < tokens.length && /^\d{6}$/.test(tokens[j])) { changeWindow = tokens[j++]; } // FM group DDHHmm
+                    const grp = parseGroup(tokens.slice(j));
+                    return { changeType, changeWindow, ...grp };
+                }
+
+                const mainSeg = parseSegment(segments[0] || []);
+                const changeSegs = segments.slice(1).map(s => parseSegment(s));
+
+                // render TAF
+                function renderGroup(seg, label) {
+                    const wl = windStr(seg.wDir, seg.wSpd, seg.wGust, seg.wUnit);
+                    const vl = seg.cavok ? '10 km or more (CAVOK)' : (seg.visTok ? visStr(seg.visTok.replace('SM',''), seg.cavok) : '');
+                    const wxl = seg.wxA.length > 0 ? seg.wxA.join(', ') : '';
+                    const cl = cloudHtml(seg.cloudsA, seg.cavok, true);
+
+                    let html = `<div class="taf-group">`;
+                    html += `<div class="taf-group-header">${label}</div>`;
+                    if (seg.wDir) html += `<div class="dr-row"><span class="dr-label">Wind:</span><span class="dr-val">${wl}</span></div>`;
+                    if (vl) html += `<div class="dr-row"><span class="dr-label">Visibility:</span><span class="dr-val">${vl}</span></div>`;
+                    if (wxl) html += `<div class="dr-row"><span class="dr-label">Weather:</span><span class="dr-val">${wxl}</span></div>`;
+                    if (cl) html += `<div class="dr-cloud-block"><span class="dr-label">Cloud Layers:</span><div class="dr-cloud-list">${cl}</div></div>`;
+                    html += `</div>`;
+                    return html;
+                }
+
+                const issueTimeStr = issueDay
+                    ? `${ordinal(issueDay)} day of the month at ${issueHH}${issueMM} UTC`
+                    : 'Not available';
+
+                let groupsHtml = renderGroup(mainSeg, 'MAIN FORECAST PERIOD');
+                for (const seg of changeSegs) {
+                    const lbl = seg.changeType === 'FM'
+                        ? `FROM [Day ${seg.changeWindow.slice(0,2)} ${seg.changeWindow.slice(2,4)}:${seg.changeWindow.slice(4,6)} UTC]`
+                        : seg.changeType === 'BECMG'
+                            ? `BECOMING - ${fmtWindow('', seg.changeWindow)}`
+                            : seg.changeType.startsWith('TEMPO')
+                                ? `TEMPORARILY - ${fmtWindow('', seg.changeWindow)}`
+                                : `${seg.changeType} - ${fmtWindow('', seg.changeWindow)}`;
+                    groupsHtml += renderGroup(seg, lbl);
+                }
+
+                return `
+                <div class="decoded-report">
+                    <div class="dr-title">TAF DECODED REPORT</div>
+                    <div class="dr-divider"></div>
+                    <div class="dr-row"><span class="dr-label">Station:</span>
+                        <span class="dr-val">${station} &ndash; ${stationName}</span></div>
+                    <div class="dr-row"><span class="dr-label">Report Type:</span>
+                        <span class="dr-val">TAF (Terminal Aerodrome Forecast)</span></div>
+                    <div class="dr-row"><span class="dr-label">Issue Time:</span>
+                        <span class="dr-val">${issueTimeStr}</span></div>
+                    <div class="dr-row"><span class="dr-label">Forecast Valid:</span>
+                        <span class="dr-val">${fmtValidity(validityTok)}</span></div>
+                    <div class="dr-divider"></div>
+                    ${groupsHtml}
+                    <div class="dr-divider"></div>
+                    <div class="dr-end">&#8212; End of TAF Report &#8212;</div>
+                </div>`;
+            }
+
+            // METAR / SPECI BRANCH
+            let obsDay = null, obsHH = '', obsMM = '';
+            let wDir = '', wSpd = null, wGust = null, wUnit = '';
+            let windVarSector = '';
+            let vis = '';
+            let wxArr = [];
+            let clouds = [];
+            let tempC = null, dewC = null;
+            let qnh = null, altInHg = '';
+            let trendStr = '';
+            let remarks = '';
+            let cavok = false;
+
+            if (i < parts.length && /^\d{6}Z$/.test(parts[i])) {
+                obsDay = parseInt(parts[i].slice(0,2));
+                obsHH  = parts[i].slice(2,4); obsMM = parts[i].slice(4,6); i++;
+            }
+            if (['AUTO','NIL'].includes(parts[i])) i++;
+            if (i < parts.length && windRe.test(parts[i])) {
+                const wm = parts[i].match(windRe);
+                wDir = wm[1]; wSpd = parseInt(wm[2]);
+                wGust = wm[4] ? parseInt(wm[4]) : null; wUnit = wm[5]; i++;
+            }
+            if (i < parts.length && /^\d{3}V\d{3}$/.test(parts[i])) windVarSector = parts[i++];
+            if (i < parts.length && parts[i] === 'CAVOK') { cavok = true; vis = '10 km or more'; i++; }
+            else if (i < parts.length && /^\d{4}$/.test(parts[i])) {
+                const vm = parseInt(parts[i++]);
+                if (vm === 9999) vis = '10 km or more';
+                else if (vm >= 5000) vis = (vm/1000).toFixed(1) + ' km';
+                else vis = vm + ' metres';
+            } else if (i < parts.length && /^\d+(\.\d+)?SM$/.test(parts[i])) {
+                vis = parseFloat(parts[i++]) + ' statute miles';
+            }
+            while (i < parts.length && /^R\d{2}[LRC]?\//.test(parts[i])) i++;
+            while (i < parts.length) { const w = decodeWx(parts[i]); if(w){wxArr.push(w);i++;}else break; }
+            const cr = parseClouds(parts, i); clouds = cr.clouds; i = cr.next;
+            if (i < parts.length && /^M?\d{2}\/M?\d{2}$/.test(parts[i])) {
+                const [tP,dP] = parts[i++].split('/');
+                tempC = tP.startsWith('M') ? -parseInt(tP.slice(1)) : parseInt(tP);
+                dewC  = dP.startsWith('M') ? -parseInt(dP.slice(1)) : parseInt(dP);
+            }
+            if (i < parts.length && /^Q\d{4}$/.test(parts[i])) qnh = parseInt(parts[i++].slice(1));
+            else if (i < parts.length && /^A\d{4}$/.test(parts[i])) {
+                altInHg = parts[i].slice(1,3)+'.'+parts[i].slice(3,5)+' inHg'; i++;
+            }
+            const trendTokens = [];
+            while (i < parts.length && parts[i] !== 'RMK') trendTokens.push(parts[i++]);
+            if (trendTokens.length > 0) {
+                const raw = trendTokens.join(' ').trim();
+                if (raw === 'NOSIG') trendStr = 'No significant change (NOSIG)';
+                else if (raw.startsWith('BECMG')) trendStr = 'Becoming: ' + raw.replace(/^BECMG\s*/,'');
+                else if (raw.startsWith('TEMPO')) trendStr = 'Temporarily: ' + raw.replace(/^TEMPO\s*/,'');
+                else trendStr = raw;
+            } else {
+                trendStr = 'No significant changes expected in the next two hours.';
+            }
+            if (i < parts.length && parts[i] === 'RMK') { i++; remarks = parts.slice(i).join(' '); }
+
+            const windLine = windStr(wDir, wSpd, wGust, wUnit);
+            const cloudSectionHtml = (() => {
+                if (cavok) return `<div class="dr-row"><span class="dr-label">Cloud Layers:</span><span class="dr-val">None below 5,000 ft, no CB/TCU (CAVOK)</span></div>`;
+                if (clouds.length === 0) return `<div class="dr-row"><span class="dr-label">Cloud Layers:</span><span class="dr-val">None reported</span></div>`;
+                return `<div class="dr-cloud-block"><span class="dr-label">Cloud Layers:</span><div class="dr-cloud-list">${cloudHtml(clouds, false, true)}</div></div>`;
+            })();
+            const obsTimeStr = obsDay ? `${ordinal(obsDay)} day of the month at ${obsHH}${obsMM} UTC` : 'Not available';
+            const typeLabel = { SPECI:'SPECI (Special Observation)', METAR:'METAR (Routine Observation)' }[reportType] || reportType;
+            const wxStr = wxArr.length > 0 ? wxArr.join(', ') : 'No significant weather';
+            const spread = (tempC !== null && dewC !== null) ? (tempC - dewC) : null;
+
+            return `
+            <div class="decoded-report">
+                <div class="dr-title">${reportType} DECODED REPORT</div>
+                <div class="dr-divider"></div>
+                <div class="dr-row"><span class="dr-label">Station:</span>
+                    <span class="dr-val">${station} &ndash; ${stationName}</span></div>
+                <div class="dr-row"><span class="dr-label">Report Type:</span>
+                    <span class="dr-val">${typeLabel}</span></div>
+                <div class="dr-row"><span class="dr-label">Observation Time:</span>
+                    <span class="dr-val">${obsTimeStr}</span></div>
+                <div class="dr-divider"></div>
+                <div class="dr-row"><span class="dr-label">Wind:</span>
+                    <span class="dr-val">${windLine}</span></div>
+                <div class="dr-row"><span class="dr-label">Visibility:</span>
+                    <span class="dr-val">${vis || 'Not reported'}</span></div>
+                <div class="dr-row"><span class="dr-label">Present Weather:</span>
+                    <span class="dr-val">${wxStr}</span></div>
+                <div class="dr-divider"></div>
+                ${cloudSectionHtml}
+                <div class="dr-divider"></div>
+                <div class="dr-row"><span class="dr-label">Air Temperature:</span>
+                    <span class="dr-val">${tempC !== null ? tempC + '&deg;C' : 'Not reported'}</span></div>
+                <div class="dr-row"><span class="dr-label">Dew Point:</span>
+                    <span class="dr-val">${dewC !== null ? dewC + '&deg;C' : 'Not reported'}</span></div>
+                <div class="dr-row"><span class="dr-label">Temp-Dew Point Spread:</span>
+                    <span class="dr-val">${spread !== null ? spread + '&deg;C' : 'Not reported'}</span></div>
+                <div class="dr-divider"></div>
+                <div class="dr-row"><span class="dr-label">Observed QNH:</span>
+                    <span class="dr-val">${qnh ? qnh + ' hPa' : (altInHg || 'Not reported')}</span></div>
+                <div class="dr-row"><span class="dr-label">Trend Forecast:</span>
+                    <span class="dr-val">${trendStr}</span></div>
+                <div class="dr-row"><span class="dr-label">Remarks:</span>
+                    <span class="dr-val">${remarks || 'None'}</span></div>
+                <div class="dr-divider"></div>
+                <div class="dr-end">&#8212; End of Report &#8212;</div>
+            </div>`;
+        }
+
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
