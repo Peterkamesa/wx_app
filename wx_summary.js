@@ -158,7 +158,7 @@ function computeAndPopulate(year, month, daysInMonth, monthStr, yearStr, allObs,
         if (d12 !== null) dew12Vals.push(d12);
 
         // Evaporation (evap_1 = total, evap_2 = PICHE)
-        const ev1 = getNum(obs12.evap_1 || obs06.evap_1);
+        const ev1 = getNum(obs12.e_p || obs06.e_p);
         if (ev1 !== null) evapTots.push(ev1);
         const ev2 = getNum(obs12.evap_2 || obs06.evap_2);
         if (ev2 !== null) evapPiche.push(ev2);

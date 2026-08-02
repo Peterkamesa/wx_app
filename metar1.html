@@ -367,6 +367,12 @@
                                     <option value="SPECI">SPECI</option>
                                 </select>
                             </div>
+                            <div class="form-group mt-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="isAutoStation">
+                                    <label class="form-check-label fw-bold" for="isAutoStation">AUTO Station</label>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-6 col-lg-3">
                             <div class="form-group">
@@ -420,7 +426,7 @@
                         <div class="col-md-6 col-lg-3">
                             <div class="cloud-input-group">
                                 <label>NsNsNshshshs</label>
-                                <select id="lowCloud" class="form-select mb-2">
+                                <select id="lowCloud" class="form-select mb-2" onchange="handleCloudGroupChange()">
                                     <option value="">None</option>
                                     <option value="FEW">FEW (1-2 OKTAS)</option>
                                     <option value="SCT">SCT (3-4 OKTAS)</option>
@@ -428,9 +434,11 @@
                                     <option value="OVC">OVC (8 OKTAS)</option>
                                     <option value="CAVOK">CAVOK</option>
                                     <option value="SKC">SKC</option>
-                                    <option value="VV">VVhshshs</option>
+                                    <option value="NCD">NCD (Auto stations)</option>
+                                    <option value="NSC">NSC (No Significant Cloud)</option>
+                                    <option value="VV">VV (Vertical Visibility)</option>
                                 </select>
-                                <input type="text" id="lowCloudHeight" placeholder="Height (ft)" class="form-control">
+                                <input type="text" id="lowCloudHeight" placeholder="Height (ft) or /// if unknown" class="form-control">
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-3">
@@ -513,6 +521,12 @@
                 <div class="mt-3">
                     <h4 class="mb-1">Generated METAR</h4>
                     <pre id="metarOutput" class="p-3 bg-light rounded fs-5 fw-bold" style="font-family: sans-serif;">No METAR generated yet. Click "Generate METAR" to create one.</pre>
+                </div>
+
+                <!-- Decoder Output Section -->
+                <div class="mt-3" id="decoderSection" style="display:none;">
+                    <h4 class="mb-1"><i class="fas fa-info-circle text-info"></i> Cloud &amp; Visibility Decoder</h4>
+                    <pre id="decoderOutput" class="p-3 rounded fs-6" style="font-family: monospace; background-color: #1b1b53; color: #06f07b; border: 1px solid #3a3a8f; white-space: pre-wrap;"></pre>
                 </div>
                 
                 <!-- Email Section -->
@@ -635,6 +649,80 @@ function formatDewPoint(value) {
   return String(rounded).padStart(2, '0');
 }
 
+// Helper: Evaluate ICAO rules based on observation data for autofill
+function evaluateIcaoCloudRules(obs, isAuto) {
+  const visNum = parseFloat(obs.visibility);
+  const vis10km = !isNaN(visNum) && (visNum >= 10000 || visNum >= 9999);
+  
+  // Weather is considered present if not empty, nil, or nsw
+  const wxRaw = obs.weather ? obs.weather.trim().toUpperCase() : '';
+  const hasWeather = wxRaw !== '' && wxRaw !== 'NSW' && wxRaw !== 'NIL';
+
+  let hasCloudBelow5000 = false;
+  let hasCbTcu = false;
+  let hasAnyCloud = false;
+  let isSkyObscured = false;
+  let vvHeight = '';
+
+  const layers = [
+    { ns: obs.ns1, h: obs.h1, c: obs.c1 },
+    { ns: obs.ns2, h: obs.h2, c: obs.c2 },
+    { ns: obs.ns3, h: obs.h3, c: obs.c3 },
+    { ns: obs.ns4, h: obs.h4, c: obs.c4 }
+  ];
+
+  layers.forEach(layer => {
+    const nsStr = layer.ns ? String(layer.ns).trim() : '';
+    const hNum = parseFloat(layer.h);
+    const cStr = layer.c ? String(layer.c).trim().toUpperCase() : '';
+
+    if (nsStr === '/' || nsStr === '9') {
+       isSkyObscured = true;
+       vvHeight = layer.h;
+    } else {
+       const nsNum = parseInt(nsStr, 10);
+       if (!isNaN(nsNum) && nsNum > 0) {
+          hasAnyCloud = true;
+          if (!isNaN(hNum) && hNum < 5000) {
+             hasCloudBelow5000 = true;
+          }
+          if (cStr.includes('CB') || cStr.includes('TCU')) {
+             hasCbTcu = true;
+          }
+       }
+    }
+  });
+
+  const N_raw = obs.n ? String(obs.n).trim() : '';
+  if (N_raw === '/' || N_raw === '9') {
+     isSkyObscured = true;
+     if (!vvHeight) vvHeight = obs.vvhshshs; // Use vvhshshs field from database
+  }
+
+  if (isSkyObscured) {
+    return { group: 'VV', height: vvHeight };
+  }
+
+  // Sky is completely clear if N=0 (or empty) and no significant cloud layers > 0 oktas
+  const isSkyCompletelyClear = (N_raw === '0' || N_raw === '') && !hasAnyCloud;
+
+  if (isSkyCompletelyClear) {
+     if (vis10km && !hasWeather) {
+         return { group: 'SKC' };
+     } else {
+         return { group: isAuto ? 'NCD' : 'SKC' };
+     }
+  } else if (!hasCloudBelow5000 && !hasCbTcu) {
+     if (vis10km && !hasWeather) {
+         return { group: 'CAVOK' };
+     } else {
+         return { group: 'NSC' };
+     }
+  }
+
+  return null;
+}
+
 // Fetch latest observation and populate all fields
 async function populateMetarFromObservation() {
   try {
@@ -661,8 +749,20 @@ async function populateMetarFromObservation() {
     document.getElementById('qnh').value = obs.qnh ? Math.floor(obs.qnh) : '';
     document.getElementById('recentWeather').value = obs.r_wx || '';
 
-    // Populate cloud layers (NsNsNshshshs logic)
-    populateCloudsFromObservation(obs);
+    // Automatically check for CAVOK, SKC, NCD, NSC, VV
+    const isAuto = document.getElementById('isAutoStation').checked;
+    const specialGroup = evaluateIcaoCloudRules(obs, isAuto);
+
+    if (specialGroup) {
+      document.getElementById('lowCloud').value = specialGroup.group;
+      if (specialGroup.group === 'VV') {
+         document.getElementById('lowCloudHeight').value = codeCloudHeight(specialGroup.height);
+      }
+      handleCloudGroupChange(); // This will disable and clear secondary cloud inputs
+    } else {
+      populateCloudsFromObservation(obs);
+      handleCloudGroupChange(); // Ensure fields are re-enabled if previously disabled
+    }
 
   } catch (err) {
     console.error("Error loading observation data:", err);
@@ -679,34 +779,261 @@ function formatObservationHeader(dateStr, timeStr) {
   return `${day}${hours}${minutes}`;
 }
 
-// Generate the METAR Report text
+// ─── Cloud/Visibility ICAO Rule Engine ───────────────────────────────────────
+
+/**
+ * handleCloudGroupChange — called when the primary cloud selector changes.
+ * Enforces mutual exclusivity: if a special group (CAVOK, SKC, NCD, NSC, VV)
+ * is chosen in the first slot, disable/clear the other cloud layer inputs.
+ */
+function handleCloudGroupChange() {
+  const primaryVal = document.getElementById('lowCloud').value;
+  const specialGroups = ['CAVOK', 'SKC', 'NCD', 'NSC', 'VV'];
+  const isSpecial = specialGroups.includes(primaryVal);
+
+  // Secondary cloud layer selects
+  const secondaryIds = ['mediumCloud', 'highCloud', 'Cloud'];
+  const secondaryHeightIds = ['mediumCloudHeight', 'highCloudHeight', 'additionalCloudHeight'];
+
+  secondaryIds.forEach((id, i) => {
+    const sel = document.getElementById(id);
+    const ht  = document.getElementById(secondaryHeightIds[i]);
+    if (isSpecial) {
+      sel.value = '';
+      sel.disabled = true;
+      ht.value = '';
+      ht.disabled = true;
+    } else {
+      sel.disabled = false;
+      ht.disabled = false;
+    }
+  });
+
+  // For CAVOK/SKC/NCD/NSC: hide the height field of the primary layer too
+  const lowHeightInput = document.getElementById('lowCloudHeight');
+  if (['CAVOK', 'SKC', 'NCD', 'NSC'].includes(primaryVal)) {
+    lowHeightInput.value = '';
+    lowHeightInput.disabled = true;
+  } else {
+    lowHeightInput.disabled = false;
+    if (primaryVal === 'VV') {
+      lowHeightInput.placeholder = 'VV height in 100s ft (e.g. 003) or ///';
+    } else {
+      lowHeightInput.placeholder = 'Height (ft) or /// if unknown';
+    }
+  }
+}
+
+/**
+ * buildDecoderExplanation — returns a human-readable explanation of the
+ * cloud/visibility group used in the METAR, per ICAO/WMO rules.
+ */
+function buildDecoderExplanation(cloudGroup, visibilityRaw, weatherRaw) {
+  const lines = [];
+
+  if (cloudGroup === 'CAVOK') {
+    lines.push('CAVOK — Ceiling and Visibility OK.');
+    lines.push('  • Visibility is 10 km or more (9999).');
+    lines.push('  • No significant weather is occurring.');
+    lines.push('  • No clouds below 5,000 ft (1,500 m) above aerodrome level.');
+    lines.push('  • No CB or TCU clouds present.');
+    lines.push('  ➜ Visibility, weather, and cloud groups are omitted.');
+  } else if (cloudGroup === 'SKC') {
+    lines.push('SKC — Sky Clear.');
+    lines.push('  • Observed at a MANUAL station.');
+    lines.push('  • No clouds were observed and no vertical visibility is reported.');
+  } else if (cloudGroup === 'NCD') {
+    lines.push('NCD — No Cloud Detected.');
+    lines.push('  • Reported by an AUTOMATIC (AUTO) observing system.');
+    lines.push('  • The automatic sensor detected no clouds.');
+  } else if (cloudGroup === 'NSC') {
+    lines.push('NSC — No Significant Cloud.');
+    lines.push('  • No clouds below 5,000 ft (or below the MSA if higher).');
+    lines.push('  • No cumulonimbus (CB) or towering cumulus (TCU) clouds.');
+    lines.push('  • CAVOK cannot be used due to visibility < 10 km or present weather.');
+  } else if (cloudGroup && cloudGroup.startsWith('VV')) {
+    const vvCode = cloudGroup.slice(2);
+    if (vvCode === '///' || vvCode === '') {
+      lines.push('VV/// — Sky Obscured.');
+      lines.push('  • The sky is obscured (fog, heavy precipitation, smoke, etc.).');
+      lines.push('  • Vertical visibility could not be determined.');
+      lines.push('  ➜ No FEW/SCT/BKN/OVC layers are reported when VV is used.');
+    } else {
+      const vvFeet = parseInt(vvCode, 10) * 100;
+      lines.push(`VV${vvCode} — Sky Obscured.`);
+      lines.push(`  • The sky is obscured (fog, heavy precipitation, smoke, etc.).`);
+      lines.push(`  • Vertical visibility is ${vvFeet.toLocaleString()} feet.`);
+      lines.push('  ➜ No FEW/SCT/BKN/OVC layers are reported when VV is used.');
+    }
+  } else {
+    // Standard FEW/SCT/BKN/OVC cloud layers
+    if (!cloudGroup) {
+      lines.push('No cloud group selected.');
+    }
+  }
+
+  return lines.join('\n');
+}
+
+// Generate the METAR Report text — enforcing ICAO/WMO cloud & visibility rules
 function generateMetarReport() {
-  const fields = [
-    document.getElementById('typeofmessage').value,
-    document.getElementById('stIcao').value,
-    `${document.getElementById('obsTime').value}Z`,
-    `${document.getElementById('wind').value}KT`,
-    document.getElementById('visibility').value,
-    document.getElementById('rvr').value,
-    document.getElementById('weather').value,
-  ];
+  const isAuto   = document.getElementById('isAutoStation').checked;
+  const msgType  = document.getElementById('typeofmessage').value;
+  const stIcao   = document.getElementById('stIcao').value;
+  const obsTime  = `${document.getElementById('obsTime').value}Z`;
+  const windRaw  = document.getElementById('wind').value.trim();
+  const wind     = windRaw ? `${windRaw}KT` : '';
+  const visRaw   = document.getElementById('visibility').value.trim();
+  const rvrRaw   = document.getElementById('rvr').value.trim();
+  const wxRaw    = document.getElementById('weather').value.trim();
+  const tempDew  = document.getElementById('tempDew').value.trim();
+  const qnh      = document.getElementById('qnh').value.trim();
+  const recentWx = document.getElementById('recentWeather').value.trim();
 
-  const cloudFields = [
-    document.getElementById('lowCloud').value ? `${document.getElementById('lowCloud').value}${document.getElementById('lowCloudHeight').value}` : "",
-    document.getElementById('mediumCloud').value ? `${document.getElementById('mediumCloud').value}${document.getElementById('mediumCloudHeight').value}` : "",
-    document.getElementById('highCloud').value ? `${document.getElementById('highCloud').value}${document.getElementById('highCloudHeight').value}` : "",
-    document.getElementById('Cloud').value ? `${document.getElementById('Cloud').value}${document.getElementById('additionalCloudHeight').value}` : "",
-  ].filter(value => value.trim() !== "");
+  // ── Primary cloud selector ──────────────────────────────────────────────
+  const primaryCloud    = document.getElementById('lowCloud').value;
+  const lowCloudHeight  = document.getElementById('lowCloudHeight').value.trim();
 
-  const fullFields = fields.concat(cloudFields, [
-    document.getElementById('tempDew').value,
-    `Q${document.getElementById('qnh').value}`,
-    document.getElementById('recentWeather').value ? `RE${document.getElementById('recentWeather').value}` : ""
-  ]);
+  // ── Validation & rule enforcement ────────────────────────────────────────
+  let cloudPart   = '';   // The cloud/visibility group(s) to embed in METAR
+  let visPart     = visRaw ? visRaw : '';  // May be suppressed for CAVOK
+  let wxPart      = wxRaw;                 // May be suppressed for CAVOK
+  let decoderNote = '';   // Human-readable explanation
+  let errorMsg    = '';
 
-  const metarReport = fullFields.filter(value => value.trim() !== "").join(" ") + "=";
-  const header = document.getElementById('header').value;
+  const visNum = parseFloat(visRaw);
+  const vis10km = visNum >= 9999 || visNum >= 10000;
+
+  if (primaryCloud === 'CAVOK') {
+    // ── CAVOK Rules ────────────────────────────────────────────────────────
+    if (!vis10km) {
+      errorMsg = 'CAVOK cannot be used: Visibility is less than 10 km (9999).';
+    } else if (wxRaw) {
+      errorMsg = 'CAVOK cannot be used: Significant weather is present (' + wxRaw + ').';
+    } else {
+      // Check if medium/high cloud or additional cloud layers have been entered
+      const med = document.getElementById('mediumCloud').value;
+      const hi  = document.getElementById('highCloud').value;
+      const add = document.getElementById('Cloud').value;
+      if (med || hi || add) {
+        errorMsg = 'CAVOK cannot be used: Cloud layers are reported in other fields.';
+      } else {
+        cloudPart = 'CAVOK';
+        visPart   = '';  // Suppress visibility
+        wxPart    = '';  // Suppress weather
+        decoderNote = buildDecoderExplanation('CAVOK', visRaw, wxRaw);
+      }
+    }
+
+  } else if (primaryCloud === 'SKC') {
+    // ── SKC Rules ──────────────────────────────────────────────────────────
+    if (isAuto) {
+      errorMsg = 'SKC cannot be used at automatic (AUTO) stations. Use NCD instead.';
+    } else {
+      cloudPart   = 'SKC';
+      decoderNote = buildDecoderExplanation('SKC', visRaw, wxRaw);
+    }
+
+  } else if (primaryCloud === 'NCD') {
+    // ── NCD Rules ──────────────────────────────────────────────────────────
+    if (!isAuto) {
+      errorMsg = 'NCD should only be used at automatic (AUTO) stations. Use SKC for manual stations.';
+    } else {
+      cloudPart   = 'NCD';
+      decoderNote = buildDecoderExplanation('NCD', visRaw, wxRaw);
+    }
+
+  } else if (primaryCloud === 'NSC') {
+    // ── NSC Rules ──────────────────────────────────────────────────────────
+    if (vis10km && !wxRaw) {
+      errorMsg = 'When visibility ≥ 10 km and no weather, consider using CAVOK instead of NSC.';
+    }
+    cloudPart   = 'NSC';
+    decoderNote = buildDecoderExplanation('NSC', visRaw, wxRaw);
+
+  } else if (primaryCloud === 'VV') {
+    // ── VV Rules ───────────────────────────────────────────────────────────
+    // VV height: if lowCloudHeight provided and numeric → pad to 3 digits; else ///
+    let vvHeight;
+    if (lowCloudHeight === '///' || lowCloudHeight === '') {
+      vvHeight = '///';
+    } else if (!isNaN(lowCloudHeight) && lowCloudHeight !== '') {
+      // User enters value in hundreds of feet directly (e.g. 3 → VV003)
+      vvHeight = String(parseInt(lowCloudHeight)).padStart(3, '0');
+    } else {
+      vvHeight = lowCloudHeight.padStart(3, '0');
+    }
+    cloudPart   = `VV${vvHeight}`;
+    decoderNote = buildDecoderExplanation(`VV${vvHeight}`, visRaw, wxRaw);
+
+  } else {
+    // ── Standard FEW/SCT/BKN/OVC layers ────────────────────────────────────
+    const layerDefs = [
+      { sel: 'lowCloud',     ht: 'lowCloudHeight'       },
+      { sel: 'mediumCloud',  ht: 'mediumCloudHeight'    },
+      { sel: 'highCloud',    ht: 'highCloudHeight'      },
+      { sel: 'Cloud',        ht: 'additionalCloudHeight'},
+    ];
+
+    const cloudLayers = layerDefs
+      .map(d => {
+        const cover  = document.getElementById(d.sel).value;
+        const htRaw  = document.getElementById(d.ht).value.trim();
+        if (!cover) return '';
+        // The height field already stores the coded value in 100s of feet
+        // (populated by codeCloudHeight() which already divides by 100).
+        // Just zero-pad to 3 digits — do NOT divide by 100 again.
+        let htCode = '';
+        if (htRaw && !isNaN(htRaw)) {
+          htCode = String(parseInt(htRaw, 10)).padStart(3, '0');
+        } else if (htRaw) {
+          htCode = htRaw;
+        }
+        return `${cover}${htCode}`;
+      })
+      .filter(v => v !== '');
+
+    cloudPart = cloudLayers.join(' ');
+  }
+
+  // ── Show validation error if any ────────────────────────────────────────
+  if (errorMsg) {
+    document.getElementById('metarOutput').innerText = '⚠️ Rule Violation:\n' + errorMsg;
+    document.getElementById('decoderOutput').innerText = '';
+    document.getElementById('decoderSection').style.display = 'none';
+    return;
+  }
+
+  // ── AUTO tag ─────────────────────────────────────────────────────────────
+  const autoTag = isAuto ? 'AUTO' : '';
+
+  // ── Assemble all METAR fields ────────────────────────────────────────────
+  const parts = [
+    msgType,
+    stIcao,
+    obsTime,
+    autoTag,
+    wind,
+    visPart,
+    rvrRaw,
+    wxPart,
+    cloudPart,
+    tempDew,
+    qnh ? `Q${qnh}` : '',
+    recentWx ? `RE${recentWx}` : ''
+  ].filter(v => v && v.trim() !== '');
+
+  const metarReport = parts.join(' ') + '=';
+  const header      = document.getElementById('header').value;
   document.getElementById('metarOutput').innerText = `${header}\n${metarReport}`;
+
+  // ── Show decoder if there's something to explain ─────────────────────────
+  if (decoderNote) {
+    document.getElementById('decoderOutput').innerText = decoderNote;
+    document.getElementById('decoderSection').style.display = 'block';
+  } else {
+    document.getElementById('decoderSection').style.display = 'none';
+  }
 }
 
         // Save to MongoDB Database
