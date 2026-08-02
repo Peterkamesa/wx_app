@@ -897,6 +897,10 @@ function generateMetarReport() {
   // ── Validation & rule enforcement ────────────────────────────────────────
   let cloudPart   = '';   // The cloud/visibility group(s) to embed in METAR
   let visPart     = visRaw ? visRaw : '';  // May be suppressed for CAVOK
+  if (visPart && !isNaN(visPart)) {
+    // Pad numeric visibility to 4 digits (e.g. 400 -> 0400)
+    visPart = String(parseInt(visPart, 10)).padStart(4, '0');
+  }
   let wxPart      = wxRaw;                 // May be suppressed for CAVOK
   let decoderNote = '';   // Human-readable explanation
   let errorMsg    = '';
