@@ -671,15 +671,22 @@
 
 
         let wind = obs.wind ?? '';
-        wind = wind.toString().trim();
+        wind = wind.toString().trim().toUpperCase();
         let dd = '//';
         let ff = '//';
         // Process only if wind is valid
-        if (wind && !isNaN(wind)) {
-        // Direction is first 3 digits, padded to 2 digits
-        dd = wind.slice(0, -3).padStart(2, '0');
-        // Speed is last 2 digits, padded to 2 digits
-        ff = wind.slice(-2).padStart(2, '0');
+        if (wind) {
+            if (wind.startsWith('VRB')) {
+                // Variable wind direction is coded as 99
+                dd = '99';
+                // Speed is the digits following 'VRB', padded to 2 digits
+                ff = wind.slice(3).padStart(2, '0');
+            } else if (!isNaN(wind)) {
+                // Direction is first 3 digits, padded to 2 digits
+                dd = wind.slice(0, -3).padStart(2, '0');
+                // Speed is last 2 digits, padded to 2 digits
+                ff = wind.slice(-2).padStart(2, '0');
+            }
         }
         // Build Nddff group
         const Nddff = `${N}${dd}${ff}`;

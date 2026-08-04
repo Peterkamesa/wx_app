@@ -619,10 +619,10 @@ function getCloudCode(oktas) {
 // Helper: fill ns fields and select dropdowns
 function populateCloudsFromObservation(obs) {
   const cloudPairs = [
-    { ns: "ns1", select: "lowCloud", height: "lowCloudHeight", value: obs.ns1, h: obs.h1 },
-    { ns: "ns2", select: "mediumCloud", height: "mediumCloudHeight", value: obs.ns2, h: obs.h2 },
-    { ns: "ns3", select: "highCloud", height: "highCloudHeight", value: obs.ns3, h: obs.h3 },
-    { ns: "ns4", select: "Cloud", height: "additionalCloudHeight", value: obs.ns4, h: obs.h4 }
+    { ns: "ns1", select: "lowCloud", height: "lowCloudHeight", value: obs.ns1, h: obs.h1, type: obs.type1 },
+    { ns: "ns2", select: "mediumCloud", height: "mediumCloudHeight", value: obs.ns2, h: obs.h2, type: obs.type2 },
+    { ns: "ns3", select: "highCloud", height: "highCloudHeight", value: obs.ns3, h: obs.h3, type: obs.type3 },
+    { ns: "ns4", select: "Cloud", height: "additionalCloudHeight", value: obs.ns4, h: obs.h4, type: obs.type4 }
   ];
 
   cloudPairs.forEach(layer => {
@@ -630,7 +630,10 @@ function populateCloudsFromObservation(obs) {
     const select = document.getElementById(layer.select);
     const heightInput = document.getElementById(layer.height);
 
-    if (select) select.value = code || "";
+    if (select) {
+      select.value = code || "";
+      select.dataset.cloudType = layer.type || "";
+    }
     if (heightInput) heightInput.value = codeCloudHeight(layer.h) || "";
   });
 }
@@ -981,7 +984,9 @@ function generateMetarReport() {
 
     const cloudLayers = layerDefs
       .map(d => {
-        const cover  = document.getElementById(d.sel).value;
+        const selElem = document.getElementById(d.sel);
+        const cover  = selElem.value;
+        const cloudType = selElem.dataset.cloudType || "";
         const htRaw  = document.getElementById(d.ht).value.trim();
         if (!cover) return '';
         // The height field already stores the coded value in 100s of feet
@@ -993,7 +998,13 @@ function generateMetarReport() {
         } else if (htRaw) {
           htCode = htRaw;
         }
-        return `${cover}${htCode}`;
+        
+        let typeSuffix = "";
+        if (cloudType.toUpperCase() === "CB" || cloudType.toUpperCase() === "TCU") {
+          typeSuffix = cloudType.toUpperCase();
+        }
+        
+        return `${cover}${htCode}${typeSuffix}`;
       })
       .filter(v => v !== '');
 
