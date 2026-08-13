@@ -497,7 +497,14 @@
           if (user && user.stationId) {
             document.getElementById('stationNumber').value = user.stationId;
           }
-          document.getElementById('MAX').value = obs.max_temp || '';
+          // Automatically use previous day's 1800Z max temperature if this is the 0600Z observation
+          const hourUTC = new Date(`1970-01-01T${obs.time}Z`).getUTCHours();
+          if (hourUTC === 6 && obs.yesterday_18z_max_temp) {
+            document.getElementById('MAX').value = obs.yesterday_18z_max_temp;
+          } else {
+            document.getElementById('MAX').value = obs.max_temp || '';
+          }
+          
           document.getElementById('MIN').value = obs.min_temp || '';
           document.getElementById('G/MIN').value = obs.g_min || '';
           document.getElementById('A/RF').value = obs.rainfall || '';
