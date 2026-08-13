@@ -336,7 +336,7 @@
                         <div class="col-md-6 col-lg-3">
                             <div class="form-group">
                                 <label>Header</label>
-                                <input list="synopTypes" id="typeofsynop" class="form-control" placeholder="Select or type header" onchange="populateSynopFromObservation()">
+                                <input list="synopTypes" id="typeofsynop" class="form-control" placeholder="Auto-populated on load" readonly>
                                 <datalist id="synopTypes">
                                     <option value="SMKN75 HKNC">MAIN</option>
                                     <option value="SIKN75 HKNC">INTERMEDIATE</option>
@@ -587,7 +587,19 @@
             const N = obs.n ?? '/';
 
             dateTimeCode = formatObservationHeader(obsDate, obsTime);
-          const baseHeader = document.getElementById('typeofsynop').value;
+
+          // Determine the UTC hour of the observation (needed for header and iR)
+          const hourUTC = new Date(`1970-01-01T${obsTime}Z`).getUTCHours();
+
+          // Automatically determine the SYNOP header based on UTC observation hour
+          let baseHeader;
+          if ([0, 6, 12, 18].includes(hourUTC)) {
+            baseHeader = 'SMKN75 HKNC';   // Main-hour SYNOP
+          } else if ([3, 9, 15, 21].includes(hourUTC)) {
+            baseHeader = 'SIKN75 HKNC';   // Intermediate-hour SYNOP
+          } else {
+            baseHeader = 'SNKN75 HKNC';   // Hourly SYNOP
+          }
           const finalHeader = `${baseHeader} ${dateTimeCode}`;
           document.getElementById('typeofsynop').value = finalHeader;
           document.getElementById('obstime').value = obstimeCode;
@@ -606,7 +618,6 @@
 
         // --- 1️⃣ Determine iR (Rainfall indicator) --- //
         // const obsTime = obs.time; // e.g., "06:00"
-        const hourUTC = new Date(`1970-01-01T${obsTime}Z`).getUTCHours();
         const isMainHour = [0, 6, 12, 18].includes(hourUTC);
 
         // Handle rainfall including "TRACE"
@@ -1289,6 +1300,9 @@
             }
 
             fetchDatabaseReports();
+
+            // Automatically load the SYNOP header and populate form on page open
+            populateSynopFromObservation();
             
             // Set active state for current page in dropdown
             // ...
