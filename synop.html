@@ -824,7 +824,8 @@
 
         const max_temp = parseFloat(obs.max_temp);
         let maxGroup = '';
-        if (typeof max_temp === 'number' && !isNaN(max_temp)) {
+        // Exclude MAX_TEMP encoding if observation time is 0600Z
+        if (typeof max_temp === 'number' && !isNaN(max_temp) && hourUTC !== 6) {
             let sign = '0';
             if (max_temp < 0) sign = '1';
             const absMax = Math.abs(max_temp);
@@ -936,8 +937,12 @@
             ].filter(Boolean).join(' ');
 
             // Get optional sections
+            // Ensure MAX_TEMP (1SnTxTxTx) is excluded for 0600Z observation
+            const obsHour = obsTime.length >= 4 ? obsTime.substring(2, 4) : '';
+            const maxTempGroup = obsHour === '06' ? '' : document.getElementById('1SnTxTxTx').value.trim();
+
             const optionalSections = [
-                document.getElementById('1SnTxTxTx').value.trim(),
+                maxTempGroup,
                 document.getElementById('2SnTnTnTn').value.trim(),
                 document.getElementById('5SnPPP').value.trim()
             ].filter(Boolean);
