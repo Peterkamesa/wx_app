@@ -157,10 +157,10 @@ function computeAndPopulate(year, month, daysInMonth, monthStr, yearStr, allObs,
         const d12 = getNum(obs12.dew_point);
         if (d12 !== null) dew12Vals.push(d12);
 
-        // Evaporation (evap_1 = total, evap_2 = PICHE)
-        const ev1 = getNum(obs12.e_p || obs06.e_p);
+        // Evaporation (e_p/evap_1 = total pan evaporation at next day's 0600Z, evap_2 = PICHE)
+        const ev1 = getNum(nextObs06.e_p || nextObs06.evap_1);
         if (ev1 !== null) evapTots.push(ev1);
-        const ev2 = getNum(obs12.evap_2 || obs06.evap_2);
+        const ev2 = getNum(nextObs06.evap_2 || obs12.evap_2 || obs06.evap_2);
         if (ev2 !== null) evapPiche.push(ev2);
 
         // Rainfall: next day's 0600Z is the total for this day
@@ -186,10 +186,10 @@ function computeAndPopulate(year, month, daysInMonth, monthStr, yearStr, allObs,
         const rad = getNum(obs12.radiation || obs06.radiation);
         if (rad !== null) radVals.push(rad);
 
-        // Pressure (read minus 1)
-        const p06 = obs06.pr_read ? parseFloat(obs06.pr_read) - 1 : null;
+        // Pressure (read minus 0.1)
+        const p06 = obs06.pr_read ? parseFloat(obs06.pr_read) - 0.1 : null;
         if (p06 !== null) pres06Vals.push(p06);
-        const p12 = obs12.pr_read ? parseFloat(obs12.pr_read) - 1 : null;
+        const p12 = obs12.pr_read ? parseFloat(obs12.pr_read) - 0.1 : null;
         if (p12 !== null) pres12Vals.push(p12);
 
         // RH
