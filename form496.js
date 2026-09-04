@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const user = typeof getUser === 'function' ? getUser() : null;
     if (user) {
         document.getElementById('lblStation').textContent   = user.name       || 'UNKNOWN';
-        document.getElementById('lblStationId').textContent = user.stationId  || '';
+        document.getElementById('lblStationId').textContent = user.rs_no || user.RS_NO || '';
     }
 
     // Default to current month
@@ -109,9 +109,10 @@ async function generateForm() {
         const nextYear  = nextMonthDate.getFullYear();
         const nextMonth = nextMonthDate.getMonth() + 1;
 
-        /* Fetch all station observations */
+        /* Fetch all station observations and RS_NO */
         const user = typeof getUser === 'function' ? getUser() : null;
         let allObs = [];
+        let rsNo = user ? (user.rs_no || user.RS_NO || '') : '';
         if (user && typeof authenticatedFetch === 'function') {
             try {
                 const res = await authenticatedFetch(`${API_BASE_URL}/station/${user.name}/observations`);
@@ -119,7 +120,20 @@ async function generateForm() {
             } catch (err) {
                 console.error('Error fetching observations:', err);
             }
+
+            try {
+                const profileRes = await authenticatedFetch(`${API_BASE_URL}/station/${user.name}/profile`);
+                if (profileRes && profileRes.ok) {
+                    const stn = await profileRes.json();
+                    if (stn && stn.rs_no) rsNo = stn.rs_no;
+                }
+            } catch (err) {
+                // Fall back to token rs_no
+            }
         }
+
+        const lblStnId = document.getElementById('lblStationId');
+        if (lblStnId) lblStnId.textContent = rsNo || '';
 
         buildGrid(year, month, yearStr, monthStr, daysInMonth, nextYear, nextMonth, allObs);
 

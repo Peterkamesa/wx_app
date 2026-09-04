@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const user = typeof getUser === 'function' ? getUser() : null;
     if (user) {
         document.getElementById('lblStationName').textContent = user.name || 'UNKNOWN';
-        document.getElementById('lblStationId').textContent = user.stationId || 'UNKNOWN';
+        document.getElementById('lblStationId').textContent = user.rs_no || user.RS_NO || '';
     }
 
     // Set default month to current month
@@ -50,9 +50,10 @@ async function generateForm() {
         // Determine days in month (28, 29, 30, 31)
         const daysInMonth = new Date(year, month, 0).getDate();
         
-        // Fetch observations
+        // Fetch observations and RS_NO
         const user = typeof getUser === 'function' ? getUser() : null;
         let allObs = [];
+        let rsNo = user ? (user.rs_no || user.RS_NO || '') : '';
         if (user && typeof authenticatedFetch === 'function') {
             try {
                 // Fetch all observations for the station (needed for next day lookups)
@@ -61,9 +62,20 @@ async function generateForm() {
             } catch (err) {
                 console.error("Error fetching observations:", err);
             }
+
+            try {
+                const profileRes = await authenticatedFetch(`${API_BASE_URL}/station/${user.name}/profile`);
+                if (profileRes && profileRes.ok) {
+                    const stn = await profileRes.json();
+                    if (stn && stn.rs_no) rsNo = stn.rs_no;
+                }
+            } catch (err) {
+                // Fall back to token rs_no
+            }
         }
 
-        renderTableRows(year, month, daysInMonth, allObs, user ? user.stationId : 'UNKNOWN');
+        document.getElementById('lblStationId').textContent = rsNo || '';
+        renderTableRows(year, month, daysInMonth, allObs, rsNo || '');
 
     } catch (error) {
         console.error("Error generating form:", error);
