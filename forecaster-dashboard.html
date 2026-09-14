@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forecaster Dashboard - Smart Wx</title>
+    <link rel="icon" type="image/x-icon" href="favicon2.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+    :root {
+        --primary-color: #1b1b53;
+        --secondary-color: #3a3a8f;
+        --accent-color: #06f07b;
+        --highlight-color: #ff4ed9;
+        --light-text: #f8f9fa;
+        --success-color: #28a745;
+        --info-color: #17a2b8;
+        --danger-color: #dc3545;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        background: url(cd1.jpg) center center fixed;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        background-color: var(--primary-color) !important;
+    }
+    .navbar-brand img { height: 30px; transition: transform 0.3s ease; }
+    .navbar-brand:hover img { transform: scale(1.05); }
+    .nav-link { position: relative; margin: 0 8px; transition: color 0.3s ease; color: var(--light-text) !important; }
+    .nav-link.active { color: var(--accent-color) !important; font-weight: bold; }
+    .nav-link.active::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 3px; background: var(--highlight-color); border-radius: 3px; }
+    .dropdown-menu { background-color: var(--secondary-color); border: none; }
+    .dropdown-item { color: var(--light-text); transition: all 0.3s ease; }
+    .dropdown-item:hover { background-color: var(--highlight-color); color: white; }
+
+    /* ===== MAIN CONTENT ===== */
+    .content { flex: 1; padding: 1.5rem 0 3rem; }
+
+    .page-header {
+        background: rgba(27, 27, 83, 0.92);
+        backdrop-filter: blur(10px);
+        color: white;
+        padding: 1.25rem 2rem;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        border-left: 5px solid var(--accent-color);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    .page-header h1 { font-size: 1.85rem; font-weight: 700; margin: 0; }
+    .page-header p { margin: 0.25rem 0 0; opacity: 0.85; font-size: 0.95rem; }
+
+    /* ===== MAIN TABS ===== */
+    .main-tabs-wrapper {
+        background: rgba(255,255,255,0.98);
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+        overflow: hidden;
+    }
+
+    .main-nav-tabs {
+        background: var(--primary-color);
+        border: none;
+        padding: 0.5rem 1rem 0;
+        gap: 0.25rem;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .main-nav-tabs .nav-link {
+        color: rgba(255,255,255,0.75) !important;
+        border: none;
+        border-radius: 8px 8px 0 0;
+        padding: 0.7rem 1.4rem;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: all 0.2s;
+        margin: 0;
+        cursor: pointer;
+    }
+    .main-nav-tabs .nav-link:hover { color: white !important; background: rgba(255,255,255,0.15); }
+    .main-nav-tabs .nav-link.active {
+        color: var(--primary-color) !important;
+        background: white !important;
+        font-weight: 700;
+    }
+    .main-nav-tabs .nav-link.active::after { display: none; }
+    .tab-content-inner { padding: 1.5rem; }
+
+    /* ===== REGION SUB-TABS (ROFOR) ===== */
+    .region-nav-bar {
+        background: #f1f4fa;
+        border: 1px solid #ccd5e6;
+        border-radius: 8px;
+        padding: 0.4rem;
+        margin-bottom: 1.25rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .region-btn {
+        background: #ffffff;
+        color: var(--primary-color);
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        padding: 0.55rem 1.15rem;
+        font-size: 0.88rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+        flex: 1 1 auto;
+        text-align: center;
+        min-width: 140px;
+    }
+    .region-btn:hover {
+        background: #e2e8f0;
+        color: var(--secondary-color);
+    }
+    .region-btn.active {
+        background: var(--secondary-color) !important;
+        color: #ffffff !important;
+        border-color: var(--secondary-color) !important;
+        box-shadow: 0 2px 8px rgba(58, 58, 143, 0.35);
+    }
+
+    /* ===== ROFOR FORM STYLES ===== */
+    .rofor-header-sheet {
+        background: #ffffff;
+        border: 2px solid #1b1b53;
+        border-radius: 6px;
+        padding: 1.2rem;
+        margin-bottom: 1.2rem;
+    }
+    .rofor-header-sheet .dept-title {
+        font-weight: 800;
+        font-size: 1.1rem;
+        text-align: center;
+        color: #1b1b53;
+        letter-spacing: 0.05em;
+        line-height: 1.3;
+    }
+    .rofor-header-sheet .form-no {
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: #333;
+    }
+    .rofor-meta-row {
+        margin-top: 0.75rem;
+        font-size: 0.88rem;
+    }
+    .rofor-meta-row label {
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 2px;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+    }
+    .rofor-meta-row .form-control {
+        font-size: 0.86rem;
+        padding: 0.35rem 0.5rem;
+        border-color: #adb5bd;
+    }
+    .rofor-meta-row .form-control:focus {
+        border-color: var(--secondary-color);
+        box-shadow: 0 0 0 0.15rem rgba(58,58,143,0.2);
+    }
+
+    .rofor-outlook-block {
+        margin-bottom: 1rem;
+        background: #fbfcfe;
+        border: 1px solid #ccd5e6;
+        border-radius: 6px;
+        padding: 0.8rem 1rem;
+    }
+    .rofor-outlook-block label {
+        font-weight: 800;
+        color: var(--primary-color);
+        font-size: 0.88rem;
+        margin-bottom: 0.3rem;
+        display: block;
+        letter-spacing: 0.02em;
+    }
+    .rofor-outlook-block textarea {
+        font-size: 0.88rem;
+        line-height: 1.5;
+        border: 1px solid #b8c4db;
+        border-radius: 4px;
+        padding: 0.5rem;
+        resize: vertical;
+    }
+
+    /* ROFOR Table */
+    .rofor-table-wrap {
+        overflow-x: auto;
+        margin-bottom: 1.25rem;
+        border: 2px solid #222;
+        border-radius: 4px;
+    }
+    .rofor-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.82rem;
+        background: white;
+        margin-bottom: 0;
+    }
+    .rofor-table th, .rofor-table td {
+        border: 1px solid #444;
+        padding: 0;
+        vertical-align: middle;
+    }
+    .rofor-table thead th {
+        background: #1b1b53;
+        color: white;
+        font-weight: 700;
+        text-align: center;
+        padding: 0.6rem 0.5rem;
+        font-size: 0.82rem;
+        letter-spacing: 0.03em;
+        line-height: 1.3;
+    }
+    .rofor-table .row-label {
+        background: #f0f3fa;
+        font-weight: 700;
+        color: #1b1b53;
+        padding: 0.4rem 0.6rem;
+        width: 230px;
+        min-width: 210px;
+        font-size: 0.78rem;
+        vertical-align: middle;
+        line-height: 1.3;
+    }
+    .rofor-table .sub-label {
+        padding-left: 1.2rem;
+        font-weight: 600;
+    }
+    .rofor-table .section-header-row td {
+        background: #d9e2f3;
+        font-weight: 800;
+        color: #1b1b53;
+        padding: 0.35rem 0.6rem;
+        font-size: 0.8rem;
+        text-align: center;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+    .rofor-table input[type="text"],
+    .rofor-table textarea {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 0.82rem;
+        padding: 0.4rem 0.5rem;
+        resize: none;
+        font-family: inherit;
+        line-height: 1.4;
+        color: #111;
+        box-sizing: border-box;
+    }
+    .rofor-table input[type="text"]:focus,
+    .rofor-table textarea:focus {
+        background: rgba(6,240,123,0.1);
+        outline: 1px solid #00aa55;
+    }
+    .rofor-col { width: 25.6%; }
+
+    /* ===== DAILY WX ===== */
+    .dailywx-header-banner {
+        background: linear-gradient(135deg, rgba(27, 27, 83, 0.92) 0%, rgba(58, 58, 143, 0.88) 100%);
+        color: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+    .dailywx-header-banner h2 { font-weight: 700; font-size: 1.8rem; margin: 0; }
+    .dailywx-header-banner p { margin: 0.3rem 0 0; opacity: 0.9; font-size: 1rem; }
+
+    .wx-card {
+        background: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        margin-bottom: 1.5rem;
+        border: 1px solid #e2e8f0;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .wx-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.18); }
+    .wx-card-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        color: white;
+        padding: 0.85rem 1.2rem;
+        font-weight: 700;
+        font-size: 1rem;
+        text-align: center;
+    }
+    .wx-card-body { padding: 1.2rem; }
+    .wx-card-body textarea {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        border-color: #cbd5e1;
+        border-radius: 6px;
+    }
+    .wx-card-body textarea:focus {
+        border-color: var(--highlight-color);
+        box-shadow: 0 0 0 0.15rem rgba(255,78,217,0.2);
+    }
+    .wx-image-box {
+        margin-top: 0.8rem;
+        border: 1px dashed #94a3b8;
+        border-radius: 8px;
+        padding: 0.75rem;
+        background: #f8fafc;
+    }
+    .wx-image-preview-container {
+        margin-top: 0.6rem;
+        text-align: center;
+    }
+    .wx-image-preview {
+        max-width: 100%;
+        max-height: 280px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        display: none;
+    }
+
+    .wx-sidebar {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 1.2rem;
+        border: 1px solid #cbd5e1;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    }
+    .wx-sidebar h4 {
+        color: var(--primary-color);
+        font-weight: 700;
+        border-bottom: 2px solid var(--accent-color);
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+        font-size: 1.05rem;
+    }
+    .data-box {
+        background: white;
+        border-radius: 8px;
+        padding: 0.8rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid var(--info-color);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .data-box h5 {
+        color: var(--primary-color);
+        font-weight: 700;
+        font-size: 0.9rem;
+        margin-bottom: 0.4rem;
+    }
+    .data-content {
+        font-family: monospace;
+        font-size: 0.82rem;
+        background: #f1f5f9;
+        padding: 0.6rem;
+        border-radius: 5px;
+        min-height: 80px;
+        word-break: break-all;
+        border: 1px solid #e2e8f0;
+    }
+
+    /* ===== MONDAY BRIEF ===== */
+    .brief-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        color: white;
+        border-radius: 10px;
+        padding: 1.2rem 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+    .brief-header h3 { margin: 0; font-weight: 700; font-size: 1.35rem; }
+    .brief-header p { opacity: 0.85; font-size: 0.9rem; margin: 0.25rem 0 0; }
+
+    .brief-section-card {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        padding: 1rem 1.2rem;
+        margin-bottom: 1.1rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .brief-section-card label {
+        font-weight: 700;
+        color: var(--primary-color);
+        display: block;
+        margin-bottom: 6px;
+        font-size: 0.88rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+    .brief-section-card textarea {
+        border-color: #cbd5e1;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+    .brief-section-card textarea:focus {
+        border-color: var(--secondary-color);
+        box-shadow: 0 0 0 0.15rem rgba(58,58,143,0.2);
+    }
+
+    /* ===== TAF ===== */
+    .taf-wrap {
+        max-width: 820px;
+        margin: 0 auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+    }
+    .taf-header-block {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid var(--accent-color);
+        padding-bottom: 1rem;
+    }
+    .taf-header-block h3 { color: var(--primary-color); font-weight: 700; margin: 0; }
+    .taf-header-block p { color: #64748b; font-size: 0.95rem; margin: 0.3rem 0 0; }
+    .taf-textarea {
+        width: 100%;
+        min-height: 240px;
+        font-family: monospace;
+        font-size: 1rem;
+        padding: 1rem;
+        border: 2px solid #cbd5e1;
+        border-radius: 8px;
+        resize: vertical;
+        line-height: 1.6;
+    }
+    .taf-textarea:focus {
+        border-color: var(--secondary-color);
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(58,58,143,0.2);
+    }
+
+    /* ===== ACTION BUTTONS & STATUS ===== */
+    .btn-save-primary {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.6rem 1.8rem;
+        border-radius: 6px;
+        font-weight: 700;
+        font-size: 0.92rem;
+        transition: all 0.25s;
+        cursor: pointer;
+    }
+    .btn-save-primary:hover {
+        background: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        color: white;
+    }
+    .btn-accent {
+        background: var(--accent-color);
+        color: var(--primary-color);
+        border: none;
+        padding: 0.6rem 1.4rem;
+        border-radius: 6px;
+        font-weight: 700;
+        font-size: 0.92rem;
+        transition: all 0.25s;
+        cursor: pointer;
+    }
+    .btn-accent:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(6,240,123,0.3);
+    }
+
+    .status-msg {
+        margin-top: 0.9rem;
+        padding: 0.65rem 1rem;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: none;
+    }
+    .status-msg.success { background: rgba(40,167,69,0.12); color: #155724; border: 1px solid #c3e6cb; display: block; }
+    .status-msg.error { background: rgba(220,53,69,0.12); color: #721c24; border: 1px solid #f5c6cb; display: block; }
+    .status-msg.info { background: rgba(23,162,184,0.12); color: #0c5460; border: 1px solid #bee5eb; display: block; }
+
+    /* ===== FOOTER ===== */
+    footer { background-color: var(--primary-color); color: white; padding: 2rem 0; margin-top: auto; }
+    .footer-links { list-style: none; padding: 0; }
+    .footer-links li { display: inline-block; margin: 0 10px; }
+    .footer-links a { color: #adb5bd; text-decoration: none; transition: color 0.3s; }
+    .footer-links a:hover { color: white; }
+    .social-media a { color: white; font-size: 1.3rem; margin: 0 10px; transition: color 0.3s; }
+    .social-media a:hover { color: var(--accent-color); }
+
+    @media (max-width: 768px) {
+        .page-header h1 { font-size: 1.5rem; }
+        .tab-content-inner { padding: 1rem 0.75rem; }
+        .rofor-table { font-size: 0.74rem; }
+        .rofor-table .row-label { width: 140px; min-width: 140px; }
+        .region-btn { min-width: 110px; font-size: 0.8rem; padding: 0.4rem 0.8rem; }
+    }
+    </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">
+            <img src="logo2.jpg" alt="Logo" height="30"> Smart Wx
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto" id="dynamic-nav">
+                <!-- Populated dynamically by auth.js -->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="content">
+    <div class="container-fluid px-3 px-md-4">
+
+        <!-- Guest Alert Banner (if not logged in) -->
+        <div id="auth-warning-banner" class="alert alert-warning alert-dismissible fade show" style="display:none;" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <strong>Guest Mode:</strong> You are viewing the Forecaster Dashboard in offline/guest mode. To save reports to the server, please <a href="login.html" class="alert-link">log in with your station credentials</a>.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Page Header -->
+        <div class="page-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div>
+                <h1><i class="fas fa-cloud-sun-rain me-2"></i>Forecaster Dashboard</h1>
+                <p id="forecaster-station-label">Kenya Meteorological Department · Moi Air Base</p>
+            </div>
+            <div>
+                <span class="badge" style="background-color: var(--accent-color); color: var(--primary-color); font-size: 0.9rem; padding: 0.5rem 1rem;">
+                    <i class="fas fa-user-circle me-1"></i><span id="user-display-name">Station Forecaster</span>
+                </span>
+            </div>
+        </div>
+
+        <!-- Dashboard Tabs Wrapper -->
+        <div class="main-tabs-wrapper">
+
+            <!-- Main Tab Navigation -->
+            <ul class="nav main-nav-tabs" id="mainTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="rofor-tab-btn" type="button" onclick="openMainTab('rofor')">
+                        <i class="fas fa-route me-2"></i>ROFOR Form
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="dailywx-tab-btn" type="button" onclick="openMainTab('dailywx')">
+                        <i class="fas fa-sun me-2"></i>Daily WX
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="monbrief-tab-btn" type="button" onclick="openMainTab('monbrief')">
+                        <i class="fas fa-calendar-week me-2"></i>MON Brief
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="taf-tab-btn" type="button" onclick="openMainTab('taf')">
+                        <i class="fas fa-plane-departure me-2"></i>New TAF
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="mainTabContent">
+
+                <!-- ============================================================ -->
+                <!-- 1. ROFOR FORM TAB                                            -->
+                <!-- ============================================================ -->
+                <div class="tab-pane fade show active" id="rofor-tab-pane" style="display:block;">
+                    <div class="tab-content-inner">
+                        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                            <div>
+                                <h4 class="mb-0" style="color:var(--primary-color); font-weight:700;">
+                                    <i class="fas fa-file-alt me-2"></i>FORM NO.2063 (REV.4/ 74) — Tabular Forecast of En-Route Conditions
+                                </h4>
+                                <small class="text-muted">Select any of the 6 regions below to view, enter, edit, and save the official ROFOR form.</small>
+                            </div>
+                        </div>
+
+                        <!-- 6 Region Sub-tabs Navigation -->
+                        <div class="region-nav-bar" id="regionTabs">
+                            <button class="region-btn active" id="reg-btn-SE" type="button" onclick="openRegion('SE')">South Eastern (SE)</button>
+                            <button class="region-btn" id="reg-btn-NE" type="button" onclick="openRegion('NE')">North Eastern (NE)</button>
+                            <button class="region-btn" id="reg-btn-Coast" type="button" onclick="openRegion('Coast')">Coast</button>
+                            <button class="region-btn" id="reg-btn-NW" type="button" onclick="openRegion('NW')">North Western (NW)</button>
+                            <button class="region-btn" id="reg-btn-W" type="button" onclick="openRegion('W')">Western (W)</button>
+                            <button class="region-btn" id="reg-btn-Central" type="button" onclick="openRegion('Central')">Central</button>
+                        </div>
+
+                        <!-- 6 Region Panes (Direct display management) -->
+                        <div id="regionTabContent">
+                            <div class="region-pane" id="region-SE" style="display:block;"><div id="rofor-form-SE"></div></div>
+                            <div class="region-pane" id="region-NE" style="display:none;"><div id="rofor-form-NE"></div></div>
+                            <div class="region-pane" id="region-Coast" style="display:none;"><div id="rofor-form-Coast"></div></div>
+                            <div class="region-pane" id="region-NW" style="display:none;"><div id="rofor-form-NW"></div></div>
+                            <div class="region-pane" id="region-W" style="display:none;"><div id="rofor-form-W"></div></div>
+                            <div class="region-pane" id="region-Central" style="display:none;"><div id="rofor-form-Central"></div></div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- END ROFOR TAB -->
+
+                <!-- ============================================================ -->
+                <!-- 2. DAILY WX TAB                                              -->
+                <!-- ============================================================ -->
+                <div class="tab-pane fade" id="dailywx-tab-pane" style="display:none;">
+                    <div class="tab-content-inner">
+                        
+                        <!-- Header Banner matching daily_wx.html -->
+                        <div class="dailywx-header-banner">
+                            <h2>Daily Weather Forecast</h2>
+                            <p id="dailywx-header-desc">Moi Air Base Forecast — Editable Template</p>
+                        </div>
+
+                        <div class="row">
+                            <!-- Sidebar with Latest METAR & TAF -->
+                            <div class="col-lg-4 mb-4">
+                                <div class="wx-sidebar">
+                                    <h4><i class="fas fa-cloud-sun me-2"></i>Latest Weather Data</h4>
+                                    
+                                    <div class="data-box">
+                                        <h5><i class="fas fa-plane me-2"></i>Latest METAR</h5>
+                                        <div id="wx-latest-metar" class="data-content">Loading METAR data...</div>
+                                    </div>
+                                    
+                                    <div class="data-box" style="border-left-color: var(--success-color);">
+                                        <h5><i class="fas fa-cloud-meatball me-2"></i>Latest TAF</h5>
+                                        <div id="wx-latest-taf" class="data-content">Loading TAF data...</div>
+                                    </div>
+
+                                    <hr>
+                                    <h5 style="color:var(--primary-color); font-weight:700;"><i class="fas fa-sliders-h me-2"></i>Forecast Details</h5>
+                                    <div class="mb-2">
+                                        <label class="form-label small fw-bold text-uppercase">Forecast Date</label>
+                                        <input type="date" class="form-control form-control-sm" id="wx-forecast-date">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label small fw-bold text-uppercase">Forecast Period / Subtitle</label>
+                                        <input type="text" class="form-control form-control-sm" id="wx-forecast-period" placeholder="e.g. Moi Air Base Forecast from 6th to 7th November 2025">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold text-uppercase">Issued By</label>
+                                        <input type="text" class="form-control form-control-sm" id="wx-issued-by" placeholder="Forecaster name/station">
+                                    </div>
+
+                                    <button class="btn-save-primary w-100 mb-2" onclick="saveDailyWX()">
+                                        <i class="fas fa-save me-2"></i>Save Daily WX
+                                    </button>
+                                    <button class="btn-accent w-100" onclick="loadLatestDailyWX()">
+                                        <i class="fas fa-sync-alt me-2"></i>Load Latest Daily WX
+                                    </button>
+                                    <div class="status-msg" id="wx-status"></div>
+                                </div>
+                            </div>
+
+                            <!-- Main Forecast Cards (matching daily_wx.html cards) -->
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <!-- 1. Rainfall Forecast -->
+                                    <div class="col-md-6">
+                                        <div class="wx-card">
+                                            <div class="wx-card-header">Rainfall Forecast</div>
+                                            <div class="wx-card-body">
+                                                <label class="form-label small fw-bold text-uppercase text-muted">Forecast Text</label>
+                                                <textarea class="form-control mb-2" id="wx-rainfall-text" rows="4" placeholder="Rainfall expected over few places in the Coastal region, the Highlands West and East of the Rift Valley. Sunny intervals expected over several parts of the country."></textarea>
+                                                
+                                                <div class="wx-image-box">
+                                                    <label class="form-label small fw-bold text-uppercase" style="color:var(--primary-color)"><i class="fas fa-image me-1"></i>Forecast Image</label>
+                                                    <div class="input-group input-group-sm mb-2">
+                                                        <span class="input-group-text"><i class="fas fa-link"></i></span>
+                                                        <input type="text" class="form-control" id="wx-rainfall-img" placeholder="Paste Image URL..." oninput="previewImage('wx-rainfall-img','wx-rainfall-preview')">
+                                                    </div>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <input type="file" class="form-control form-control-sm" accept="image/*" onchange="handleImageFile(this, 'wx-rainfall-img', 'wx-rainfall-preview')">
+                                                    </div>
+                                                    <div class="wx-image-preview-container">
+                                                        <img id="wx-rainfall-preview" class="wx-image-preview" alt="Rainfall forecast image">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 2. Nairobi County Forecast -->
+                                    <div class="col-md-6">
+                                        <div class="wx-card">
+                                            <div class="wx-card-header">Nairobi County Forecast</div>
+                                            <div class="wx-card-body">
+                                                <label class="form-label small fw-bold text-uppercase text-muted">Forecast Text</label>
+                                                <textarea class="form-control mb-2" id="wx-nairobi-text" rows="4" placeholder="Cloudy conditions expected in the morning breaking into sunny intervals. Showers expected over few places in the afternoon."></textarea>
+                                                
+                                                <div class="wx-image-box">
+                                                    <label class="form-label small fw-bold text-uppercase" style="color:var(--primary-color)"><i class="fas fa-image me-1"></i>Forecast Image</label>
+                                                    <div class="input-group input-group-sm mb-2">
+                                                        <span class="input-group-text"><i class="fas fa-link"></i></span>
+                                                        <input type="text" class="form-control" id="wx-nairobi-img" placeholder="Paste Image URL..." oninput="previewImage('wx-nairobi-img','wx-nairobi-preview')">
+                                                    </div>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <input type="file" class="form-control form-control-sm" accept="image/*" onchange="handleImageFile(this, 'wx-nairobi-img', 'wx-nairobi-preview')">
+                                                    </div>
+                                                    <div class="wx-image-preview-container">
+                                                        <img id="wx-nairobi-preview" class="wx-image-preview" alt="Nairobi forecast image">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 3. Surface Winds -->
+                                    <div class="col-md-6">
+                                        <div class="wx-card">
+                                            <div class="wx-card-header">Surface Winds</div>
+                                            <div class="wx-card-body">
+                                                <label class="form-label small fw-bold text-uppercase text-muted">Forecast Text</label>
+                                                <textarea class="form-control mb-2" id="wx-surf-winds-text" rows="4" placeholder="Strong Southerly winds are expected at the surface veering to south-easterlies over the north-western parts of the country."></textarea>
+                                                
+                                                <div class="wx-image-box">
+                                                    <label class="form-label small fw-bold text-uppercase" style="color:var(--primary-color)"><i class="fas fa-image me-1"></i>Forecast Image</label>
+                                                    <div class="input-group input-group-sm mb-2">
+                                                        <span class="input-group-text"><i class="fas fa-link"></i></span>
+                                                        <input type="text" class="form-control" id="wx-surf-winds-img" placeholder="Paste Image URL..." oninput="previewImage('wx-surf-winds-img','wx-surf-winds-preview')">
+                                                    </div>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <input type="file" class="form-control form-control-sm" accept="image/*" onchange="handleImageFile(this, 'wx-surf-winds-img', 'wx-surf-winds-preview')">
+                                                    </div>
+                                                    <div class="wx-image-preview-container">
+                                                        <img id="wx-surf-winds-preview" class="wx-image-preview" alt="Surface winds forecast image">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 4. 700MB Level Winds -->
+                                    <div class="col-md-6">
+                                        <div class="wx-card">
+                                            <div class="wx-card-header">700MB Level Winds</div>
+                                            <div class="wx-card-body">
+                                                <label class="form-label small fw-bold text-uppercase text-muted">Forecast Text</label>
+                                                <textarea class="form-control mb-2" id="wx-700mb-text" rows="4" placeholder="Variable winds are expected at the 700mb level over most parts of the country."></textarea>
+                                                
+                                                <div class="wx-image-box">
+                                                    <label class="form-label small fw-bold text-uppercase" style="color:var(--primary-color)"><i class="fas fa-image me-1"></i>Forecast Image</label>
+                                                    <div class="input-group input-group-sm mb-2">
+                                                        <span class="input-group-text"><i class="fas fa-link"></i></span>
+                                                        <input type="text" class="form-control" id="wx-700mb-img" placeholder="Paste Image URL..." oninput="previewImage('wx-700mb-img','wx-700mb-preview')">
+                                                    </div>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <input type="file" class="form-control form-control-sm" accept="image/*" onchange="handleImageFile(this, 'wx-700mb-img', 'wx-700mb-preview')">
+                                                    </div>
+                                                    <div class="wx-image-preview-container">
+                                                        <img id="wx-700mb-preview" class="wx-image-preview" alt="700MB winds forecast image">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 5. Maximum Surface Temperatures -->
+                                    <div class="col-md-6">
+                                        <div class="wx-card">
+                                            <div class="wx-card-header">Maximum Surface Temperatures</div>
+                                            <div class="wx-card-body">
+                                                <label class="form-label small fw-bold text-uppercase text-muted">Forecast Text</label>
+                                                <textarea class="form-control mb-2" id="wx-max-temp-text" rows="4" placeholder="Maximum temperatures are expected to range from 5 degrees Celsius to 35 degrees Celsius."></textarea>
+                                                
+                                                <div class="wx-image-box">
+                                                    <label class="form-label small fw-bold text-uppercase" style="color:var(--primary-color)"><i class="fas fa-image me-1"></i>Forecast Image</label>
+                                                    <div class="input-group input-group-sm mb-2">
+                                                        <span class="input-group-text"><i class="fas fa-link"></i></span>
+                                                        <input type="text" class="form-control" id="wx-max-temp-img" placeholder="Paste Image URL..." oninput="previewImage('wx-max-temp-img','wx-max-temp-preview')">
+                                                    </div>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <input type="file" class="form-control form-control-sm" accept="image/*" onchange="handleImageFile(this, 'wx-max-temp-img', 'wx-max-temp-preview')">
+                                                    </div>
+                                                    <div class="wx-image-preview-container">
+                                                        <img id="wx-max-temp-preview" class="wx-image-preview" alt="Max temperature forecast image">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 6. Minimum Surface Temperatures -->
+                                    <div class="col-md-6">
+                                        <div class="wx-card">
+                                            <div class="wx-card-header">Minimum Surface Temperatures</div>
+                                            <div class="wx-card-body">
+                                                <label class="form-label small fw-bold text-uppercase text-muted">Forecast Text</label>
+                                                <textarea class="form-control mb-2" id="wx-min-temp-text" rows="4" placeholder="Minimum temperatures are expected to range from 4 degrees Celsius to 20 degrees Celsius."></textarea>
+                                                
+                                                <div class="wx-image-box">
+                                                    <label class="form-label small fw-bold text-uppercase" style="color:var(--primary-color)"><i class="fas fa-image me-1"></i>Forecast Image</label>
+                                                    <div class="input-group input-group-sm mb-2">
+                                                        <span class="input-group-text"><i class="fas fa-link"></i></span>
+                                                        <input type="text" class="form-control" id="wx-min-temp-img" placeholder="Paste Image URL..." oninput="previewImage('wx-min-temp-img','wx-min-temp-preview')">
+                                                    </div>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <input type="file" class="form-control form-control-sm" accept="image/*" onchange="handleImageFile(this, 'wx-min-temp-img', 'wx-min-temp-preview')">
+                                                    </div>
+                                                    <div class="wx-image-preview-container">
+                                                        <img id="wx-min-temp-preview" class="wx-image-preview" alt="Min temperature forecast image">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div><!-- /row -->
+                            </div><!-- /col-lg-8 -->
+                        </div><!-- /row -->
+
+                    </div>
+                </div>
+                <!-- END DAILY WX TAB -->
+
+                <!-- ============================================================ -->
+                <!-- 3. MONDAY BRIEF TAB (Editable Form, No Iframe)               -->
+                <!-- ============================================================ -->
+                <div class="tab-pane fade" id="monbrief-tab-pane" style="display:none;">
+                    <div class="tab-content-inner">
+                        
+                        <div class="brief-header">
+                            <h3><i class="fas fa-calendar-alt me-2"></i>Kenya Meteorological Department — Monday Weather Brief</h3>
+                            <p>Weekly Weather Briefing presented every Monday · All times in UTC unless otherwise specified</p>
+                        </div>
+
+                        <div class="row g-3">
+                            <!-- Left: Meta Details -->
+                            <div class="col-lg-4">
+                                <div class="rofor-header-sheet h-100">
+                                    <h5 style="color:var(--primary-color); font-weight:800; border-bottom:2px solid var(--accent-color); padding-bottom:0.5rem; margin-bottom:1rem;">
+                                        Briefing Information
+                                    </h5>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold text-uppercase" style="color:var(--primary-color)">Briefing Date</label>
+                                        <input type="date" class="form-control" id="brief-date">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold text-uppercase" style="color:var(--primary-color)">Valid Period</label>
+                                        <input type="text" class="form-control" id="brief-valid-period" placeholder="e.g. Mon 14 Sep – Sun 20 Sep 2026">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold text-uppercase" style="color:var(--primary-color)">Station / Office</label>
+                                        <input type="text" class="form-control" id="brief-station" placeholder="e.g. Moi Air Base (MAB)">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold text-uppercase" style="color:var(--primary-color)">Issued By (Forecaster)</label>
+                                        <input type="text" class="form-control" id="brief-issued-by" placeholder="Forecaster name">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-bold text-uppercase" style="color:var(--primary-color)">Issue Time (UTC)</label>
+                                        <input type="text" class="form-control" id="brief-issue-time" placeholder="e.g. 0630Z">
+                                    </div>
+
+                                    <div class="d-grid gap-2 mt-4">
+                                        <button class="btn-save-primary" onclick="saveMondayBrief()">
+                                            <i class="fas fa-save me-2"></i>Save Monday Brief
+                                        </button>
+                                        <button class="btn-accent" onclick="loadLatestMondayBrief()">
+                                            <i class="fas fa-sync-alt me-2"></i>Load Latest Brief
+                                        </button>
+                                    </div>
+                                    <div class="status-msg" id="brief-status"></div>
+                                </div>
+                            </div>
+
+                            <!-- Right: Structured Editable Sections -->
+                            <div class="col-lg-8">
+                                <div class="brief-section-card">
+                                    <label><i class="fas fa-satellite me-2"></i>1. Synoptic Situation &amp; Analysis</label>
+                                    <textarea class="form-control" id="brief-synoptic" rows="3" placeholder="Describe the current synoptic systems (Inter-Tropical Convergence Zone, subtropical anticyclones, monsoonal flow, pressure systems)..."></textarea>
+                                </div>
+
+                                <div class="brief-section-card">
+                                    <label><i class="fas fa-globe-africa me-2"></i>2. General Meteorological Outlook</label>
+                                    <textarea class="form-control" id="brief-outlook" rows="3" placeholder="General national and regional weather conditions expected during the week..."></textarea>
+                                </div>
+
+                                <div class="brief-section-card">
+                                    <label><i class="fas fa-cloud-showers-heavy me-2"></i>3. Rainfall Outlook &amp; Distribution</label>
+                                    <textarea class="form-control" id="brief-rainfall" rows="3" placeholder="Rainfall distribution, expected intensity, areas likely to receive light/moderate/heavy showers, and thunderstorm activity..."></textarea>
+                                </div>
+
+                                <div class="brief-section-card">
+                                    <label><i class="fas fa-temperature-high me-2"></i>4. Temperature Outlook (Max &amp; Min)</label>
+                                    <textarea class="form-control" id="brief-temperature" rows="3" placeholder="Expected maximum surface temperatures across highlands and lowlands, minimum temperatures, cold night advisories..."></textarea>
+                                </div>
+
+                                <div class="brief-section-card">
+                                    <label><i class="fas fa-wind me-2"></i>5. Surface &amp; Low-Level Winds</label>
+                                    <textarea class="form-control" id="brief-surface-winds" rows="3" placeholder="Wind speed and direction at surface, expected gusts over arid/semi-arid areas and coastal waters..."></textarea>
+                                </div>
+
+                                <div class="brief-section-card">
+                                    <label><i class="fas fa-layer-group me-2"></i>6. Upper Winds (700mb / 500mb / 200mb)</label>
+                                    <textarea class="form-control" id="brief-upper-winds" rows="3" placeholder="Upper level circulation, wind shear, moisture transport patterns..."></textarea>
+                                </div>
+
+                                <div class="brief-section-card">
+                                    <label><i class="fas fa-plane me-2"></i>7. Aviation En-Route &amp; Aerodrome Conditions</label>
+                                    <textarea class="form-control" id="brief-aviation" rows="3" placeholder="Cloud bases and tops, icing levels, turbulence reports, visibility hazards (morning fog/mist)..."></textarea>
+                                </div>
+
+                                <div class="brief-section-card">
+                                    <label><i class="fas fa-exclamation-triangle me-2 text-warning"></i>8. Severe Weather / Significant Advisories</label>
+                                    <textarea class="form-control" id="brief-warnings" rows="3" placeholder="Strong wind warnings, flood risk alerts, high sea warnings, gale warnings if applicable..."></textarea>
+                                </div>
+
+                                <div class="brief-section-card">
+                                    <label><i class="fas fa-seedling me-2 text-success"></i>9. Agricultural &amp; Hydrological Impacts</label>
+                                    <textarea class="form-control" id="brief-agro" rows="3" placeholder="Implications for farming activities, soil moisture, catchment areas, pasture conditions..."></textarea>
+                                </div>
+
+                                <div class="brief-section-card">
+                                    <label><i class="fas fa-comment-dots me-2"></i>10. Remarks &amp; Forecaster Notes</label>
+                                    <textarea class="form-control" id="brief-remarks" rows="2" placeholder="Additional remarks, data limitations, model consensus..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- END MONDAY BRIEF TAB -->
+
+                <!-- ============================================================ -->
+                <!-- 4. NEW TAF TAB (Matching taf.html)                           -->
+                <!-- ============================================================ -->
+                <div class="tab-pane fade" id="taf-tab-pane" style="display:none;">
+                    <div class="tab-content-inner">
+                        <div class="taf-wrap">
+                            <div class="taf-header-block">
+                                <h3>Terminal Aerodrome Forecast (TAF)</h3>
+                                <p>Enter or edit the TAF report below. The latest saved TAF will be loaded automatically.</p>
+                            </div>
+
+                            <div class="row mb-3 g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-bold text-uppercase" style="color:var(--primary-color)">Station / ICAO Code</label>
+                                    <input type="text" class="form-control" id="taf-icao" placeholder="e.g. HKRE">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-bold text-uppercase" style="color:var(--primary-color)">Forecaster Name</label>
+                                    <input type="text" class="form-control" id="taf-issued-by" placeholder="e.g. Duty Forecaster">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-bold text-uppercase" style="color:var(--primary-color)">Issue Time (UTC)</label>
+                                    <input type="text" class="form-control" id="taf-issue-time" placeholder="e.g. 0330Z">
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="taf-input" class="form-label fw-bold" style="color:var(--primary-color)">TAF Report:</label>
+                                <textarea id="taf-input" class="taf-textarea" placeholder="TAF HKRE 130330Z 1306/1412 VRB03KT 9999 FEW018 SCT025&#10;BECMG 1310/1312 13010KT&#10;PROB40 TEMPO 1312/1318 5000 TSRA FEW015CB BKN020..."></textarea>
+                            </div>
+
+                            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                                <button class="btn-save-primary" onclick="saveForecasterTAF()">
+                                    <i class="fas fa-save me-2"></i>Save TAF
+                                </button>
+                                <button class="btn-accent" onclick="loadLatestForecasterTAF()">
+                                    <i class="fas fa-sync-alt me-2"></i>Load Latest TAF
+                                </button>
+                            </div>
+                            
+                            <div class="status-msg" id="taf-status"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END TAF TAB -->
+
+            </div><!-- /tab-content -->
+        </div><!-- /main-tabs-wrapper -->
+
+    </div><!-- /container-fluid -->
+</div><!-- /content -->
+
+<!-- ===== FOOTER ===== -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 text-center text-md-start">
+                <div class="footer-logo mb-2">
+                    <img src="logo.jpg" alt="Logo" style="height:38px;">
+                </div>
+                <p>&copy; 2025 P.Kamesa. All rights reserved.</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <ul class="footer-links">
+                    <li><a href="/privacy-policy">Privacy Policy</a></li>
+                    <li><a href="/terms-of-service">Terms of Service</a></li>
+                    <li><a href="contact.html">Contact Me</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 text-center text-md-end">
+                <div class="social-media mb-2">
+                    <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+                    <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="auth.js"></script>
+<script src="forecaster.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

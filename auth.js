@@ -103,7 +103,7 @@ function buildRoleNavbar() {
         </li>`;
 
         // --- DASHBOARD dropdown ---
-        const dashPages = ['station-dashboard.html', 'pilot-dashboard.html', 'admin-dashboard.html'];
+        const dashPages = ['station-dashboard.html', 'pilot-dashboard.html', 'admin-dashboard.html', 'forecaster-dashboard.html'];
         navHTML += `<li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle ${isActive(dashPages)}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fas fa-tachometer-alt me-1"></i>Dashboard
@@ -115,12 +115,16 @@ function buildRoleNavbar() {
                 <li><a class="dropdown-item ${isActive('pilot-dashboard.html')}" href="pilot-dashboard.html">
                     <i class="fas fa-plane me-2"></i>Pilot/ATC Dashboard
                 </a></li>
+                <li><a class="dropdown-item ${isActive('forecaster-dashboard.html')}" href="forecaster-dashboard.html">
+                    <i class="fas fa-cloud-sun-rain me-2"></i>Forecaster Dashboard
+                </a></li>
                 ${role === 'admin' ? `<li><hr class="dropdown-divider" style="border-color: rgba(255,255,255,0.15);"></li>
                 <li><a class="dropdown-item ${isActive('admin-dashboard.html')}" href="admin-dashboard.html">
                     <i class="fas fa-user-shield me-2"></i>Admin Panel
                 </a></li>` : ''}
             </ul>
         </li>`;
+
 
         // --- RESOURCES dropdown ---
         const resourcePages = ['learn_metar.html', 'learn_synop.html', 'ref.html', 'learn_taf.html'];
@@ -137,19 +141,35 @@ function buildRoleNavbar() {
         </li>`;
 
         // --- FORECASTS dropdown ---
-        const forecastPages = ['daily_wx.html', 's_e.html', 'coast.html', 'central.html', 'western.html', 'n_w.html', 'n_e.html'];
+        const forecastPages = ['daily_wx.html', 'forecaster-dashboard.html', 's_e.html', 'coast.html', 'central.html', 'western.html', 'n_w.html', 'n_e.html'];
         navHTML += `<li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle ${isActive(forecastPages)}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Forecasts
+                <i class="fas fa-chart-line me-1"></i>Forecasts
             </a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item ${isActive('daily_wx.html')}" href="daily_wx.html">Daily WX</a></li>
-                <li><a class="dropdown-item ${isActive('s_e.html')}" href="s_e.html">S.E</a></li>
-                <li><a class="dropdown-item ${isActive('coast.html')}" href="coast.html">COAST</a></li>
-                <li><a class="dropdown-item ${isActive('central.html')}" href="central.html">CENTRAL</a></li>
-                <li><a class="dropdown-item ${isActive('western.html')}" href="western.html">WESTERN</a></li>
-                <li><a class="dropdown-item ${isActive('n_w.html')}" href="n_w.html">N.W</a></li>
-                <li><a class="dropdown-item ${isActive('n_e.html')}" href="n_e.html">N.E</a></li>
+                <li><a class="dropdown-item ${isActive('daily_wx.html')}" href="daily_wx.html">
+                    <i class="fas fa-sun me-2"></i>Daily WX
+                </a></li>
+                <li><hr class="dropdown-divider" style="border-color: rgba(255,255,255,0.15);"></li>
+                <li><h6 class="dropdown-header text-white-50" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.04em;">ROFOR Forms (FORM NO.2063)</h6></li>
+                <li><a class="dropdown-item" href="forecaster-dashboard.html?region=SE">
+                    <i class="fas fa-route me-2"></i>South Eastern (SE) ROFOR
+                </a></li>
+                <li><a class="dropdown-item" href="forecaster-dashboard.html?region=NE">
+                    <i class="fas fa-route me-2"></i>North Eastern (NE) ROFOR
+                </a></li>
+                <li><a class="dropdown-item" href="forecaster-dashboard.html?region=Coast">
+                    <i class="fas fa-water me-2"></i>Coast ROFOR
+                </a></li>
+                <li><a class="dropdown-item" href="forecaster-dashboard.html?region=NW">
+                    <i class="fas fa-route me-2"></i>North Western (NW) ROFOR
+                </a></li>
+                <li><a class="dropdown-item" href="forecaster-dashboard.html?region=W">
+                    <i class="fas fa-route me-2"></i>Western (W) ROFOR
+                </a></li>
+                <li><a class="dropdown-item" href="forecaster-dashboard.html?region=Central">
+                    <i class="fas fa-route me-2"></i>Central ROFOR
+                </a></li>
             </ul>
         </li>`;
 
@@ -197,16 +217,32 @@ function buildRoleNavbar() {
 
         navHTML += `<li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Forecasts
+                <i class="fas fa-chart-line me-1"></i>Forecasts
             </a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="daily_wx.html">Daily WX</a></li>
-                <li><a class="dropdown-item" href="s_e.html">S.E</a></li>
-                <li><a class="dropdown-item" href="coast.html">COAST</a></li>
-                <li><a class="dropdown-item" href="central.html">CENTRAL</a></li>
-                <li><a class="dropdown-item" href="western.html">WESTERN</a></li>
-                <li><a class="dropdown-item" href="n_w.html">N.W</a></li>
-                <li><a class="dropdown-item" href="n_e.html">N.E</a></li>
+                <li><a class="dropdown-item" href="daily_wx.html">
+                    <i class="fas fa-sun me-2"></i>Daily WX
+                </a></li>
+                <li><hr class="dropdown-divider" style="border-color: rgba(255,255,255,0.15);"></li>
+                <li><h6 class="dropdown-header text-white-50" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.04em;">ROFOR Forms (FORM NO.2063)</h6></li>
+                <li><a class="dropdown-item" href="forecaster-dashboard.html?region=SE">
+                    <i class="fas fa-route me-2"></i>South Eastern (SE) ROFOR
+                </a></li>
+                <li><a class="dropdown-item" href="forecaster-dashboard.html?region=NE">
+                    <i class="fas fa-route me-2"></i>North Eastern (NE) ROFOR
+                </a></li>
+                <li><a class="dropdown-item" href="forecaster-dashboard.html?region=Coast">
+                    <i class="fas fa-water me-2"></i>Coast ROFOR
+                </a></li>
+                <li><a class="dropdown-item" href="forecaster-dashboard.html?region=NW">
+                    <i class="fas fa-route me-2"></i>North Western (NW) ROFOR
+                </a></li>
+                <li><a class="dropdown-item" href="forecaster-dashboard.html?region=W">
+                    <i class="fas fa-route me-2"></i>Western (W) ROFOR
+                </a></li>
+                <li><a class="dropdown-item" href="forecaster-dashboard.html?region=Central">
+                    <i class="fas fa-route me-2"></i>Central ROFOR
+                </a></li>
             </ul>
         </li>`;
 
