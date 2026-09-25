@@ -609,7 +609,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div>
-                                        <div class="stat-label text-primary">METARs Today</div>
+                                        <div class="stat-label text-primary">METARs</div>
                                         <div class="stat-value" id="count-metar">0</div>
                                         <div class="stat-sublabel">Reports submitted</div>
                                     </div>
@@ -627,7 +627,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div>
-                                        <div class="stat-label text-success">SYNOPs Today</div>
+                                        <div class="stat-label text-success">SYNOPs</div>
                                         <div class="stat-value" id="count-synop">0</div>
                                         <div class="stat-sublabel">Reports submitted</div>
                                     </div>
@@ -645,7 +645,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div>
-                                        <div class="stat-label text-info">ACTUALS Today</div>
+                                        <div class="stat-label text-info">ACTUALS</div>
                                         <div class="stat-value" id="count-actuals">0</div>
                                         <div class="stat-sublabel">Reports submitted</div>
                                     </div>
@@ -687,7 +687,7 @@
 
             <!-- View & New Report Cards -->
             <div class="row g-3 mb-3" id="report-actions-container">
-                <!-- View OBS Slips -->
+              <!--
                 <div class="col-md-3 mb-3">
                     <div class="card resource-card h-100">
                         <div class="card-body d-flex align-items-center gap-3">
@@ -703,7 +703,9 @@
                         </div>
                     </div>
                 </div>
+                -->
                 <!-- View METARs -->
+                 <!--
                 <div class="col-md-3 mb-3">
                     <div class="card resource-card h-100">
                         <div class="card-body d-flex align-items-center gap-3">
@@ -719,7 +721,9 @@
                         </div>
                     </div>
                 </div>
+            -->
                 <!-- View SYNOPs -->
+                 <!--
                 <div class="col-md-3 mb-3">
                     <div class="card resource-card h-100">
                         <div class="card-body d-flex align-items-center gap-3">
@@ -735,7 +739,9 @@
                         </div>
                     </div>
                 </div>
+            -->
                 <!-- View ACTUALS -->
+                 <!--
                 <div class="col-md-3 mb-3">
                     <div class="card resource-card h-100">
                         <div class="card-body d-flex align-items-center gap-3">
@@ -751,9 +757,10 @@
                         </div>
                     </div>
                 </div>
+                -->
                 <!-- New OBS Slip -->
                 <div class="col-md-3 mb-3">
-                    <div class="card resource-card h-100">
+                    <div class="card resource-card h-100" onclick="openPageModal('obs_slip.html', 'New Observation Slip')" style="cursor:pointer;">
                         <div class="card-body d-flex align-items-center gap-3">
                             <div class="icon-box icon-new-obs">
                                 <i class="fas fa-file-signature"></i>
@@ -763,7 +770,7 @@
                                     <h5 class="mb-0">New OBS Slip</h5>
                                     <span class="badge bg-success badge-new">New</span>
                                 </div>
-                                <a href="#" onclick="openPageModal('obs_slip.html', 'New Observation Slip')" class="open-link">
+                                <a href="#" onclick="event.stopPropagation(); openPageModal('obs_slip.html', 'New Observation Slip')" class="open-link">
                                     <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
                                 </a>
                             </div>
@@ -772,7 +779,7 @@
                 </div>
                 <!-- New METAR/SPECI -->
                 <div class="col-md-3 mb-3">
-                    <div class="card resource-card h-100">
+                    <div class="card resource-card h-100" onclick="openPageModal('metar1.html', 'New METAR/SPECI')" style="cursor:pointer;">
                         <div class="card-body d-flex align-items-center gap-3">
                             <div class="icon-box icon-new-metar">
                                 <i class="fas fa-plus-circle"></i>
@@ -782,7 +789,7 @@
                                     <h5 class="mb-0">New METAR/SPECI</h5>
                                     <span class="badge bg-success badge-new">New</span>
                                 </div>
-                                <a href="#" onclick="openPageModal('metar1.html', 'New METAR/SPECI')" class="open-link">
+                                <a href="#" onclick="event.stopPropagation(); openPageModal('metar1.html', 'New METAR/SPECI')" class="open-link">
                                     <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
                                 </a>
                             </div>
@@ -791,7 +798,7 @@
                 </div>
                 <!-- New SYNOP -->
                 <div class="col-md-3 mb-3">
-                    <div class="card resource-card h-100">
+                    <div class="card resource-card h-100" onclick="openPageModal('synop.html', 'New SYNOP Report')" style="cursor:pointer;">
                         <div class="card-body d-flex align-items-center gap-3">
                             <div class="icon-box icon-new-synop">
                                 <i class="fas fa-edit"></i>
@@ -801,7 +808,7 @@
                                     <h5 class="mb-0">New SYNOP</h5>
                                     <span class="badge bg-success badge-new">New</span>
                                 </div>
-                                <a href="#" onclick="openPageModal('synop.html', 'New SYNOP Report')" class="open-link">
+                                <a href="#" onclick="event.stopPropagation(); openPageModal('synop.html', 'New SYNOP Report')" class="open-link">
                                     <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
                                 </a>
                             </div>
@@ -810,7 +817,7 @@
                 </div>
                 <!-- New ACTUALS -->
                 <div class="col-md-3 mb-3">
-                    <div class="card resource-card h-100">
+                    <div class="card resource-card h-100" onclick="openPageModal('actuals.html', 'New ACTUALS Report')" style="cursor:pointer;">
                         <div class="card-body d-flex align-items-center gap-3">
                             <div class="icon-box icon-new-actuals">
                                 <i class="fas fa-tasks"></i>
@@ -820,7 +827,7 @@
                                     <h5 class="mb-0">New ACTUALS</h5>
                                     <span class="badge bg-success badge-new">New</span>
                                 </div>
-                                <a href="#" onclick="openPageModal('actuals.html', 'New ACTUALS Report')" class="open-link">
+                                <a href="#" onclick="event.stopPropagation(); openPageModal('actuals.html', 'New ACTUALS Report')" class="open-link">
                                     <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
                                 </a>
                             </div>
@@ -829,7 +836,7 @@
                 </div>
                 <!-- New TAF -->
                 <div class="col-md-3 mb-3">
-                    <div class="card resource-card h-100">
+                    <div class="card resource-card h-100" onclick="openPageModal('taf.html', 'New TAF Report')" style="cursor:pointer;">
                         <div class="card-body d-flex align-items-center gap-3">
                             <div class="icon-box icon-new-taf">
                                 <i class="fas fa-wind"></i>
@@ -839,7 +846,7 @@
                                     <h5 class="mb-0">New TAF</h5>
                                     <span class="badge bg-success badge-new">New</span>
                                 </div>
-                                <a href="#" onclick="openPageModal('taf.html', 'New TAF Report')" class="open-link">
+                                <a href="#" onclick="event.stopPropagation(); openPageModal('taf.html', 'New TAF Report')" class="open-link">
                                     <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
                                 </a>
                             </div>
@@ -859,14 +866,14 @@
             <div class="row g-3 mb-3" id="climate-returns-container">
                 <!-- Form 626 -->
                 <div class="col-md-3 mb-3">
-                    <div class="card resource-card h-100">
+                    <div class="card resource-card h-100" onclick="openPageModal('form626.html', 'Form 626')" style="cursor:pointer;">
                         <div class="card-body d-flex align-items-center gap-3">
                             <div class="icon-box" style="background: linear-gradient(135deg, #0d6e3e 0%, #0dcaf0 100%);">
                                 <i class="fas fa-file-excel text-white"></i>
                             </div>
                             <div>
                                 <h5 class="mb-1">Form 626</h5>
-                                <a href="#" onclick="openPageModal('form626.html', 'Form 626')" class="open-link">
+                                <a href="#" onclick="event.stopPropagation(); openPageModal('form626.html', 'Form 626')" class="open-link">
                                     <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
                                 </a>
                             </div>
@@ -875,14 +882,14 @@
                 </div>
                 <!-- C/SHEET -->
                 <div class="col-md-3 mb-3">
-                    <div class="card resource-card h-100">
+                    <div class="card resource-card h-100" onclick="openPageModal('c_sheet.html', 'Computation Sheet')" style="cursor:pointer;">
                         <div class="card-body d-flex align-items-center gap-3">
                             <div class="icon-box" style="background: linear-gradient(135deg, #6610a0 0%, #ff4ed9 100%);">
                                 <i class="fas fa-table text-white"></i>
                             </div>
                             <div>
                                 <h5 class="mb-1">C/SHEET</h5>
-                                <a href="#" onclick="openPageModal('c_sheet.html', 'Computation Sheet')" class="open-link">
+                                <a href="#" onclick="event.stopPropagation(); openPageModal('c_sheet.html', 'Computation Sheet')" class="open-link">
                                     <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
                                 </a>
                             </div>
@@ -891,14 +898,14 @@
                 </div>
                 <!-- AGRO 18 DEK -->
                 <div class="col-md-3 mb-3">
-                    <div class="card resource-card h-100">
+                    <div class="card resource-card h-100" onclick="openPageModal('agro18.html', 'AGRO 18 DEKAD')" style="cursor:pointer;">
                         <div class="card-body d-flex align-items-center gap-3">
                             <div class="icon-box" style="background: linear-gradient(135deg, #ff9900 0%, #ff5500 100%);">
                                 <i class="fas fa-seedling text-white"></i>
                             </div>
                             <div>
                                 <h5 class="mb-1">AGRO 18</h5>
-                                <a href="#" onclick="openPageModal('agro18.html', 'AGRO 18 DEKAD')" class="open-link">
+                                <a href="#" onclick="event.stopPropagation(); openPageModal('agro18.html', 'AGRO 18 DEKAD')" class="open-link">
                                     <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
                                 </a>
                             </div>
@@ -907,14 +914,14 @@
                 </div>
                 <!-- WX SUMMARY -->
                 <div class="col-md-3 mb-3">
-                    <div class="card resource-card h-100">
+                    <div class="card resource-card h-100" onclick="openPageModal('wx_summary.html', 'Monthly Weather Summary')" style="cursor:pointer;">
                         <div class="card-body d-flex align-items-center gap-3">
                             <div class="icon-box" style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);">
                                 <i class="fas fa-file-alt text-white"></i>
                             </div>
                             <div>
                                 <h5 class="mb-1">WX SUMMARY</h5>
-                                <a href="#" onclick="openPageModal('wx_summary.html', 'Monthly Weather Summary')" class="open-link">
+                                <a href="#" onclick="event.stopPropagation(); openPageModal('wx_summary.html', 'Monthly Weather Summary')" class="open-link">
                                     <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
                                 </a>
                             </div>
@@ -923,14 +930,14 @@
                 </div>
                 <!-- FORM 446 -->
                 <div class="col-md-3 mb-3">
-                    <div class="card resource-card h-100">
+                    <div class="card resource-card h-100" onclick="openPageModal('form446.html', 'Form 446 - Evaporation Pan')" style="cursor:pointer;">
                         <div class="card-body d-flex align-items-center gap-3">
                             <div class="icon-box" style="background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);">
                                 <i class="fas fa-tint text-white"></i>
                             </div>
                             <div>
                                 <h5 class="mb-1">FORM 446</h5>
-                                <a href="#" onclick="openPageModal('form446.html', 'Form 446 - Evaporation Pan')" class="open-link">
+                                <a href="#" onclick="event.stopPropagation(); openPageModal('form446.html', 'Form 446 - Evaporation Pan')" class="open-link">
                                     <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
                                 </a>
                             </div>
@@ -939,14 +946,14 @@
                 </div>
                 <!-- FORM 496 -->
                 <div class="col-md-3 mb-3">
-                    <div class="card resource-card h-100">
+                    <div class="card resource-card h-100" onclick="openPageModal('form496.html', 'Form 496 - Monthly Rainfall Report')" style="cursor:pointer;">
                         <div class="card-body d-flex align-items-center gap-3">
                             <div class="icon-box" style="background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);">
                                 <i class="fas fa-cloud-rain text-white"></i>
                             </div>
                             <div>
                                 <h5 class="mb-1">FORM 496</h5>
-                                <a href="#" onclick="openPageModal('form496.html', 'Form 496 - Monthly Rainfall Report')" class="open-link">
+                                <a href="#" onclick="event.stopPropagation(); openPageModal('form496.html', 'Form 496 - Monthly Rainfall Report')" class="open-link">
                                     <i class="fas fa-external-link-alt me-1" style="font-size:0.65rem;"></i>Open Form
                                 </a>
                             </div>
