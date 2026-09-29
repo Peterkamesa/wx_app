@@ -223,8 +223,8 @@ function renderTableRows(year, month, daysInMonth, obsData, stnNumber) {
             <td>${obs12.soil_1300_20 || ''}</td>
             
             <!-- MAX/MIN RESET -->
-            <td>${obs12.max_reset || ''}</td>
-            <td>${obs12.min_reset || ''}</td>
+            <td>${obs06.dry_bulb || ''}</td>
+            <td>${obs06.dry_bulb || ''}</td>
             
             <!-- SOIL MOISTURE (5, 100) -->
             <td>${obs12.soil_moist_5 || ''}</td>
