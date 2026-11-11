@@ -544,9 +544,9 @@
             if (maxTemp) actualsReport += `MAX ${maxTemp} `;
             if (minTemp) actualsReport += `MIN ${minTemp} `;
             if (gMin) actualsReport += `G/MIN ${gMin} `;
-            if (aRf) actualsReport += `A/RF ${aRf} `;
+            if (aRf) actualsReport += `A/RF ${(aRf !== '' && !isNaN(aRf)) ? aRf + 'MM' : aRf} `;
             if (rH) actualsReport += `R/H ${rH}%`;
-            if (wRf) actualsReport += ` W/RF ${wRf}`;
+            if (wRf) actualsReport += ` W/RF ${(wRf !== '' && !isNaN(wRf)) ? wRf + 'MM' : wRf}`;
             
             // Display the generated report
             document.getElementById('actualsOutput').textContent = actualsReport +'=';
